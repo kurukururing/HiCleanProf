@@ -242,7 +242,7 @@ export function Footer() {
                   href={`mailto:${email}`}
                   className={`block break-all text-base text-white/85 transition-colors hover:text-white ${focusRing}`}
                 >
-                  {email}
+                  +62 812-3456-7890
                 </a>
                 {address && <p className="max-w-[16rem] text-sm leading-relaxed text-white/60">{address}</p>}
               </div>

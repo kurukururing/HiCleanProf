@@ -1,23 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
-import { StatusBadge } from '../ui/StatusBadge';
 import { LabelMarquee } from '../ui/LabelMarquee';
 import { features } from '../../data/features';
 
 /**
- * Features — mengikuti section "Legal solutions for every challenge" di Juriso:
- * - header di tengah + kontrol tab berbentuk pill dengan thumb yang bergeser
- * - kiri: panel dengan mockup HP yang terpotong di tepi bawah (bukan HP melayang + panah)
- * - kanan: accordion bergaris dengan tombol +/- bulat
+ * Features — header di tengah + tab pill, kiri mockup HP, kanan accordion bergaris.
  *
- * Mockup HP hanya memakai data yang sudah ada (judul, deskripsi, daftar fitur per peran),
- * jadi layar HP mencerminkan menu aplikasi yang sebenarnya:
- *   - judul + deskripsi fitur aktif (crossfade)
- *   - daftar semua fitur peran tersebut, dengan baris aktif tersorot
+ * Mockup HP menampilkan screenshot aplikasi. Setiap fitur boleh punya BEBERAPA gambar
+ * yang berganti otomatis secara berurutan (lalu mengulang dari awal):
+ *
+ *   {
+ *     id: 'w1', titleID: '...', ...,
+ *     screens: [
+ *       { src: '/screens/w1-1.webp', duration: 3000 },          // tampil 3 detik
+ *       { src: '/screens/w1-2.webp', duration: 5000 },          // tampil 5 detik
+ *       { src: '/screens/w1-3.webp', srcEN: '/screens/w1-3-en.webp' }, // durasi default
+ *     ],
+ *   }
+ *
+ * - `duration` (ms) = berapa lama gambar itu tampil sebelum berganti ke gambar berikutnya.
+ *   Untuk gambar terakhir, itu waktu sebelum kembali ke gambar pertama.
+ * - `srcEN` opsional untuk UI bahasa Inggris.
+ * - Format lama `screenshot` / `screenshotEN` (satu gambar) tetap didukung.
+ * - Gambar yang gagal dimuat dilewati; jika semuanya gagal/kosong, layar menampilkan
+ *   judul + deskripsi fitur sebagai cadangan.
+ *
+ * Kontrol: bar progres di bawah HP (klik untuk loncat ke gambar tertentu);
+ * slideshow berhenti saat kursor berada di atas HP.
  */
 
 const EASE = 'ease-[cubic-bezier(0.25,1,0.5,1)]';
 const TABS = ['warga', 'pengepul'];
+
+const DEFAULT_DURATION = 3500; // ms, jika `duration` tidak diisi
+
+// Rasio layar HP yang dipakai frame. Semua screenshot sebaiknya memakai rasio yang sama
+// (mis. 1170 × 2532 px = iPhone 14/15) agar tidak ada bagian yang terpotong.
+const SCREEN_RATIO = 'aspect-[1170/2532]';
+
+// Normalisasi data fitur → daftar gambar { key, src, duration }
+function getScreens(feat, lang) {
+  const list = feat.screens?.length
+    ? feat.screens
+    : feat.screenshot
+      ? [{ src: feat.screenshot, srcEN: feat.screenshotEN }]
+      : [];
+
+  return list.map((s, i) => ({
+    key: `${feat.id}:${i}`,
+    src: (lang === 'en' && s.srcEN) || s.src,
+    duration: s.duration ?? DEFAULT_DURATION,
+  }));
+}
 
 function ToggleIcon({ open }) {
   return (
@@ -37,75 +71,140 @@ function ToggleIcon({ open }) {
   );
 }
 
-function PhoneMockup({ items, activeIndex, roleLabel, lang }) {
-  const pick = (f, key) => (lang === 'id' ? f[`${key}ID`] : f[`${key}EN`]);
+function PhoneMockup({ items, activeIndex, lang }) {
+  const active = items[activeIndex];
+
+  // Semua gambar tiap fitur (sudah dinormalisasi)
+  const screensById = useMemo(
+    () => Object.fromEntries(items.map((f) => [f.id, getScreens(f, lang)])),
+    [items, lang],
+  );
+
+  // Gambar yang gagal dimuat (dilewati dari slideshow)
+  const [failed, setFailed] = useState(() => new Set());
+  const markFailed = (key) =>
+    setFailed((prev) => {
+      if (prev.has(key)) return prev;
+      const next = new Set(prev);
+      next.add(key);
+      return next;
+    });
+
+  // Posisi slideshow, terikat pada fitur: pindah fitur otomatis kembali ke gambar pertama
+  const [pos, setPos] = useState({ id: null, frame: 0 });
+  const [paused, setPaused] = useState(false);
+  const [epoch, setEpoch] = useState(0); // naik setiap timer perlu mulai ulang (resume / klik bar)
+
+  const usable = useMemo(
+    () => (screensById[active.id] ?? []).filter((s) => !failed.has(s.key)),
+    [screensById, active.id, failed],
+  );
+  const frame = pos.id === active.id ? Math.min(pos.frame, Math.max(usable.length - 1, 0)) : 0;
+
+  useEffect(() => {
+    if (paused || usable.length < 2) return undefined;
+    const id = setTimeout(
+      () => setPos({ id: active.id, frame: (frame + 1) % usable.length }),
+      usable[frame].duration,
+    );
+    return () => clearTimeout(id);
+  }, [paused, usable, frame, active.id, epoch]);
+
+  const jumpTo = (i) => {
+    setPos({ id: active.id, frame: i });
+    setEpoch((e) => e + 1);
+  };
 
   return (
-    <div className="absolute left-1/2 top-10 h-[560px] w-[270px] -translate-x-1/2 rounded-[2.75rem] bg-ink p-2.5">
-      <div className="relative flex h-full flex-col overflow-hidden rounded-[2.25rem] bg-white px-5 pb-6 pt-4">
-        {/* Pulau kamera */}
-        <div className="absolute left-1/2 top-2.5 h-5 w-20 -translate-x-1/2 rounded-full bg-ink" />
+    <>
+      <div
+        className="relative w-[250px] shrink-0 rounded-[2.75rem] bg-ink p-2.5 md:w-[270px]"
+        onPointerEnter={(e) => {
+          if (e.pointerType !== 'touch') setPaused(true); // sentuhan tidak "menempel"
+        }}
+        onPointerLeave={() => {
+          setPaused(false);
+          setEpoch((e) => e + 1);
+        }}
+      >
+        <div className={`relative ${SCREEN_RATIO} overflow-hidden rounded-[2.25rem] bg-white`}>
+          {/* Pulau kamera dekoratif: hanya menutup area tengah status bar */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-2.5 z-20 h-5 w-20 -translate-x-1/2 rounded-full bg-ink"
+          />
 
-        {/* Status bar */}
-        <div className="flex items-center justify-between pt-1 text-[11px] font-medium text-ink">
-          <span>9:41</span>
-          <span className="flex items-end gap-0.5" aria-hidden="true">
-            <span className="h-1 w-0.5 bg-ink" />
-            <span className="h-1.5 w-0.5 bg-ink" />
-            <span className="h-2 w-0.5 bg-ink" />
-            <span className="h-2.5 w-0.5 bg-ink" />
-          </span>
-        </div>
+          {items.map((feat) => {
+            const isActive = feat.id === active.id;
+            const screens = (screensById[feat.id] ?? []).filter((s) => !failed.has(s.key));
 
-        {/* Peran aktif */}
-        <p className="mt-8 text-xs text-neutral-500">{roleLabel}</p>
-
-        {/* Fitur aktif: crossfade */}
-        <div className="relative mt-2 h-36">
-          {items.map((feat, idx) => {
-            const isActive = idx === activeIndex;
             return (
-              <div
-                key={feat.id}
-                aria-hidden={!isActive}
-                className={`absolute inset-0 transition-all duration-700 ${EASE} motion-reduce:transition-none ${
-                  isActive ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
-                }`}
-              >
-                <h4 className="text-xl font-medium leading-tight tracking-tight text-ink">
-                  {pick(feat, 'title')}
-                </h4>
-                <p className="mt-2 line-clamp-4 text-xs leading-relaxed text-neutral-600">
-                  {pick(feat, 'desc')}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Menu aplikasi: seluruh fitur peran ini */}
-        <div className="mt-auto space-y-1.5">
-          {items.map((feat, idx) => {
-            const isActive = idx === activeIndex;
-            return (
-              <div
-                key={feat.id}
-                className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-xs transition-colors duration-500 ${EASE} motion-reduce:transition-none ${
-                  isActive ? 'bg-ink text-white' : 'bg-neutral-100 text-neutral-500'
-                }`}
-              >
-                <span
-                  className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-500 ${
-                    isActive ? 'bg-white' : 'bg-neutral-300'
-                  }`}
-                />
-                <span className="truncate">{pick(feat, 'title')}</span>
+              <div key={feat.id} aria-hidden={!isActive} className="absolute inset-0">
+                {screens.length === 0 ? (
+                  /* Cadangan: belum ada gambar / semuanya gagal dimuat */
+                  <div
+                    className={`flex h-full flex-col px-5 pt-16 transition-opacity duration-700 ${EASE} motion-reduce:transition-none ${
+                      isActive ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    <h4 className="text-xl font-medium leading-tight tracking-tight text-ink">
+                      {lang === 'id' ? feat.titleID : feat.titleEN}
+                    </h4>
+                    <p className="mt-2 text-xs leading-relaxed text-neutral-600">
+                      {lang === 'id' ? feat.descID : feat.descEN}
+                    </p>
+                  </div>
+                ) : (
+                  screens.map((s) => (
+                    <img
+                      key={s.key}
+                      src={s.src}
+                      alt={isActive && usable[frame]?.key === s.key ? (lang === 'id' ? feat.titleID : feat.titleEN) : ''}
+                      decoding="async"
+                      draggable="false"
+                      onError={() => markFailed(s.key)}
+                      className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-700 ${EASE} motion-reduce:transition-none ${
+                        isActive && usable[frame]?.key === s.key ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  ))
+                )}
               </div>
             );
           })}
         </div>
       </div>
-    </div>
+
+      {/* Bar progres: tinggi ruang selalu dipesan agar layout tidak melompat antar fitur */}
+      <div className="flex h-1.5 items-center gap-1.5" role="group" aria-label="Slideshow">
+        {usable.length > 1 &&
+          usable.map((s, i) => (
+            <button
+              key={s.key}
+              type="button"
+              onClick={() => jumpTo(i)}
+              aria-label={`${i + 1} / ${usable.length}`}
+              aria-current={i === frame ? 'true' : undefined}
+              className="relative h-1.5 w-8 overflow-hidden rounded-full bg-neutral-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            >
+              <span
+                key={`${i}-${i === frame ? epoch : 'idle'}`}
+                className="absolute inset-0 origin-left rounded-full bg-ink"
+                style={
+                  i < frame
+                    ? { transform: 'scaleX(1)' }
+                    : i === frame
+                      ? {
+                          animation: `fs-progress ${s.duration}ms linear forwards`,
+                          animationPlayState: paused ? 'paused' : 'running',
+                        }
+                      : { transform: 'scaleX(0)' }
+                }
+              />
+            </button>
+          ))}
+      </div>
+    </>
   );
 }
 
@@ -124,6 +223,8 @@ export function Features() {
 
   return (
     <section id="features" className="scroll-mt-20 overflow-x-clip bg-neutral-50 py-24 md:py-32">
+      <style>{`@keyframes fs-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }`}</style>
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col items-center text-center">
@@ -163,16 +264,11 @@ export function Features() {
         </div>
 
         {/* Isi */}
-        <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:gap-16">
-          {/* Panel HP */}
+        <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:items-center lg:gap-16">
+          {/* Panel HP: tinggi mengikuti HP, jadi mockup tampil utuh */}
           <div className="lg:col-span-5">
-            <div className="relative h-[480px] overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-100 md:h-[540px]">
-              <PhoneMockup
-                items={currentFeatures}
-                activeIndex={activeIndex}
-                roleLabel={t(`tab.${activeTab}`)}
-                lang={lang}
-              />
+            <div className="flex flex-col items-center gap-6 rounded-3xl border border-neutral-200 bg-neutral-100 px-6 py-10 md:py-12">
+              <PhoneMockup items={currentFeatures} activeIndex={activeIndex} lang={lang} />
             </div>
             <p className="mt-4 text-xs text-neutral-500">{t('text.simulationData')}</p>
           </div>
@@ -192,14 +288,12 @@ export function Features() {
                       aria-controls={panelId}
                       className="group flex w-full items-center justify-between gap-6 py-7 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ink"
                     >
-                      <span className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                        <span
-                          className={`text-2xl font-medium tracking-tight transition-colors duration-500 md:text-3xl ${
-                            isActive ? 'text-ink' : 'text-neutral-500 group-hover:text-ink'
-                          }`}
-                        >
-                          {lang === 'id' ? feat.titleID : feat.titleEN}
-                        </span>
+                      <span
+                        className={`text-2xl font-medium tracking-tight transition-colors duration-500 md:text-3xl ${
+                          isActive ? 'text-ink' : 'text-neutral-500 group-hover:text-ink'
+                        }`}
+                      >
+                        {lang === 'id' ? feat.titleID : feat.titleEN}
                       </span>
                       <ToggleIcon open={isActive} />
                     </button>
