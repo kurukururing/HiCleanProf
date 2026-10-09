@@ -23,6 +23,120 @@
   }
 }
 
+/* =====================================================================
+   Animasi scroll — tempel di AKHIR index.css (setelah @theme / @layer base)
+   Hanya opacity & transform → ringan dan tanpa layout shift.
+   ===================================================================== */
+
+:root {
+  --rv-ease: cubic-bezier(0.22, 1, 0.36, 1); /* melambat halus di akhir */
+  --rv-duration: 850ms;
+}
+
+/* ---------- 1. Reveal satu elemen: data-reveal="up|fade|scale|blur|left|right" ---------- */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity var(--rv-duration) var(--rv-ease),
+    transform calc(var(--rv-duration) + 100ms) var(--rv-ease),
+    filter var(--rv-duration) var(--rv-ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal='up'] { transform: translate3d(0, 28px, 0); }
+[data-reveal='left'] { transform: translate3d(-32px, 0, 0); }
+[data-reveal='right'] { transform: translate3d(32px, 0, 0); }
+[data-reveal='scale'] { transform: scale(0.95); }
+[data-reveal='blur'] { transform: translate3d(0, 16px, 0); filter: blur(10px); }
+
+[data-reveal][data-visible='true'] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  will-change: auto;
+}
+
+/* ---------- 2. Stagger: anak-anak langsung muncul berurutan ---------- */
+[data-stagger] > * {
+  opacity: 0;
+  transition:
+    opacity var(--rv-duration) var(--rv-ease),
+    transform calc(var(--rv-duration) + 100ms) var(--rv-ease);
+  transition-delay: calc(var(--reveal-delay, 0ms) + var(--i, 0) * var(--stagger-step, 90ms));
+}
+[data-stagger='up'] > * { transform: translate3d(0, 28px, 0); }
+[data-stagger='scale'] > * { transform: scale(0.95); }
+[data-stagger='left'] > * { transform: translate3d(-28px, 0, 0); }
+[data-stagger][data-visible='true'] > * {
+  opacity: 1;
+  transform: none;
+}
+/* Indeks urutan; item ke-13 dst. memakai jeda yang sama agar total tidak kelamaan */
+[data-stagger] > :nth-child(1)  { --i: 0; }
+[data-stagger] > :nth-child(2)  { --i: 1; }
+[data-stagger] > :nth-child(3)  { --i: 2; }
+[data-stagger] > :nth-child(4)  { --i: 3; }
+[data-stagger] > :nth-child(5)  { --i: 4; }
+[data-stagger] > :nth-child(6)  { --i: 5; }
+[data-stagger] > :nth-child(7)  { --i: 6; }
+[data-stagger] > :nth-child(8)  { --i: 7; }
+[data-stagger] > :nth-child(9)  { --i: 8; }
+[data-stagger] > :nth-child(10) { --i: 9; }
+[data-stagger] > :nth-child(11) { --i: 10; }
+[data-stagger] > :nth-child(12) { --i: 11; }
+[data-stagger] > :nth-child(n + 13) { --i: 12; }
+
+/* ---------- 3. Judul kata demi kata (RevealText) ---------- */
+.rv-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* ruang ekstra agar huruf berekor (g, y, j) dan aksen tidak terpotong mask */
+  padding: 0.08em 0 0.16em;
+  margin: -0.08em 0 -0.16em;
+}
+.rv-word > span {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 950ms var(--rv-ease);
+}
+[data-visible='true'] .rv-word > span {
+  transform: none;
+}
+
+/* ---------- 4. Efek tirai antar section (SectionTransition) ---------- */
+.st-curtain {
+  transform: translate3d(0, 28px, 0); /* harus ≤ tumpang tindih agar tidak ada celah */
+  transition: transform 1000ms var(--rv-ease);
+}
+.st-curtain[data-visible='true'] {
+  transform: none;
+}
+.st-overlap {
+  margin-top: -2.5rem;
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem;
+}
+@media (min-width: 768px) {
+  .st-overlap {
+    margin-top: -3.5rem;
+    border-top-left-radius: 3rem;
+    border-top-right-radius: 3rem;
+  }
+}
+
+/* ---------- 5. Reduced motion: tampilkan konten langsung, tanpa gerak ---------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-stagger] > *,
+  .rv-word > span,
+  .st-curtain {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
 /* Dukungan prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   html {

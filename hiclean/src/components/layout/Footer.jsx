@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { siteConfig } from '../../config/siteConfig';
 
 const REFERENCES = [
@@ -49,8 +51,7 @@ const COPY = {
   id: {
     tagline: 'Ekosistem pengumpulan sampah yang transparan dan terukur untuk warga dan pengepul di Surabaya.',
     ctaTitle: 'Mari wujudkan pengelolaan sampah yang transparan.',
-    cta: 'Hubungi kami',
-    contact: 'Hubungi kami',
+    contact: 'Kontak',
     social: 'Media sosial',
     top: 'Kembali ke atas',
     footerNav: 'Navigasi footer',
@@ -58,7 +59,6 @@ const COPY = {
   en: {
     tagline: 'A transparent, measurable waste-collection ecosystem for residents and collectors in Surabaya.',
     ctaTitle: "Let's make waste management transparent.",
-    cta: 'Contact us',
     contact: 'Get in touch',
     social: 'Social media',
     top: 'Back to top',
@@ -124,21 +124,6 @@ function SocialIcon({ name }) {
   );
 }
 
-/* Ornamen sisi CTA: titik + bracket + garis yang memanjang sampai tombol (hanya layar lebar) */
-function Bracket({ flip = false }) {
-  const dots =
-    'h-14 w-20 shrink-0 bg-[radial-gradient(circle,rgba(255,255,255,0.28)_1px,transparent_1px)] [background-size:12px_12px]';
-  return (
-    <div className={`hidden flex-1 items-center lg:flex ${flip ? 'flex-row-reverse' : ''}`} aria-hidden="true">
-      <div className={dots} />
-      <div
-        className={`h-14 w-3 shrink-0 border-y border-white/25 ${flip ? 'rounded-l-md border-l' : 'rounded-r-md border-r'}`}
-      />
-      <div className="h-px flex-1 bg-white/25" />
-    </div>
-  );
-}
-
 function FooterLinkGroup({ title, links, lang }) {
   return (
     <div>
@@ -161,6 +146,9 @@ function FooterLinkGroup({ title, links, lang }) {
 
 export function Footer() {
   const { t, lang } = useLanguage();
+  const rvGrid = useReveal({ variant: 'up', stagger: true, step: 140 });
+  const rvLinks = useReveal({ variant: 'up', stagger: true, step: 80, delay: 200 });
+  const rvMark = useReveal({ variant: 'up' });
   const copy = COPY[lang] ?? COPY.en;
   const [showRefs, setShowRefs] = useState(false);
   const { email, social, address, links } = siteConfig.contact;
@@ -182,26 +170,13 @@ export function Footer() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-ink via-ink/75 to-ink/95" aria-hidden="true" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* 1. CTA: judul + tombol dengan ornamen bracket */}
+        {/* 1. Judul penutup */}
         <div className="flex flex-col items-center text-center">
-          <h2 className="max-w-3xl text-3xl font-medium leading-[1.1] tracking-tighter text-white md:text-5xl">
-            {copy.ctaTitle}
-          </h2>
-
-          <div className="mt-10 flex w-full items-center justify-center">
-            <Bracket />
-            <a
-              href="#contact"
-              className={`shrink-0 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:bg-neutral-200 lg:mx-6 ${focusRing}`}
-            >
-              {copy.cta}
-            </a>
-            <Bracket flip />
-          </div>
+          <RevealText as="h2" className="max-w-3xl text-3xl font-medium leading-[1.1] tracking-tighter text-white md:text-5xl" text={copy.ctaTitle} />
         </div>
 
         {/* 2. Brand + tautan + kontak */}
-        <div className="mt-20 grid gap-14 border-t border-white/15 pt-14 lg:grid-cols-12 lg:gap-10">
+        <div {...rvGrid} className="mt-16 grid gap-14 border-t border-white/15 pt-14 lg:grid-cols-12 lg:gap-10">
           {/* Brand */}
           <div className="lg:col-span-4">
             <a href="#home" aria-label="Hi-Clean" className={`inline-block rounded-sm ${focusRing}`}>
@@ -229,6 +204,7 @@ export function Footer() {
           {/* Tautan + kontak */}
           <nav
             aria-label={copy.footerNav}
+            {...rvLinks}
             className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-4 lg:col-span-8 lg:pl-8"
           >
             {LINK_GROUPS.map((group) => (
@@ -242,7 +218,7 @@ export function Footer() {
                   href={`mailto:${email}`}
                   className={`block break-all text-base text-white/85 transition-colors hover:text-white ${focusRing}`}
                 >
-                  +62 812-3456-7890
+                  {email}
                 </a>
                 {address && <p className="max-w-[16rem] text-sm leading-relaxed text-white/60">{address}</p>}
               </div>
@@ -287,7 +263,7 @@ export function Footer() {
       </div>
 
       {/* Wordmark besar, terpotong di tepi bawah */}
-      <div className="pointer-events-none mt-10 select-none" aria-hidden="true">
+      <div {...rvMark} className="pointer-events-none mt-10 select-none" aria-hidden="true">
         <span className="-mb-[0.2em] block text-center font-heading text-[clamp(4rem,19vw,17rem)] font-semibold leading-[0.8] tracking-tighter text-white/[0.12]">
           Hi-Clean
         </span>

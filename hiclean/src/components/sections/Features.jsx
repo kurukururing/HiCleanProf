@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { LabelMarquee } from '../ui/LabelMarquee';
 import { features } from '../../data/features';
 
@@ -210,6 +212,9 @@ function PhoneMockup({ items, activeIndex, lang }) {
 
 export function Features() {
   const { t, lang } = useLanguage();
+  const rvTabs = useReveal({ variant: 'fade', delay: 250 });
+  const rvPhone = useReveal({ variant: 'up', delay: 100 });
+  const rvList = useReveal({ variant: 'up', stagger: true, step: 90, delay: 200 });
   const [activeTab, setActiveTab] = useState('warga');
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -231,13 +236,12 @@ export function Features() {
           {/* Marquee label berjalan di belakang judul */}
           <div className="relative">
             <LabelMarquee text={t('section.features.label')} />
-            <h2 className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl">
-              {t('section.features.title')}
-            </h2>
+            <RevealText as="h2" className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" text={t('section.features.title')} />
           </div>
 
           {/* Tab pill dengan thumb yang bergeser */}
           <div
+            {...rvTabs}
             role="tablist"
             className="relative mt-10 grid grid-cols-2 rounded-full border border-neutral-200 bg-white p-1"
           >
@@ -266,7 +270,7 @@ export function Features() {
         {/* Isi */}
         <div className="mt-16 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:items-center lg:gap-16">
           {/* Panel HP: tinggi mengikuti HP, jadi mockup tampil utuh */}
-          <div className="lg:col-span-5">
+          <div {...rvPhone} className="lg:col-span-5">
             <div className="flex flex-col items-center gap-6 rounded-3xl border border-neutral-200 bg-neutral-100 px-6 py-10 md:py-12">
               <PhoneMockup items={currentFeatures} activeIndex={activeIndex} lang={lang} />
             </div>
@@ -275,7 +279,7 @@ export function Features() {
 
           {/* Accordion */}
           <div className="lg:col-span-7">
-            <ul className="border-b border-neutral-200">
+            <ul {...rvList} className="border-b border-neutral-200">
               {currentFeatures.map((feat, idx) => {
                 const isActive = activeIndex === idx;
                 const panelId = `feature-panel-${activeTab}-${feat.id}`;

@@ -1,4 +1,6 @@
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { problemStats, painPoints } from '../../data/stats';
 import { LabelMarquee } from '../ui/LabelMarquee';
 
@@ -19,6 +21,7 @@ function splitPersona(title) {
 // Satu kolom persona: aturan tebal di atas, peran sebagai tipografi besar, masalah sebagai daftar bergaris
 function PainGroup({ title, items, t }) {
   const { role, name } = splitPersona(title);
+  const rvList = useReveal({ variant: 'up', stagger: true, step: 80, delay: 200 });
 
   return (
     <section aria-label={title} className="border-t-2 border-ink pt-5">
@@ -27,7 +30,7 @@ function PainGroup({ title, items, t }) {
         {name && <p className="text-sm text-ink/60">{name}</p>}
       </header>
 
-      <ul className="mt-8">
+      <ul {...rvList} className="mt-8">
         {items.map((key, i) => (
           <li
             key={key}
@@ -44,6 +47,9 @@ function PainGroup({ title, items, t }) {
 
 export function Problem() {
   const { t, lang } = useLanguage();
+  const rvPanel = useReveal({ variant: 'up' });
+  const rvStats = useReveal({ variant: 'up', stagger: true, step: 110, delay: 150 });
+  const rvPain = useReveal({ variant: 'up', stagger: true, step: 160 });
 
   return (
     <section id="problem" className="scroll-mt-20 overflow-x-clip bg-warm-50 py-24 md:py-32">
@@ -54,9 +60,7 @@ export function Problem() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-7">
-              <h2 className="max-w-[16ch] text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl">
-                {t('section.problem.title')}
-              </h2>
+              <RevealText as="h2" className="max-w-[16ch] text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" text={t('section.problem.title')} />
             </div>
           </div>
         </div>
@@ -64,8 +68,8 @@ export function Problem() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Statistik: panel gelap */}
-        <div className="mt-14 rounded-[2rem] bg-ink px-6 py-10 md:mt-16 md:px-12 md:py-14">
-          <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
+        <div {...rvPanel} className="mt-14 rounded-[2rem] bg-ink px-6 py-10 md:mt-16 md:px-12 md:py-14">
+          <dl {...rvStats} className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 xl:grid-cols-4">
             {problemStats.map((stat) => {
               const value = lang === 'id' ? stat.valueID : stat.valueEN;
               const unit = lang === 'id' ? stat.unitID : stat.unitEN;
@@ -102,7 +106,7 @@ export function Problem() {
         <p className="mt-5 text-xs italic text-ink/50">{t('stat.extra')}</p>
 
         {/* Pain points: dua kolom editorial, tanpa kartu dan ikon */}
-        <div className="mt-16 grid gap-x-16 gap-y-14 md:mt-20 md:grid-cols-2">
+        <div {...rvPain} className="mt-16 grid gap-x-16 gap-y-14 md:mt-20 md:grid-cols-2">
           <PainGroup title={t('pain.warga.title')} items={painPoints.warga} t={t} />
           <PainGroup title={t('pain.pengepul.title')} items={painPoints.pengepul} t={t} />
         </div>

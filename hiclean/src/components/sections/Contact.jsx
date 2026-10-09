@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { ArrowRight, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { siteConfig } from '../../config/siteConfig';
 
 const ROLES = ['warga', 'pengepul', 'mitra', 'lainnya'];
@@ -37,6 +39,7 @@ function Field({ id, label, children }) {
  */
 export function Contact() {
   const { t, lang } = useLanguage();
+  const rvPanel = useReveal({ variant: 'up', stagger: true, step: 160 });
   const copy = COPY[lang] ?? COPY.en;
   const [sent, setSent] = useState(false);
   const { email, social } = siteConfig.contact;
@@ -50,12 +53,10 @@ export function Contact() {
   return (
     <section id="contact" className="scroll-mt-20 bg-white py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-3 rounded-[2rem] bg-ink p-3 md:gap-4 md:p-4 lg:grid-cols-12">
+        <div {...rvPanel} className="grid gap-3 rounded-[2rem] bg-ink p-3 md:gap-4 md:p-4 lg:grid-cols-12">
           {/* Kiri: judul + info kontak */}
           <div className="flex flex-col justify-between gap-12 p-5 md:p-8 lg:col-span-5 lg:p-10">
-            <h2 className="max-w-[14ch] text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl">
-              {t('section.contact.title')}
-            </h2>
+            <RevealText as="h2" className="max-w-[14ch] text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.contact.title')} />
 
             <dl className="border-t border-white/15">
               <div className="border-b border-white/15 py-5">
@@ -65,7 +66,7 @@ export function Contact() {
                     href={`mailto:${email}`}
                     className={`group inline-flex items-center gap-2 break-all rounded-sm ${focusRingLight}`}
                   >
-                    <span className="underline-offset-4 group-hover:underline">hiCleanCorp@gmail.com</span>
+                    <span className="underline-offset-4 group-hover:underline">{email}</span>
                     <ArrowUpRight
                       className="size-5 shrink-0 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"
                       aria-hidden
@@ -76,7 +77,7 @@ export function Contact() {
               <div className="py-5">
                 <dt className="text-sm text-white/50">{copy.social}</dt>
                 <dd className="mt-1.5 text-xl font-medium tracking-tight text-white md:text-2xl">
-                  @hicle0n.id
+                  {social}
                 </dd>
               </div>
             </dl>

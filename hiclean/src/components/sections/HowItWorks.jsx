@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { steps } from '../../data/steps';
 import { LabelMarquee } from '../ui/LabelMarquee';
@@ -22,6 +24,10 @@ const focusRing =
 
 export function HowItWorks() {
   const { t, lang } = useLanguage();
+  const rvIntro = useReveal({ variant: 'up', delay: 200 });
+  const rvArrows = useReveal({ variant: 'fade', delay: 300 });
+  const rvStepper = useReveal({ variant: 'up' });
+  const rvSteps = useReveal({ variant: 'up', stagger: true, step: 130, delay: 200 });
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const total = steps.length;
@@ -57,17 +63,15 @@ export function HowItWorks() {
               <div className={MARQUEE_ON_DARK}>
                 <LabelMarquee text={t('section.howItWorks.label')} />
               </div>
-              <h2 className="relative z-10 text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl">
-                {t('section.howItWorks.title')}
-              </h2>
+              <RevealText as="h2" className="relative z-10 text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.howItWorks.title')} />
             </div>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/65">
+            <p {...rvIntro} className="mt-5 max-w-lg text-base leading-relaxed text-white/65">
               Alur terintegrasi untuk menciptakan ekosistem pengumpulan sampah yang transparan dan
               terukur.
             </p>
           </div>
 
-          <div className="flex shrink-0 gap-3">
+          <div {...rvArrows} className="flex shrink-0 gap-3">
             <button
               type="button"
               onClick={prev}
@@ -89,6 +93,7 @@ export function HowItWorks() {
 
         {/* Stepper */}
         <div
+          {...rvStepper}
           className="mt-14 rounded-3xl border border-white/15 p-6 md:mt-16 md:p-10"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
@@ -97,7 +102,8 @@ export function HowItWorks() {
         >
           <div
             className="relative grid grid-cols-1 gap-12 md:gap-8 md:[grid-template-columns:repeat(var(--cols),minmax(0,1fr))]"
-            style={{ '--cols': total }}
+            {...rvSteps}
+            style={{ '--cols': total, ...rvSteps.style }}
           >
             {/* Garis rail (hanya desktop) */}
             {total > 1 && (

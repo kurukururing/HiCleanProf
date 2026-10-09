@@ -1,6 +1,8 @@
 import { lazy, Suspense, useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
+import { useReveal } from '../../hooks/useReveal';
+import { RevealText } from '../ui/RevealText';
 import { LabelMarquee } from '../ui/LabelMarquee';
 import { technologies } from '../../data/technologies';
 
@@ -107,6 +109,8 @@ function TechItem({ tech, lang, open, onToggle }) {
 
 export function Technology() {
   const { t, lang } = useLanguage();
+  const rvList = useReveal({ variant: 'up', stagger: true, step: 100, delay: 150 });
+  const rvPanel = useReveal({ variant: 'up', delay: 200 });
   const copy = COPY[lang] ?? COPY.en;
 
   const [openId, setOpenId] = useState(technologies[0]?.id ?? null);
@@ -125,14 +129,12 @@ export function Technology() {
           <div className={MARQUEE_ON_DARK}>
             <LabelMarquee text={t('section.technology.label')} />
           </div>
-          <h2 className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl">
-            {t('section.technology.title')}
-          </h2>
+          <RevealText as="h2" className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.technology.title')} />
         </header>
 
         <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
           {/* Daftar teknologi */}
-          <ul className="border-t border-white/15 lg:col-span-5">
+          <ul {...rvList} className="border-t border-white/15 lg:col-span-5">
             {technologies.map((tech) => (
               <TechItem
                 key={tech.id}
@@ -145,7 +147,7 @@ export function Technology() {
           </ul>
 
           {/* Panel model 3D: tetap putih sebagai titik fokus terang di atas latar gelap */}
-          <div className="overflow-hidden rounded-[2rem] bg-white lg:sticky lg:top-24 lg:col-span-7">
+          <div {...rvPanel} className="overflow-hidden rounded-[2rem] bg-white lg:sticky lg:top-24 lg:col-span-7">
             <div className="flex flex-wrap items-center justify-end gap-3 border-b border-neutral-200 px-5 py-4">
               <Segmented label={copy.styleLabel} value={style} options={copy.styles} onChange={setStyle} />
             </div>
