@@ -84,7 +84,14 @@ export function Navbar() {
     >
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-4 sm:px-6 lg:grid-cols-[1fr_auto_1fr] lg:px-8">
         <a href="#home" onClick={close} aria-label="Hi-Clean" className={`justify-self-start rounded-sm ${focusRing}`}>
-          <img src="/logoDesc.png" alt="Hi-Clean" width="127" height="40" decoding="async" className="h-9 w-auto md:h-10" />
+          <img
+            src="/logoDesc.png"
+            alt="Hi-Clean"
+            decoding="async"
+            className={`w-auto max-w-none transition-[height] duration-300 motion-reduce:transition-none ${
+              scrolled ? 'h-10 md:h-11' : 'h-12 md:h-14'
+            }`}
+          />
         </a>
 
         {/* Navigasi desktop: di tengah, penanda aktif berupa garis tipis (tanpa menggeser layout) */}
