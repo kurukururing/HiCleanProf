@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { LabelMarquee } from '../ui/LabelMarquee';
 import { features } from '../../data/features';
 
@@ -236,7 +235,7 @@ export function Features() {
           {/* Marquee label berjalan di belakang judul */}
           <div className="relative">
             <LabelMarquee text={t('section.features.label')} />
-            <RevealText as="h2" className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" text={t('section.features.title')} />
+            <h2 className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" >{t('section.features.title')}</h2>
           </div>
 
           {/* Tab pill dengan thumb yang bergeser */}

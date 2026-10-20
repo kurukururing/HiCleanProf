@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ArrowRight, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { siteConfig } from '../../config/siteConfig';
 
 const ROLES = ['warga', 'pengepul', 'mitra', 'lainnya'];
@@ -56,7 +55,7 @@ export function Contact() {
         <div {...rvPanel} className="grid gap-3 rounded-[2rem] bg-ink p-3 md:gap-4 md:p-4 lg:grid-cols-12">
           {/* Kiri: judul + info kontak */}
           <div className="flex flex-col justify-between gap-12 p-5 md:p-8 lg:col-span-5 lg:p-10">
-            <RevealText as="h2" className="max-w-[14ch] text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.contact.title')} />
+            <h2 className="max-w-[14ch] text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" >{t('section.contact.title')}</h2>
 
             <dl className="border-t border-white/15">
               <div className="border-b border-white/15 py-5">

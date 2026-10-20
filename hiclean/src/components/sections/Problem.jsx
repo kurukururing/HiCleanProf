@@ -1,6 +1,5 @@
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { problemStats, painPoints } from '../../data/stats';
 import { LabelMarquee } from '../ui/LabelMarquee';
 
@@ -60,7 +59,7 @@ export function Problem() {
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-10">
             <div className="md:col-span-7">
-              <RevealText as="h2" className="max-w-[16ch] text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" text={t('section.problem.title')} />
+              <h2 className="max-w-[16ch] text-4xl font-medium leading-[1.05] tracking-tighter text-ink md:text-5xl lg:text-6xl" >{t('section.problem.title')}</h2>
             </div>
           </div>
         </div>

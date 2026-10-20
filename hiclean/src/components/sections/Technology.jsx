@@ -2,7 +2,6 @@ import { lazy, Suspense, useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { LabelMarquee } from '../ui/LabelMarquee';
 import { technologies } from '../../data/technologies';
 
@@ -129,7 +128,7 @@ export function Technology() {
           <div className={MARQUEE_ON_DARK}>
             <LabelMarquee text={t('section.technology.label')} />
           </div>
-          <RevealText as="h2" className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.technology.title')} />
+          <h2 className="relative z-10 max-w-3xl text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" >{t('section.technology.title')}</h2>
         </header>
 
         <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">

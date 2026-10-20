@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { siteConfig } from '../../config/siteConfig';
 
 const REFERENCES = [
@@ -172,7 +171,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* 1. Judul penutup */}
         <div className="flex flex-col items-center text-center">
-          <RevealText as="h2" className="max-w-3xl text-3xl font-medium leading-[1.1] tracking-tighter text-white md:text-5xl" text={copy.ctaTitle} />
+          <h2 className="max-w-3xl text-3xl font-medium leading-[1.1] tracking-tighter text-white md:text-5xl" >{copy.ctaTitle}</h2>
         </div>
 
         {/* 2. Brand + tautan + kontak */}

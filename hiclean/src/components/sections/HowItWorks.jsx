@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { useReveal } from '../../hooks/useReveal';
-import { RevealText } from '../ui/RevealText';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { steps } from '../../data/steps';
 import { LabelMarquee } from '../ui/LabelMarquee';
@@ -63,7 +62,7 @@ export function HowItWorks() {
               <div className={MARQUEE_ON_DARK}>
                 <LabelMarquee text={t('section.howItWorks.label')} />
               </div>
-              <RevealText as="h2" className="relative z-10 text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" text={t('section.howItWorks.title')} />
+              <h2 className="relative z-10 text-4xl font-medium leading-[1.05] tracking-tighter text-white md:text-5xl lg:text-6xl" >{t('section.howItWorks.title')}</h2>
             </div>
             <p {...rvIntro} className="mt-5 max-w-lg text-base leading-relaxed text-white/65">
               Alur terintegrasi untuk menciptakan ekosistem pengumpulan sampah yang transparan dan
