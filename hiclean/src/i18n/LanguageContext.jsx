@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext, useMemo, useCallback } from 'react';
 import { id } from './id';
 import { en } from './en';
 
@@ -26,9 +26,11 @@ export function LanguageProvider({ children }) {
     document.documentElement.lang = lang;
   }, [lang]);
 
-  const toggleLang = () => setLang(prev => (prev === 'id' ? 'en' : 'id'));
+  const toggleLang = useCallback(() => {
+    setLang(prev => (prev === 'id' ? 'en' : 'id'));
+  }, []);
 
-  const t = (key) => {
+  const t = useCallback((key) => {
     const dict = dictionaries[lang];
     if (dict[key]) return dict[key];
     
@@ -38,10 +40,16 @@ export function LanguageProvider({ children }) {
       return id[key];
     }
     return key;
-  };
+  }, [lang]);
+
+  const value = useMemo(() => ({
+    lang,
+    toggleLang,
+    t
+  }), [lang, toggleLang, t]);
 
   return (
-    <LanguageContext.Provider value={{ lang, toggleLang, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );

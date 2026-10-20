@@ -14,6 +14,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: -10px;
   }
   body {
     @apply font-body text-ink bg-white antialiased;
@@ -24,16 +25,99 @@
 }
 
 /* =====================================================================
-   Animasi scroll — tempel di AKHIR index.css (setelah @theme / @layer base)
-   Hanya opacity & transform → ringan dan tanpa layout shift.
+   Animasi scroll & Efek Modern (Sesuai animation.md)
    ===================================================================== */
 
 :root {
-  --rv-ease: cubic-bezier(0.22, 1, 0.36, 1); /* melambat halus di akhir */
+  --rv-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --rv-duration: 850ms;
 }
 
-/* ---------- 1. Reveal satu elemen: data-reveal="up|fade|scale|blur|left|right" ---------- */
+/* ---------- 1. View Transitions API (Page Transitions) ---------- */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 300ms;
+    animation-timing-function: var(--rv-ease);
+  }
+}
+
+/* ---------- 2. Scroll Progress Bar (Global Top) ---------- */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--color-brand-green);
+    transform-origin: 0 50%;
+    z-index: 100;
+    animation: scroll-progress linear;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes scroll-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+/* ---------- 3. Sticky Stacking Sections (Kartu Bertumpuk) ---------- */
+.stack-section {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-shadow: 0 -15px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- 4. Modal & Popover Halus (@starting-style) ---------- */
+@supports (transition-behavior: allow-discrete) {
+  dialog[open] {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  dialog {
+    opacity: 0;
+    transform: scale(0.95) translateY(12px);
+    transition: opacity 300ms var(--rv-ease), transform 300ms var(--rv-ease), overlay 300ms var(--rv-ease) allow-discrete, display 300ms var(--rv-ease) allow-discrete;
+  }
+  @starting-style {
+    dialog[open] {
+      opacity: 0;
+      transform: scale(0.95) translateY(12px);
+    }
+  }
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 300ms var(--rv-ease), backdrop-filter 300ms var(--rv-ease);
+  }
+  dialog[open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+}
+
+/* ---------- 5. Modern Glassmorphism & Mesh Gradients ---------- */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px) saturate(1.8);
+  -webkit-backdrop-filter: blur(12px) saturate(1.8);
+}
+
+.mesh-gradient-cta {
+  background-image: 
+    radial-gradient(at 10% 20%, oklch(0.85 0.12 145 / 0.3) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, oklch(0.80 0.15 85 / 0.25) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, oklch(0.90 0.08 180 / 0.2) 0px, transparent 70%);
+}
+
+/* ---------- 5. Reveal satu elemen: data-reveal="up|fade|scale|blur|left|right" ---------- */
 [data-reveal] {
   opacity: 0;
   transition:
@@ -56,7 +140,7 @@
   will-change: auto;
 }
 
-/* ---------- 2. Stagger: anak-anak langsung muncul berurutan ---------- */
+/* ---------- 6. Stagger: anak-anak langsung muncul berurutan ---------- */
 [data-stagger] > * {
   opacity: 0;
   transition:
@@ -71,7 +155,6 @@
   opacity: 1;
   transform: none;
 }
-/* Indeks urutan; item ke-13 dst. memakai jeda yang sama agar total tidak kelamaan */
 [data-stagger] > :nth-child(1)  { --i: 0; }
 [data-stagger] > :nth-child(2)  { --i: 1; }
 [data-stagger] > :nth-child(3)  { --i: 2; }
@@ -86,12 +169,11 @@
 [data-stagger] > :nth-child(12) { --i: 11; }
 [data-stagger] > :nth-child(n + 13) { --i: 12; }
 
-/* ---------- 3. Judul kata demi kata (RevealText) ---------- */
+/* ---------- 7. Judul kata demi kata (RevealText) ---------- */
 .rv-word {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  /* ruang ekstra agar huruf berekor (g, y, j) dan aksen tidak terpotong mask */
   padding: 0.08em 0 0.16em;
   margin: -0.08em 0 -0.16em;
 }
@@ -104,9 +186,9 @@
   transform: none;
 }
 
-/* ---------- 4. Efek tirai antar section (SectionTransition) ---------- */
+/* ---------- 8. Efek tirai antar section (SectionTransition) ---------- */
 .st-curtain {
-  transform: translate3d(0, 28px, 0); /* harus ≤ tumpang tindih agar tidak ada celah */
+  transform: translate3d(0, 28px, 0);
   transition: transform 1000ms var(--rv-ease);
 }
 .st-curtain[data-visible='true'] {
@@ -125,19 +207,7 @@
   }
 }
 
-/* ---------- 5. Reduced motion: tampilkan konten langsung, tanpa gerak ---------- */
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal],
-  [data-stagger] > *,
-  .rv-word > span,
-  .st-curtain {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: none !important;
-  }
-}
-/* Dukungan prefers-reduced-motion */
+/* ---------- 9. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

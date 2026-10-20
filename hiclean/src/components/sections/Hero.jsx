@@ -14,11 +14,11 @@ export function Hero() {
   const prototypeUrl = siteConfig.figmaPrototypeUrl;
 
   return (
-    <section id="home" className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink lg:items-center">
+    <section id="home" className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink lg:items-center" style={{ contain: 'layout style paint' }}>
       <style>{`
         /* Animasi masuk: fill-mode "both" mencegah elemen berkedip sebelum delay selesai */
         @keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
-        .hero-rise { animation: hero-rise 700ms cubic-bezier(0.25, 1, 0.5, 1) both; }
+        .hero-rise { animation: hero-rise 700ms cubic-bezier(0.25, 1, 0.5, 1) both; will-change: transform, opacity; }
         @media (prefers-reduced-motion: reduce) { .hero-rise { animation: none; } }
       `}</style>
 
@@ -27,6 +27,7 @@ export function Hero() {
         src={HERO_IMAGE}
         alt=""
         aria-hidden="true"
+        loading="eager"
         fetchPriority="high"
         decoding="async"
         className="absolute inset-0 -z-10 h-full w-full object-cover object-[58%_50%] lg:object-center"

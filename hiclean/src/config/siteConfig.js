@@ -1,8 +1,9 @@
 export const siteConfig = {
   figmaPrototypeUrl: "https://www.figma.com/proto/lPCWLvjTviIjt0JNQ24k9E/UIUX-INSYS?node-id=63-2157&p=f&viewport=547%2C541%2C0.09&t=PjHtjXwQuU0NkPSl-9&scaling=scale-down&content-scaling=fixed&starting-point-node-id=63%3A2157&show-proto-sidebar=1&page-id=41%3A2",
   contact: {
-    email: "[diisi tim]",
-    social: "[diisi tim]"
+    email: "hiCleanCorp@gmail.com",
+    social: "hicle0n.id",
+    phone: "+62 821-4356-7890"
   },
   team: "Restu Bumi Team",
   year: 2026,
