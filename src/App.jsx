@@ -45,6 +45,7 @@ import { SetoranStep4Page } from './pages/dashboard/SetoranStep4Page';
 import { SetoranSuccessPage } from './pages/dashboard/SetoranSuccessPage';
 import { SetoranActiveListPage } from './pages/dashboard/SetoranActiveListPage';
 import { SetoranCameraPage } from './pages/dashboard/SetoranCameraPage';
+import { PengepulDashboardPage } from './pages/pengepul/PengepulDashboardPage';
 import { ROUTES } from './routes';
 
 // Navbar + Footer company profile dipakai di semua halaman.
@@ -124,6 +125,7 @@ function App() {
         <Route path={ROUTES.setoranSuccess} element={<SetoranSuccessPage />} />
         <Route path={ROUTES.setoranActiveList} element={<SetoranActiveListPage />} />
         <Route path={ROUTES.setoranCamera} element={<SetoranCameraPage />} />
+        <Route path={ROUTES.pengepulDashboard} element={<PengepulDashboardPage />} />
       </Routes>
     </>
   );

@@ -17,22 +17,29 @@ export function LoginPage() {
 
   const ready = Boolean(email.trim() && password.trim());
 
-  // Prototype alur: tanpa autentikasi, langsung lanjut ke halaman berikutnya.
+  // Logika sederhana: jika email mengandung "pengepul", arahkan ke dashboard pengepul. Jika tidak, ke dashboard warga.
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(ROUTES.afterLogin);
+    if (email.toLowerCase().includes('pengepul')) {
+      localStorage.setItem('hiclean_role', 'pengepul');
+      navigate(ROUTES.pengepulDashboard);
+    } else {
+      localStorage.setItem('hiclean_role', 'warga');
+      navigate(ROUTES.dashboard);
+    }
   };
 
   return (
     <PhotoShell>
       <h1 className="text-2xl font-medium text-white md:text-3xl">{t('auth.login.title')}</h1>
+      <p className="text-xs text-white/70 mt-1">Tips demo: ketik email dengan kata &quot;pengepul&quot; untuk masuk sebagai Pengepul.</p>
 
-      <form onSubmit={handleSubmit} noValidate className="mt-7 space-y-5">
+      <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">
         <TextField
           id="login-email"
           type="email"
           label={t('auth.field.email')}
-          placeholder={t('auth.field.emailHint')}
+          placeholder="warga@gmail.com atau pengepul@gmail.com"
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

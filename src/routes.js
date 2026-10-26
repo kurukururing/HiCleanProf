@@ -41,4 +41,5 @@ export const ROUTES = {
   setoranSuccess: '/dashboard/setoran/sukses',
   setoranActiveList: '/dashboard/setoran/aktif-list',
   setoranCamera: '/dashboard/setoran/foto-kamera',
+  pengepulDashboard: '/pengepul',
 };

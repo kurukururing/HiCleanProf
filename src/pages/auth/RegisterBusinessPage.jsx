@@ -5,7 +5,6 @@ import { ROUTES } from '../../routes';
 import { PhotoShell } from '../../components/auth/AuthShell';
 import { AuthButton, TextField } from '../../components/auth/fields';
 
-/** Daftar pengepul, langkah 2: data usaha. */
 export function RegisterBusinessPage() {
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -16,7 +15,8 @@ export function RegisterBusinessPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(ROUTES.login);
+    localStorage.setItem('hiclean_role', 'pengepul');
+    navigate(ROUTES.pengepulDashboard);
   };
 
   return (
