@@ -1,0 +1,5 @@
+export const technologies = [
+  { id: '01', titleID: 'Mobile SmartScale (IoT)', titleEN: 'Mobile SmartScale (IoT)', descID: 'Dirancang menggunakan load cell, HX711, ESP32 ke cloud. Target akurasi ±1–2%, IP65, kapasitas ±500 kg.', descEN: 'Designed with load cell, HX711, ESP32 to cloud. Target accuracy ±1–2%, IP65, capacity ±500 kg.', status: 'concept' },
+  { id: '02', titleID: 'AI Demand Prediction', titleEN: 'AI Demand Prediction', descID: 'Sistem yang dirancang untuk memprediksi kebutuhan dan volume pickup.', descEN: 'A system designed to predict pickup demand and volume.', status: 'concept' },
+  { id: '03', titleID: 'Intelligent Pickup', titleEN: 'Intelligent Pickup', descID: 'Ditargetkan untuk membantu menentukan prioritas dan optimasi rute penjemputan.', descEN: 'Targeted to help prioritize and optimize pickup routes.', status: 'concept' }
+];
