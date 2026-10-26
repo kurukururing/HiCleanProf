@@ -1,17 +1,14 @@
-import { useState } from 'react';
 import { 
-  Bell, Menu, X, ArrowRight, Wallet, Sparkles, 
-  Clock, History, User, LogOut, Settings, ShieldCheck, ChevronRight,
+  User, LogOut, Settings, ShieldCheck, ChevronRight,
   MapPin, Globe, Lock, Flame, Package
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { WargaNavbar } from '../../components/layout/WargaNavbar';
 import { siteConfig } from '../../config/siteConfig';
 
 export function ProfilePage() {
   const navigate = useNavigate();
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const user = {
     name: 'Budiman',
@@ -23,174 +20,113 @@ export function ProfilePage() {
     activePoints: '1.430 pts'
   };
 
+  const menuItems = [
+    { label: 'Data Diri', icon: User, path: ROUTES.profileData },
+    { label: 'Alamat Saya', icon: MapPin, path: ROUTES.profileAddress },
+    { label: 'Bahasa', icon: Globe, path: ROUTES.profileLanguage },
+    { label: 'Keamanan Akun', icon: Lock, path: ROUTES.profileSecurity },
+    { label: 'Pengaturan Umum', icon: Settings, path: ROUTES.generalSettings }
+  ];
+
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-9 w-auto" />
-          </Link>
+      <WargaNavbar activeName="Profil" />
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/dashboard" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Beranda</Link>
-            <Link to="/dashboard/setoran" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Setoran</Link>
-            <Link to="/dashboard/riwayat" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Riwayat</Link>
-            <Link to="/dashboard/penukaran" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Penukaran</Link>
-            <Link to="/dashboard/profil" className="text-sm font-semibold text-brand-green">Profil</Link>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link 
-              to="/dashboard/notifikasi" 
-              aria-label="Notifikasi" 
-              className="relative rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors inline-flex items-center justify-center"
-            >
-              <Bell className="size-5" />
-              <span className="absolute top-2 right-2 size-2 rounded-full bg-red-500 ring-2 ring-white" />
-            </Link>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 rounded-full p-1 pl-2.5 bg-neutral-100 hover:bg-neutral-200 transition-colors border border-neutral-200"
-              >
-                <span className="text-xs font-semibold hidden sm:inline-block max-w-[120px] truncate">{user.name}</span>
-                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-bold text-sm">
-                  {user.name.charAt(0)}
-                </div>
-              </button>
-
-              {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-neutral-100 z-50">
-                  <div className="px-3 py-2 border-b border-neutral-100 mb-1">
-                    <p className="text-xs font-bold text-neutral-900">{user.fullName}</p>
-                    <p className="text-[11px] text-neutral-500 truncate">Mahasiswa UPN Veteran Jawa Timur</p>
-                  </div>
-                  <Link to="/dashboard/profil" onClick={() => setProfileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                    <User className="size-4 text-neutral-500" /> Profil Saya
-                  </Link>
-                  <Link to="/dashboard/pengaturan" onClick={() => setProfileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                    <Settings className="size-4 text-neutral-500" /> Pengaturan
-                  </Link>
-                  <button type="button" onClick={() => navigate(ROUTES.home)} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1">
-                    <LogOut className="size-4 text-red-500" /> Keluar
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors">
-              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
+      <main className="flex-grow mx-auto w-full max-w-3xl px-4 py-5 sm:px-6 space-y-4 pb-8">
+        
+        {/* Header */}
+        <div className="pt-1">
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900">Akun Saya</h1>
+          <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">Kelola data dan preferensi akun Anda</p>
         </div>
 
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-neutral-200 bg-white px-4 py-4 space-y-3">
-            <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Beranda</Link>
-            <Link to="/dashboard/setoran" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Setoran</Link>
-            <Link to="/dashboard/riwayat" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Riwayat</Link>
-            <Link to="/dashboard/penukaran" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Penukaran</Link>
-            <Link to="/dashboard/profil" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-semibold text-brand-green">Profil</Link>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-grow mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 space-y-6">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Akun Saya</h1>
-
-        {/* User Card (Image 1 format) */}
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 flex items-center gap-4">
-          <img 
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" 
-            alt="Budiman" 
-            className="size-16 rounded-full object-cover border-2 border-brand-green/30 shrink-0" 
-          />
-          <div className="space-y-1 w-full">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-neutral-900">{user.name}</h2>
-              <span className="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-[11px] font-semibold">
-                Terverifikasi
-              </span>
+        {/* User Profile Card */}
+        <div className="rounded-3xl bg-white p-5 shadow-xs border border-neutral-200/80">
+          <div className="flex items-center gap-4">
+            <div className="size-14 sm:size-16 rounded-2xl bg-brand-green/20 text-brand-green flex items-center justify-center font-extrabold text-2xl shrink-0">
+              {user.name.charAt(0)}
             </div>
-            <p className="text-xs text-neutral-500">Bergabung pada {user.joinDate}</p>
-            <p className="text-xs font-mono text-neutral-600">{user.phone}</p>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-base sm:text-lg font-bold text-neutral-900">{user.fullName}</h2>
+                <span className="px-2.5 py-0.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] sm:text-[11px] font-bold shrink-0">
+                  Terverifikasi
+                </span>
+              </div>
+              <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5">Bergabung {user.joinDate}</p>
+              <p className="text-[11px] sm:text-xs font-mono text-neutral-600 mt-0.5">{user.phone}</p>
+            </div>
           </div>
         </div>
 
         {/* Streak Alert Card */}
-        <div className="rounded-3xl bg-[#FF4B4B] text-white p-5 shadow-md flex items-center gap-4">
+        <div className="rounded-3xl bg-gradient-to-r from-red-500 to-orange-500 text-white p-4 sm:p-5 shadow-md flex items-center gap-3 sm:gap-4">
           <div className="size-10 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0">
-            <Flame className="size-6" />
+            <Flame className="size-5 sm:size-6" />
           </div>
           <div>
-            <p className="text-base font-bold">{user.streakDays} hari streak tanpa putus</p>
-            <p className="text-xs text-white/90 mt-0.5">Teruskan streak anda agar dapat dibagikan</p>
+            <p className="text-sm sm:text-base font-bold">{user.streakDays} hari streak tanpa putus!</p>
+            <p className="text-[11px] sm:text-xs text-white/90 mt-0.5">Teruskan kebiasaan baik daur ulang Anda</p>
           </div>
         </div>
 
-        {/* Total Setor & Poin Aktif Card */}
-        <div className="rounded-3xl bg-neutral-900 text-white p-6 shadow-xl grid grid-cols-2 gap-4 items-center">
+        {/* Stats: Total Setor & Poin Aktif */}
+        <div className="rounded-3xl bg-neutral-900 text-white p-5 sm:p-6 shadow-xl grid grid-cols-2 gap-4 items-center relative overflow-hidden">
+          <div className="absolute -right-6 -bottom-6 size-32 rounded-full bg-brand-green/15 blur-2xl pointer-events-none" />
           <div className="border-r border-white/10 pr-4">
-            <p className="text-xs text-neutral-400 font-medium flex items-center gap-1.5">
-              <Package className="size-3.5 text-brand-green" /> Total Setor
+            <p className="text-[11px] text-neutral-400 flex items-center gap-1.5">
+              <Package className="size-3 text-brand-green" /> Total Setor
             </p>
-            <p className="text-2xl sm:text-3xl font-extrabold mt-1 text-white">{user.totalSetor}</p>
+            <p className="text-xl sm:text-2xl font-extrabold mt-1 text-white">{user.totalSetor}</p>
           </div>
           <div className="pl-2">
-            <p className="text-xs text-neutral-400 font-medium flex items-center gap-1.5">
-              <ShieldCheck className="size-3.5 text-brand-green" /> Poin Aktif
+            <p className="text-[11px] text-neutral-400 flex items-center gap-1.5">
+              <ShieldCheck className="size-3 text-brand-green" /> Poin Aktif
             </p>
-            <p className="text-2xl sm:text-3xl font-extrabold mt-1 text-brand-green">{user.activePoints}</p>
+            <p className="text-xl sm:text-2xl font-extrabold mt-1 text-brand-green">{user.activePoints}</p>
           </div>
         </div>
 
         {/* Menu List */}
-        <div className="rounded-3xl bg-white shadow-sm border border-neutral-200 divide-y divide-neutral-100 overflow-hidden">
-          {[
-            { label: 'Data diri', icon: User, path: '/dashboard/profil/data-diri' },
-            { label: 'Alamat', icon: MapPin, path: '/dashboard/profil/alamat' },
-            { label: 'Bahasa', icon: Globe, path: '/dashboard/profil/bahasa' },
-            { label: 'Keamanan', icon: Lock, path: '/dashboard/profil/keamanan' },
-            { label: 'Pengaturan Umum', icon: Settings, path: '/dashboard/pengaturan' }
-          ].map((item, i) => {
+        <div className="rounded-3xl bg-white shadow-xs border border-neutral-200/80 divide-y divide-neutral-100 overflow-hidden">
+          {menuItems.map((item, i) => {
             const IconComp = item.icon;
             return (
               <Link
                 key={i}
                 to={item.path}
-                className="flex items-center justify-between p-5 hover:bg-neutral-50 transition-colors"
+                className="flex items-center justify-between p-4 sm:p-5 hover:bg-neutral-50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
-                    <IconComp className="size-5" />
+                  <div className="size-9 sm:size-10 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
+                    <IconComp className="size-4 sm:size-5" />
                   </div>
-                  <span className="text-sm font-bold text-neutral-900">{item.label}</span>
+                  <span className="text-sm font-semibold text-neutral-900">{item.label}</span>
                 </div>
-                <ChevronRight className="size-5 text-neutral-400" />
+                <ChevronRight className="size-4 sm:size-5 text-neutral-400" />
               </Link>
             );
           })}
         </div>
 
         {/* Keluar Button */}
-        <Link
-          to={ROUTES.home}
-          className="w-full flex items-center justify-between p-5 rounded-3xl bg-red-50/80 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-bold text-sm"
+        <button
+          type="button"
+          onClick={() => navigate(ROUTES.home)}
+          className="w-full flex items-center justify-between p-4 sm:p-5 rounded-3xl bg-red-50/80 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-semibold text-sm"
         >
           <div className="flex items-center gap-3">
-            <div className="size-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
-              <LogOut className="size-5" />
+            <div className="size-9 sm:size-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
+              <LogOut className="size-4 sm:size-5" />
             </div>
-            <span>Keluar</span>
+            <span>Keluar dari Akun</span>
           </div>
-          <ChevronRight className="size-5 text-red-400" />
-        </Link>
+          <ChevronRight className="size-4 sm:size-5 text-red-400" />
+        </button>
 
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
+      <footer className="hidden sm:block bg-white border-t border-neutral-200 py-6 text-neutral-500 text-xs mt-auto">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
           <div className="flex items-center gap-6">

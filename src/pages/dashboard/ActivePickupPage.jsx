@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
+import { ROUTES } from '../../routes';
 
 export function ActivePickupPage() {
   const navigate = useNavigate();
@@ -24,10 +25,10 @@ export function ActivePickupPage() {
       { label: 'Poin masuk', done: false },
     ],
     collector: {
-      name: 'Pak Budi Amirudin',
-      role: 'Motor Roda Tiga Eco - Bank Sampah RW 04',
+      name: 'Pak Alexander Wijaya',
+      role: 'Mitra Bank Sampah Maju Jaya - Medokan Asri',
       rating: 4.9,
-      totalOrders: 30,
+      totalOrders: 102,
       avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     },
     items: [
@@ -45,17 +46,17 @@ export function ActivePickupPage() {
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 sm:px-6">
           <button 
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(ROUTES.dashboard)}
             className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800"
           >
             <ArrowLeft className="size-5" />
           </button>
           
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to={ROUTES.dashboard} className="flex items-center gap-2">
             <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
           </Link>
 
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
+          <Link to={ROUTES.dashboard} className="text-xs font-semibold text-brand-green hover:underline">
             Beranda
           </Link>
         </div>
@@ -63,33 +64,33 @@ export function ActivePickupPage() {
 
       <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Setoran Aktif</h1>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Setoran Aktif</h1>
+            <p className="text-xs text-neutral-500 mt-0.5">Pantau posisi kurir mitra secara langsung</p>
+          </div>
           <span className="text-xs font-mono font-medium text-neutral-600 bg-neutral-200 px-3 py-1 rounded-full">
             {pickupData.id}
           </span>
         </div>
 
-        {/* Map Simulator Card */}
+        {/* Map Card */}
         <div className="rounded-3xl bg-white p-4 shadow-sm border border-neutral-200 overflow-hidden space-y-3">
-          <div className="relative h-48 sm:h-56 w-full rounded-2xl bg-neutral-200 overflow-hidden border border-neutral-100 flex items-center justify-center">
-            {/* Visual Map Mockup using clean abstract styling */}
-            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-green/10 via-transparent to-blue-500/10" />
-            
-            {/* Map simulated elements */}
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-mono font-semibold text-neutral-700 flex items-center gap-1.5">
+          <div className="relative h-56 sm:h-64 w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-100">
+            <img 
+              src="/rute/detail-pickup.jpg" 
+              alt="Peta Lacak Setoran" 
+              className="w-full h-full object-cover object-top"
+              onError={(e) => {
+                e.target.src = '/rute/maps-base.jpg';
+              }}
+            />
+
+            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-mono font-semibold text-neutral-800 flex items-center gap-1.5">
               <MapPin className="size-3.5 text-brand-green" /> {pickupData.gpsCoordinates}
             </div>
 
-            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-semibold text-neutral-800 flex items-center gap-1.5">
-              <span className="size-2 rounded-full bg-brand-green animate-ping" /> Lokasi Sekarang
-            </div>
-
-            {/* Center route path visual */}
-            <div className="absolute inset-x-12 inset-y-10 flex items-center justify-center">
-              <div className="w-full h-1 bg-brand-green/60 rounded-full relative">
-                <div className="absolute -top-2 left-1/3 size-5 rounded-full bg-brand-green text-white flex items-center justify-center text-[10px] shadow">🛵</div>
-              </div>
+            <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-semibold text-neutral-800 flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-brand-green animate-ping" /> Kurir Sedang Menuju Rumah Anda
             </div>
           </div>
 
@@ -124,7 +125,7 @@ export function ActivePickupPage() {
             {pickupData.steps.map((st, i) => (
               <div key={i} className="flex flex-col items-center text-center space-y-2">
                 <div className={`size-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                  st.done ? 'bg-brand-green text-ink' : 'bg-neutral-200 text-neutral-500'
+                  st.done ? 'bg-brand-green text-ink shadow-sm' : 'bg-neutral-200 text-neutral-500'
                 }`}>
                   {st.done ? <CheckCircle2 className="size-4" /> : (i + 1)}
                 </div>
@@ -138,7 +139,7 @@ export function ActivePickupPage() {
 
         {/* Mitra Pengepul Card */}
         <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-4">
-          <h2 className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Mitra Pengepul</h2>
+          <h2 className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Mitra Pengepul Penjemput</h2>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img 
@@ -161,13 +162,13 @@ export function ActivePickupPage() {
 
           <div className="grid grid-cols-2 gap-3 pt-2">
             <a 
-              href="tel:08123456789" 
+              href="tel:082175677656" 
               className="flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 py-3 text-xs font-bold transition-colors"
             >
               <Phone className="size-4 text-brand-green" /> Telepon Kurir
             </a>
             <a 
-              href="https://wa.me/" 
+              href="https://wa.me/6282175677656" 
               target="_blank" 
               rel="noreferrer" 
               className="flex items-center justify-center gap-2 rounded-2xl bg-brand-green text-ink py-3 text-xs font-bold hover:bg-brand-green/90 transition-colors"

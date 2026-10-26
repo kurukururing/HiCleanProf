@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { 
-  Bell, Menu, X, ArrowRight, Wallet, Sparkles, 
-  Clock, History, User, LogOut, Settings, ShieldCheck, ChevronRight
+  ArrowRight, Wallet, Sparkles, ChevronRight
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { WargaNavbar } from '../../components/layout/WargaNavbar';
 import { siteConfig } from '../../config/siteConfig';
 
 export function RedemptionPage() {
   const navigate = useNavigate();
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategoryTab, setActiveCategoryTab] = useState('Semua');
 
   const historyList = [
@@ -21,130 +19,54 @@ export function RedemptionPage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-9 w-auto" />
-          </Link>
+      <WargaNavbar activeName="Penukaran" />
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/dashboard" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Beranda</Link>
-            <Link to="/dashboard/setoran-aktifs" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Setoran</Link>
-            <Link to="/dashboard/riwayat" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Riwayat</Link>
-            <Link to="/dashboard/penukaran" className="text-sm font-semibold text-brand-green">Penukaran</Link>
-            <Link to="/dashboard/profil" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Profil</Link>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link 
-              to="/dashboard/notifikasi" 
-              aria-label="Notifikasi" 
-              className="relative rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors inline-flex items-center justify-center"
-            >
-              <Bell className="size-5" />
-              <span className="absolute top-2 right-2 size-2 rounded-full bg-red-500 ring-2 ring-white" />
-            </Link>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 rounded-full p-1 pl-2.5 bg-neutral-100 hover:bg-neutral-200 transition-colors border border-neutral-200"
-              >
-                <span className="text-xs font-semibold hidden sm:inline-block max-w-[120px] truncate">Budiman Sekti</span>
-                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-bold text-sm">
-                  B
-                </div>
-              </button>
-
-              {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-neutral-100 z-50">
-                  <div className="px-3 py-2 border-b border-neutral-100 mb-1">
-                    <p className="text-xs font-bold text-neutral-900">Budiman Sekti</p>
-                    <p className="text-[11px] text-neutral-500 truncate">Mahasiswa UPN Veteran Jawa Timur</p>
-                  </div>
-                  <Link 
-                    to="/dashboard/profil" 
-                    onClick={() => setProfileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
-                  >
-                    <User className="size-4 text-neutral-500" /> Profil Saya
-                  </Link>
-                  <Link 
-                    to="/dashboard/pengaturan" 
-                    onClick={() => setProfileMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
-                  >
-                    <Settings className="size-4 text-neutral-500" /> Pengaturan
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => navigate(ROUTES.home)}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1"
-                  >
-                    <LogOut className="size-4 text-red-500" /> Keluar
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors"
-            >
-              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-8">
+        
+        {/* Header */}
+        <div className="pt-1">
+          <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900">
+            Penukaran Poin
+          </h1>
+          <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
+            Tukar poin reward menjadi saldo atau tiket perjalanan
+          </p>
         </div>
 
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-neutral-200 bg-white px-4 py-4 space-y-3">
-            <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Beranda</Link>
-            <Link to="/dashboard/setoran-aktifs" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Setoran</Link>
-            <Link to="/dashboard/riwayat" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Riwayat</Link>
-            <Link to="/dashboard/penukaran" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-semibold text-brand-green">Penukaran</Link>
-            <Link to="/dashboard/profil" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Profil</Link>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Penukaran</h1>
-
-        {/* Total Poin Card (Image 2 format) */}
-        <div className="rounded-3xl bg-neutral-900 text-white p-6 sm:p-8 shadow-xl relative overflow-hidden space-y-6">
-          <div className="absolute -right-10 -bottom-10 size-48 rounded-full bg-brand-green/10 blur-2xl pointer-events-none" />
+        {/* Total Poin Card */}
+        <div className="rounded-3xl bg-neutral-900 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden border border-neutral-800 space-y-4">
+          <div className="absolute -right-8 -bottom-8 size-48 rounded-full bg-brand-green/15 blur-2xl pointer-events-none" />
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <span className="size-2 rounded-full bg-brand-green animate-pulse" />
               <span className="text-xs font-semibold text-neutral-300">Total Poin Kamu</span>
             </div>
-            <Link 
-              to="/dashboard/penukaran/riwayat-poin" 
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-300 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-full transition-all"
+            <Link
+              to={ROUTES.pointsHistory}
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-300 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-all"
             >
-              Riwayat poin <ArrowRight className="size-3.5" />
+              Riwayat <ChevronRight className="size-3" />
             </Link>
           </div>
 
           <div>
-            <p className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white">1.430 <span className="text-lg font-normal text-brand-green">pts</span></p>
-            <p className="text-xs text-neutral-400 mt-1.5">Diperbarui otomatis setiap setoran selesai</p>
+            <p className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+              1.430 <span className="text-base sm:text-lg font-normal text-brand-green">pts</span>
+            </p>
+            <p className="text-[11px] text-neutral-400 mt-1">Diperbarui otomatis setiap setoran selesai</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <p className="text-[11px] text-neutral-400 font-medium">Bisa Ditukar</p>
-              <p className="text-xl font-bold text-white mt-0.5">1.250 pts</p>
-              <p className="text-[10px] text-neutral-500 mt-0.5">Dapat diklaim langsung</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white/5 p-3 sm:p-4 rounded-2xl border border-white/10">
+              <p className="text-[11px] text-neutral-400">Bisa Ditukar</p>
+              <p className="text-lg sm:text-xl font-bold text-white mt-0.5">1.250 pts</p>
+              <p className="text-[10px] text-neutral-500 mt-0.5">Siap diklaim sekarang</p>
             </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/10">
-              <p className="text-[11px] text-neutral-400 font-medium">Tertahan</p>
-              <p className="text-xl font-bold text-white mt-0.5">180 pts</p>
-              <p className="text-[10px] text-neutral-500 mt-0.5">Dalam verifikasi</p>
+            <div className="bg-white/5 p-3 sm:p-4 rounded-2xl border border-white/10">
+              <p className="text-[11px] text-neutral-400">Tertahan</p>
+              <p className="text-lg sm:text-xl font-bold text-amber-400 mt-0.5">180 pts</p>
+              <p className="text-[10px] text-neutral-500 mt-0.5">Dalam proses verifikasi</p>
             </div>
           </div>
         </div>
@@ -152,45 +74,51 @@ export function RedemptionPage() {
         {/* Pilih Kategori Penukaran */}
         <div className="space-y-3">
           <div>
-            <h2 className="text-lg font-bold text-neutral-900 tracking-tight">Pilih Kategori Penukaran</h2>
-            <p className="text-xs text-neutral-500">Pilih jenis reward sesuai kebutuhan Anda</p>
+            <h2 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight">Pilih Kategori Penukaran</h2>
+            <p className="text-[11px] sm:text-xs text-neutral-500 mt-0.5">Pilih jenis reward sesuai kebutuhan Anda</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 hover:border-brand-green transition-all flex flex-col justify-between">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* E-Wallet Card */}
+            <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-xs border border-neutral-200/80 hover:border-brand-green transition-all flex flex-col justify-between">
               <div>
-                <div className="size-11 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center mb-4">
-                  <Wallet className="size-6" />
+                <div className="size-10 sm:size-11 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center mb-3 sm:mb-4">
+                  <Wallet className="size-5 sm:size-6" />
                 </div>
-                <h3 className="text-lg font-bold text-neutral-900">Saldo E-Wallet</h3>
-                <p className="text-xs text-neutral-500 mt-1">Gopay, Dana, OVO, dan ShopeePay</p>
+                <h3 className="text-sm sm:text-base font-bold text-neutral-900">Saldo E-Wallet</h3>
+                <p className="text-[11px] sm:text-xs text-neutral-500 mt-1">Gopay, Dana, OVO, dan ShopeePay</p>
               </div>
-              <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
-                <span className="text-xs text-neutral-400">Mulai dari <strong className="text-neutral-900 font-semibold">500pt</strong></span>
-                <Link 
-                  to="/dashboard/penukaran/wallet" 
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-green hover:underline"
+              <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <span className="text-xs text-neutral-400">
+                  Mulai dari <strong className="text-neutral-900">500 pts</strong>
+                </span>
+                <Link
+                  to={ROUTES.redemptionWallet}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline"
                 >
-                  Tukar saldo <ArrowRight className="size-3.5" />
+                  Tukar <ArrowRight className="size-3.5" />
                 </Link>
               </div>
             </div>
 
-            <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 hover:border-brand-green transition-all flex flex-col justify-between">
+            {/* Tiket Bus Card */}
+            <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-xs border border-neutral-200/80 hover:border-brand-green transition-all flex flex-col justify-between">
               <div>
-                <div className="size-11 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center mb-4">
-                  <Sparkles className="size-6" />
+                <div className="size-10 sm:size-11 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center mb-3 sm:mb-4">
+                  <Sparkles className="size-5 sm:size-6" />
                 </div>
-                <h3 className="text-lg font-bold text-neutral-900">Tiket Bus</h3>
-                <p className="text-xs text-neutral-500 mt-1">WiraWiri & Trans Suroboyo Bus</p>
+                <h3 className="text-sm sm:text-base font-bold text-neutral-900">Tiket Bus</h3>
+                <p className="text-[11px] sm:text-xs text-neutral-500 mt-1">WiraWiri & Trans Suroboyo Bus</p>
               </div>
-              <div className="mt-6 pt-4 border-t border-neutral-100 flex items-center justify-between">
-                <span className="text-xs text-neutral-400">Mulai dari <strong className="text-neutral-900 font-semibold">250pts</strong></span>
-                <Link 
-                  to="/dashboard/penukaran/tiket" 
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-green hover:underline"
+              <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <span className="text-xs text-neutral-400">
+                  Mulai dari <strong className="text-neutral-900">250 pts</strong>
+                </span>
+                <Link
+                  to={ROUTES.redemptionTicket}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-brand-green hover:underline"
                 >
-                  Tukar tiket <ArrowRight className="size-3.5" />
+                  Tukar <ArrowRight className="size-3.5" />
                 </Link>
               </div>
             </div>
@@ -199,12 +127,15 @@ export function RedemptionPage() {
 
         {/* Rekomendasi Reward */}
         <div className="space-y-3">
-          <div>
-            <h2 className="text-lg font-bold text-neutral-900 tracking-tight">Rekomendasi Reward</h2>
-            <p className="text-xs text-neutral-500">Pilihan reward populer dan paling cocok sama kamu</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight">Rekomendasi Reward</h2>
+              <p className="text-[11px] sm:text-xs text-neutral-500">Reward populer pilihan pengguna</p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {/* Filter Tabs */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
             {['Semua', 'Transportasi', 'E-Wallet'].map((tab) => {
               const active = activeCategoryTab === tab;
               return (
@@ -212,8 +143,8 @@ export function RedemptionPage() {
                   key={tab}
                   type="button"
                   onClick={() => setActiveCategoryTab(tab)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold transition-all shrink-0 ${
-                    active ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-600 border border-neutral-200 hover:bg-neutral-100'
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all shrink-0 ${
+                    active ? 'bg-neutral-900 text-white' : 'bg-white text-neutral-600 border border-neutral-200/80 hover:bg-neutral-100'
                   }`}
                 >
                   {tab}
@@ -222,29 +153,29 @@ export function RedemptionPage() {
             })}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-2.5">
             {[1, 2].map((i) => (
-              <div key={i} className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="size-12 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center font-bold">
-                    <Wallet className="size-6" />
+              <div key={i} className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="size-10 sm:size-12 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center shrink-0">
+                    <Wallet className="size-5 sm:size-6" />
                   </div>
-                  <div>
-                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] font-bold mb-1">
+                  <div className="min-w-0">
+                    <span className="inline-block px-2 py-0.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] font-bold mb-1">
                       Rekomendasi
                     </span>
-                    <h3 className="text-sm font-bold text-neutral-900">Saldo E-Wallet Go-Pay</h3>
-                    <p className="text-[11px] text-neutral-500">Tukarkan poin menjadi saldo Go-Pay</p>
+                    <h3 className="text-xs sm:text-sm font-bold text-neutral-900 truncate">Saldo E-Wallet Go-Pay</h3>
+                    <p className="text-[10px] sm:text-[11px] text-neutral-500">500 pts = Rp 10.000</p>
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <p className="text-xs font-bold text-neutral-900 mb-2">500pts (10rb)</p>
+                <div className="shrink-0 text-right">
+                  <p className="text-xs font-bold text-neutral-900 mb-1.5">500 pts</p>
                   <Link
-                    to="/dashboard/penukaran/wallet"
-                    className="inline-block px-4 py-2 rounded-full bg-neutral-900 text-white text-xs font-bold hover:bg-neutral-800 transition-colors"
+                    to={ROUTES.redemptionWallet}
+                    className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-neutral-900 text-white text-[11px] sm:text-xs font-bold hover:bg-neutral-800 transition-colors"
                   >
-                    Tukar Poin
+                    Tukar
                   </Link>
                 </div>
               </div>
@@ -252,31 +183,29 @@ export function RedemptionPage() {
           </div>
         </div>
 
-        {/* Riwayat Penukaran Section */}
+        {/* Riwayat Penukaran */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-bold text-neutral-900 tracking-tight">Riwayat Penukaran</h2>
-            </div>
-            <Link to="/dashboard/penukaran/riwayat" className="text-xs font-bold text-brand-green hover:underline">
+            <h2 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight">Riwayat Penukaran</h2>
+            <Link to={ROUTES.redemptionHistory} className="text-xs font-bold text-brand-green hover:underline">
               Lihat Semua &rarr;
             </Link>
           </div>
 
-          <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-4">
+          <div className="rounded-3xl bg-white shadow-xs border border-neutral-200/80 divide-y divide-neutral-100 overflow-hidden">
             {historyList.map((item, i) => (
-              <div key={i} className={`flex items-center justify-between ${i > 0 ? 'pt-4 border-t border-neutral-100' : ''}`}>
+              <div key={i} className="flex items-center justify-between p-4 sm:p-5">
                 <div className="flex items-center gap-3">
-                  <div className="size-10 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center">
-                    <Wallet className="size-5" />
+                  <div className="size-9 sm:size-10 rounded-2xl bg-brand-green/10 text-brand-green flex items-center justify-center">
+                    <Wallet className="size-4 sm:size-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-neutral-900">{item.title}</p>
-                    <p className="text-[11px] text-neutral-500">{item.desc}</p>
+                    <p className="text-xs sm:text-sm font-bold text-neutral-900">{item.title}</p>
+                    <p className="text-[10px] sm:text-[11px] text-neutral-500">{item.desc}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs font-bold text-red-600">{item.pts}</p>
+                <div className="text-right shrink-0">
+                  <p className="text-xs font-bold text-red-500">{item.pts}</p>
                   <span className="text-[10px] text-brand-green font-semibold">{item.status}</span>
                 </div>
               </div>
@@ -286,7 +215,7 @@ export function RedemptionPage() {
 
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
+      <footer className="hidden sm:block bg-white border-t border-neutral-200 py-6 text-neutral-500 text-xs mt-auto">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
           <div className="flex items-center gap-6">
