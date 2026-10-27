@@ -26,6 +26,11 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* ─── Smooth iOS-like scrolling ─── */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     @apply font-body bg-white antialiased;
     color: #1a1d1b;
@@ -49,6 +54,11 @@
     outline-offset: 2px;
     border-radius: 6px;
   }
+
+  /* Safe area for notched phones */
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 /* ─────────────────────────────────────────────
@@ -62,6 +72,53 @@
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* ─── Interactive feedback ─── */
+  .btn-press {
+    @apply transition-all duration-150 active:scale-[0.97] select-none;
+  }
+  .card-lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md;
+  }
+  /* ─── Page mount fade-in-up ─── */
+  .page-enter {
+    animation: pageEnter 300ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes pageEnter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* ─── Skeleton shimmer ─── */
+  .skeleton {
+    @apply bg-neutral-200 rounded-xl animate-pulse;
+  }
+  /* ─── Gradient text brand ─── */
+  .text-gradient-green {
+    background: linear-gradient(135deg, #20c85e 0%, #16a34a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  /* ─── Input focus polish ─── */
+  .input-field {
+    @apply w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green/50 transition-all duration-150;
+  }
+  /* ─── Status dot styles ─── */
+  .status-dot-active {
+    @apply inline-block size-2 rounded-full bg-brand-green animate-pulse;
+  }
+  .status-dot-warning {
+    @apply inline-block size-2 rounded-full bg-amber-500 animate-pulse;
+  }
+  /* ─── Section label ─── */
+  .section-label {
+    @apply text-[10px] font-bold uppercase tracking-[0.1em] text-neutral-400;
+  }
+  /* ─── Float bottom bar ─── */
+  .bottom-action-bar {
+    @apply fixed bottom-0 inset-x-0 z-40 bg-white/96 backdrop-blur-md border-t border-neutral-200/80 px-4 py-3;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
   }
 }
 

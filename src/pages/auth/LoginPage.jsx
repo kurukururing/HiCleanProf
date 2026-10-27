@@ -31,8 +31,10 @@ export function LoginPage() {
 
   return (
     <PhotoShell>
-      <h1 className="text-2xl font-medium text-white md:text-3xl">{t('auth.login.title')}</h1>
-      <p className="text-xs text-white/70 mt-1">Tips demo: ketik email dengan kata &quot;pengepul&quot; untuk masuk sebagai Pengepul.</p>
+      <h1 className="text-2xl font-extrabold tracking-tight text-white md:text-3xl">{t('auth.login.title')}</h1>
+      <div className="mt-2 bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs text-white/80 leading-relaxed">
+        💡 Tips demo: ketik email dengan kata &quot;pengepul&quot; untuk masuk sebagai Pengepul.
+      </div>
 
       <form onSubmit={handleSubmit} noValidate className="mt-5 space-y-4">
         <TextField
@@ -53,9 +55,9 @@ export function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 min-h-[44px]">
           <Checkbox id="login-remember" label={t('auth.login.remember')} checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-          <Link to={ROUTES.forgot} className={`text-sm ${linkGreen}`}>
+          <Link to={ROUTES.forgot} className={`text-sm py-2 ${linkGreen}`}>
             {t('auth.login.forgot')}
           </Link>
         </div>

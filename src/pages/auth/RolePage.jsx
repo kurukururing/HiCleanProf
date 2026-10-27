@@ -25,7 +25,7 @@ function RoleCard({ to, photo, title, description }) {
   return (
     <Link
       to={to}
-      className="group grid h-28 grid-cols-[45%_1fr] overflow-hidden rounded-[1.75rem] bg-white shadow-xl shadow-black/20 transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none md:h-32"
+      className="group grid h-28 grid-cols-[45%_1fr] overflow-hidden rounded-[1.75rem] bg-white shadow-xl shadow-black/20 border-2 border-transparent hover:border-brand-green hover:shadow-lg active:scale-[0.97] transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none md:h-32"
     >
       <div className="relative overflow-hidden bg-neutral-200">
         <img
@@ -38,8 +38,8 @@ function RoleCard({ to, photo, title, description }) {
         />
       </div>
       <div className="flex flex-col justify-center px-4">
-        <h2 className="text-xl font-semibold text-role md:text-2xl">{title}</h2>
-        <p className="mt-1 text-sm leading-snug text-neutral-600">{description}</p>
+        <h2 className="text-xl font-bold tracking-tight text-role md:text-2xl">{title}</h2>
+        <p className="mt-1 text-sm leading-relaxed text-neutral-600">{description}</p>
       </div>
     </Link>
   );

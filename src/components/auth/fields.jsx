@@ -7,7 +7,7 @@ import { useLanguage } from '../../i18n/LanguageContext';
 /* ------------------------------------------------------------------ */
 
 const inputBase =
-  'h-[52px] w-full rounded-full border border-field-line bg-field px-5 text-base text-ink transition-colors placeholder:text-sm placeholder:text-neutral-600 hover:border-neutral-400 focus-visible:border-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green md:text-sm';
+  'h-[52px] w-full rounded-full border border-field-line bg-field px-5 text-base text-ink transition-all duration-150 placeholder:text-sm placeholder:text-neutral-600 hover:border-neutral-400 focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green/50 focus-visible:border-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green md:text-sm';
 
 // tone="dark"  → dipakai di atas foto gelap (label putih)
 // tone="light" → dipakai di atas latar abu (label gelap)
@@ -55,7 +55,7 @@ export function PasswordField({ id, label, tone = 'dark', reveal = true, classNa
             onClick={() => setVisible((v) => !v)}
             aria-label={visible ? t('auth.password.hide') : t('auth.password.show')}
             aria-pressed={visible}
-            className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full text-ink transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-green"
+            className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full text-ink transition-colors hover:text-brand-green hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-green"
           >
             {visible ? <EyeOff className="size-5" aria-hidden /> : <Eye className="size-5" aria-hidden />}
           </button>
@@ -77,8 +77,8 @@ export function AuthButton({ ready = false, children, className = '', ...props }
   return (
     <button
       type="submit"
-      className={`inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full font-heading text-lg font-medium text-white transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green motion-reduce:transition-none ${
-        ready ? 'bg-brand-green hover:bg-brand-green/90' : 'bg-ink hover:bg-neutral-800'
+      className={`inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-2xl py-4 font-heading text-sm font-extrabold tracking-wide transition-all duration-200 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green motion-reduce:transition-none ${
+        ready ? 'bg-brand-green text-ink hover:bg-brand-green/90' : 'bg-ink text-white hover:bg-neutral-800'
       } ${className}`}
       {...props}
     >
@@ -127,7 +127,7 @@ function AppleIcon() {
 }
 
 const socialBtn =
-  'inline-flex h-[52px] items-center justify-center gap-2.5 rounded-full bg-white font-heading text-lg font-medium text-black shadow-sm transition-colors hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+  'inline-flex h-[52px] items-center justify-center gap-2.5 rounded-full bg-white font-heading text-base font-semibold text-black shadow-sm transition-all hover:bg-neutral-100 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
 
 /** Tombol Google & Apple (visual saja, belum terhubung ke penyedia login). */
 export function SocialButtons() {

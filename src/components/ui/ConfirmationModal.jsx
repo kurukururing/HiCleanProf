@@ -88,7 +88,7 @@ export function ConfirmationModal({
         </button>
 
         {/* Icon Header */}
-        <div className={`size-14 rounded-2xl flex items-center justify-center mx-auto shadow-2xs ${getIconWrapperClass()}`}>
+        <div className={`size-16 rounded-3xl flex items-center justify-center mx-auto shadow-2xs ${getIconWrapperClass()}`}>
           {renderIcon()}
         </div>
 
@@ -108,7 +108,7 @@ export function ConfirmationModal({
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="flex-1 py-3 px-4 rounded-2xl border border-neutral-200 text-neutral-700 hover:bg-neutral-100 text-xs sm:text-sm font-bold transition-all active:scale-[0.98]"
+            className="flex-1 py-3.5 px-5 rounded-2xl border-2 border-neutral-200 text-neutral-700 hover:bg-neutral-50 text-sm font-semibold transition-all active:scale-[0.98] cursor-pointer"
           >
             {cancelText}
           </button>
@@ -117,7 +117,7 @@ export function ConfirmationModal({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className={`flex-1 py-3 px-4 rounded-2xl text-xs sm:text-sm font-extrabold transition-all active:scale-[0.98] ${getConfirmButtonClass()}`}
+            className={`flex-1 py-3.5 px-5 rounded-2xl text-sm font-extrabold transition-all active:scale-[0.98] cursor-pointer ${getConfirmButtonClass()}`}
           >
             {isLoading ? 'Memproses...' : confirmText}
           </button>

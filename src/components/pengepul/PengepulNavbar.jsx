@@ -42,9 +42,9 @@ export function PengepulNavbar({ activeName }) {
                 <Link
                   key={lnk.name}
                   to={lnk.path}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-150 ${
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-150 ${
                     isActive
-                      ? 'bg-white text-neutral-900 shadow-sm'
+                      ? 'bg-white text-neutral-900 shadow-sm border-b-2 border-brand-green/40'
                       : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
                   }`}
                 >
@@ -76,7 +76,7 @@ export function PengepulNavbar({ activeName }) {
                 <span className="text-xs font-semibold max-w-[140px] truncate text-neutral-800">
                   Bank Sampah Maju Jaya
                 </span>
-                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-bold text-sm">
+                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-extrabold text-sm">
                   B
                 </div>
               </button>
@@ -129,7 +129,7 @@ export function PengepulNavbar({ activeName }) {
             {/* Drawer Header: Profile Summary */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100 bg-neutral-50">
               <div className="flex items-center gap-3">
-                <div className="size-10 rounded-2xl bg-brand-green text-ink flex items-center justify-center font-bold text-base shadow">
+                <div className="size-10 rounded-2xl bg-brand-green text-ink flex items-center justify-center font-extrabold text-base shadow">
                   B
                 </div>
                 <div>
@@ -162,7 +162,7 @@ export function PengepulNavbar({ activeName }) {
                     key={item.name}
                     to={item.path}
                     onClick={() => setDrawerOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all ${
+                    className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-150 active:bg-neutral-100 ${
                       isActive
                         ? 'bg-brand-green/10 text-brand-green'
                         : 'text-neutral-700 hover:bg-neutral-100'
@@ -186,7 +186,7 @@ export function PengepulNavbar({ activeName }) {
                 <Link
                   to={ROUTES.pengepulNotifikasi || '/pengepul/notifikasi'}
                   onClick={() => setDrawerOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-neutral-700 hover:bg-neutral-100 transition-all"
+                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-neutral-700 hover:bg-neutral-100 active:bg-neutral-100 transition-all duration-150"
                 >
                   <div className="size-8 rounded-xl bg-neutral-100 text-neutral-600 flex items-center justify-center relative">
                     <Bell className="size-4" />
@@ -205,7 +205,7 @@ export function PengepulNavbar({ activeName }) {
                   setDrawerOpen(false);
                   setShowLogoutModal(true);
                 }}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all"
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 active:bg-red-100 transition-all duration-150"
               >
                 <div className="size-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
                   <LogOut className="size-4" />

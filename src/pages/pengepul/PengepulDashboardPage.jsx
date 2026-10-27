@@ -59,7 +59,7 @@ export function PengepulDashboardPage() {
 
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold max-w-xs text-center">
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs font-bold max-w-xs text-center animate-in slide-in-from-top-4 duration-300 border-l-4 border-brand-green">
           <CheckCircle2 className="size-4 text-brand-green shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -69,13 +69,16 @@ export function PengepulDashboardPage() {
         
         {/* ── GREETING SECTION ── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900">
-              Halo, Pak Alexander 👋
-            </h1>
-            <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
-              Siap melakukan penjemputan daur ulang hari ini?
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-2xl bg-brand-green text-ink font-extrabold flex items-center justify-center shadow-sm shrink-0">AW</div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900">
+                Halo, Pak Alexander 👋
+              </h1>
+              <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
+                Siap melakukan penjemputan daur ulang hari ini?
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-auto px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200/60">
             <ShieldCheck className="size-4 text-brand-green" />
@@ -84,7 +87,9 @@ export function PengepulDashboardPage() {
         </div>
 
         {/* ── HERO: ACTIVE ROUTE BANNER ── */}
-        <div className="rounded-3xl bg-neutral-900 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden border border-neutral-800">
+        <div className="relative rounded-3xl overflow-hidden">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-green/20 to-transparent pointer-events-none z-0" />
+          <div className="rounded-3xl bg-neutral-900 text-white p-5 sm:p-7 shadow-xl relative overflow-hidden border border-neutral-800">
           <div className="absolute -right-6 -bottom-6 size-40 rounded-full bg-brand-green/15 blur-2xl pointer-events-none" />
           
           <div className="relative z-10 space-y-3">
@@ -109,7 +114,7 @@ export function PengepulDashboardPage() {
 
               <Link
                 to={ROUTES.pengepulRoute}
-                className="sm:shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-brand-green text-ink text-xs font-extrabold hover:bg-brand-green/90 transition-all shadow-lg active:scale-95"
+                className="sm:shrink-0 flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-brand-green text-ink text-xs font-extrabold hover:bg-brand-green/90 transition-all shadow-lg active:scale-95"
               >
                 Buka Rute & Navigasi
                 <ArrowRight className="size-4" />
@@ -118,9 +123,10 @@ export function PengepulDashboardPage() {
 
             {/* Progress bar */}
             <div className="w-full h-2 rounded-full bg-white/15 overflow-hidden">
-              <div className="h-full rounded-full bg-brand-green transition-all duration-700" style={{ width: '40%' }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-brand-green to-emerald-400 transition-all duration-700" style={{ width: '40%' }} />
             </div>
           </div>
+        </div>
         </div>
 
         {/* ── 4 METRIC CARDS ── */}
@@ -132,7 +138,7 @@ export function PengepulDashboardPage() {
             { label: 'Total Berat', value: '42', unit: 'kg', color: 'blue', bg: 'bg-blue-500/15 text-blue-600', sub: 'Kapasitas 100 kg', subColor: 'text-blue-600', Icon: BarChart3 },
             { label: 'Selesai', value: '2', unit: 'tugas', color: 'purple', bg: 'bg-purple-500/15 text-purple-600', sub: 'Berhasil ditimbang', subColor: 'text-purple-600', Icon: CheckCircle2 },
           ].map((card) => (
-            <div key={card.label} className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 flex flex-col justify-between space-y-2 hover:shadow-sm transition-shadow">
+            <div key={card.label} className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 flex flex-col justify-between space-y-2 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-neutral-500">{card.label}</span>
                 <div className={`size-8 sm:size-9 rounded-xl sm:rounded-2xl flex items-center justify-center ${card.bg}`}>
@@ -140,7 +146,7 @@ export function PengepulDashboardPage() {
                 </div>
               </div>
               <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-neutral-900 leading-none">
+                <p className="text-2xl sm:text-3xl font-extrabold text-neutral-900 leading-none tabular-nums">
                   {card.value} <span className="text-[11px] font-semibold text-neutral-500">{card.unit}</span>
                 </p>
                 <p className={`text-[10px] sm:text-[11px] font-semibold mt-1 ${card.subColor}`}>{card.sub}</p>
@@ -178,7 +184,7 @@ export function PengepulDashboardPage() {
               {incoming.map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 space-y-3 hover:shadow-sm transition-shadow"
+                  className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 border-l-4 border-l-amber-400 space-y-3 hover:shadow-md transition-all duration-200"
                 >
                   {/* Header: Name + Distance */}
                   <div className="flex items-start justify-between gap-2">
