@@ -1,122 +1,268 @@
-import { useState } from 'react';
-import { ArrowLeft, CheckCircle2, ShieldAlert } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { siteConfig } from '../../config/siteConfig';
+import { useState, useRef } from 'react';
+import { 
+  ArrowLeft, Scale, Plus, Minus, Upload, 
+  CheckCircle2, Image as ImageIcon, ChevronDown, Check
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../routes';
+import { WargaStepHeader } from '../../components/layout/WargaStepHeader';
 
 export function SetoranStep3Page() {
   const navigate = useNavigate();
-  const [checks, setChecks] = useState({
-    clean: true,
-    dry: true,
-    sorted: true,
-    noHazard: false
-  });
+  const fileInputRef = useRef(null);
+  
+  const [subMaterial, setSubMaterial] = useState('Plastik PET (Bening)');
+  const [weight, setWeight] = useState(4.5);
+  const [itemCount, setItemCount] = useState(15);
+  const [photoPreview, setPhotoPreview] = useState(null);
 
-  const toggle = (key) => setChecks({ ...checks, [key]: !checks[key] });
+  const subMaterialOptions = [
+    'Plastik PET (Bening)',
+    'Plastik HDPE (Botol Shampo / Detergen)',
+    'Kardus Box Bersih',
+    'Kertas Arsip & HVS',
+    'Kaleng Minuman Aluminium',
+    'Botol Kaca & Beling'
+  ];
+
+  const handleWeightChange = (delta) => {
+    setWeight((prev) => Math.max(1, +(prev + delta).toFixed(1)));
+  };
+
+  const handleItemCountChange = (delta) => {
+    setItemCount((prev) => Math.max(1, prev + delta));
+  };
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPhotoPreview(url);
+    }
+  };
+
+  const handleNext = () => {
+    navigate(ROUTES.setoranStep4);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
-          <button type="button" onClick={() => navigate(-1)} className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800">
-            <ArrowLeft className="size-5" />
-          </button>
-          
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
-          </Link>
+    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28">
+      {/* 3 of 6 Step Header */}
+      <WargaStepHeader
+        stepBadge="Detail"
+        stepNumber={3}
+        totalSteps={6}
+        backTo={ROUTES.setoranStep2}
+      />
 
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
-            Beranda
-          </Link>
-        </div>
-      </header>
-
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-6">
-        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200 space-y-3">
-          <div className="flex items-center justify-between text-xs font-bold text-neutral-700">
-            <span className="px-3 py-1 rounded-full bg-neutral-200 text-neutral-800">Higienitas</span>
-            <span>Langkah 3 dari 4</span>
-          </div>
-          <div className="grid grid-cols-4 gap-1.5 h-1.5">
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
-          </div>
-        </div>
-
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">Cek Higienitas & Syarat</h1>
-          <p className="text-xs text-neutral-600 mt-1">Sampah yang bersih & memenuhi syarat bernilai poin 2x lebih tinggi</p>
-        </div>
-
-        <div className="space-y-3">
-          {[
-            { id: 'clean', title: 'Bebas dari sisa makanan/cairan', desc: 'Sudah dibilas air bersih dan dikeringkan minimal 1 jam' },
-            { id: 'dry', title: 'Kondisi kering & tidak berbau', desc: 'Tidak ada jamur atau potensi menarik serangga/lalat' },
-            { id: 'sorted', title: 'Sudah dipisahkan per jenis', desc: 'Tidak tercampur bahan organik atau sampah rumah tangga' },
-            { id: 'noHazard', title: 'Bebas jarum suntik, kaca tajam & B3', desc: 'Potensi bahaya telah disingkirkan dari kantong setoran' }
-          ].map((item) => {
-            const active = checks[item.id];
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => toggle(item.id)}
-                className={`w-full text-left p-4 rounded-3xl border transition-all flex items-start justify-between gap-3 ${
-                  active ? 'bg-white border-brand-green shadow-sm ring-2 ring-brand-green/20' : 'bg-white border-neutral-200'
-                }`}
+      <main className="flex-grow mx-auto w-full max-w-md px-4 space-y-4">
+        {/* Card 1: Detail & Spesifikasi Material */}
+        <div className="rounded-3xl bg-white p-5 sm:p-6 shadow-sm border border-neutral-200/80 space-y-5">
+          {/* Sub Material Dropdown */}
+          <div className="space-y-1.5">
+            <h2 className="text-sm font-extrabold text-neutral-900 font-heading">
+              Jenis Sub–Material
+            </h2>
+            <p className="text-xs text-neutral-500">
+              Pilih spesifikasi plastik agar estimasi daur ulang tepat
+            </p>
+            <div className="relative pt-1">
+              <select
+                value={subMaterial}
+                onChange={(e) => setSubMaterial(e.target.value)}
+                className="w-full appearance-none rounded-2xl bg-neutral-50 border border-neutral-200 px-4 py-3.5 text-xs font-bold text-neutral-800 pr-10 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
               >
-                <div>
-                  <p className="text-xs font-bold text-neutral-900">{item.title}</p>
-                  <p className="text-[11px] text-neutral-500 mt-0.5 leading-relaxed">{item.desc}</p>
+                {subMaterialOptions.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 size-4 text-neutral-500 mt-0.5" />
+            </div>
+          </div>
+
+          {/* Perkiraan Berat Total */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs">
+              <label className="font-extrabold text-neutral-900 font-heading">
+                Perkiraan Berat Total
+              </label>
+              <span className="text-neutral-500 text-[11px] font-medium">
+                Minimal 1 kg
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-200/70 border border-neutral-200/80">
+              <div className="flex items-center gap-3">
+                <div className="size-9 rounded-xl bg-white text-neutral-700 flex items-center justify-center shadow-2xs">
+                  <Scale className="size-5 text-neutral-700" />
                 </div>
-                <div className={`size-6 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
-                  active ? 'bg-brand-green border-brand-green text-ink' : 'border-neutral-300'
-                }`}>
-                  {active && <CheckCircle2 className="size-4" />}
-                </div>
+                <span className="text-base font-extrabold text-neutral-900 font-heading">
+                  {weight} kg
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleWeightChange(-0.5)}
+                  className="size-8 rounded-full bg-white hover:bg-neutral-100 text-neutral-800 flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+                >
+                  <Minus className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleWeightChange(0.5)}
+                  className="size-8 rounded-full bg-neutral-900 hover:bg-black text-white flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+                >
+                  <Plus className="size-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Estimasi Jumlah Satuan */}
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-200/70 border border-neutral-200/80">
+            <div>
+              <p className="text-xs font-extrabold text-neutral-900">
+                Estimasi Jumlah
+              </p>
+              <p className="text-[11px] text-neutral-500">
+                Membantu kalkulasi daya muat
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleItemCountChange(-1)}
+                className="size-7 rounded-full bg-white text-neutral-800 flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+              >
+                <Minus className="size-3.5" />
               </button>
-            );
-          })}
+              <span className="w-10 text-center font-extrabold text-sm text-neutral-900 font-mono">
+                {itemCount}
+              </span>
+              <button
+                type="button"
+                onClick={() => handleItemCountChange(1)}
+                className="size-7 rounded-full bg-white text-neutral-800 flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+              >
+                <Plus className="size-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Foto Bukti Sampah */}
+          <div className="space-y-1.5">
+            <h3 className="text-xs font-extrabold text-neutral-900 font-heading">
+              Foto Bukti Sampah
+            </h3>
+            <p className="text-[11px] text-neutral-500">
+              Verifikasi visual untuk percepatan sortir di bank sampah
+            </p>
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handlePhotoUpload}
+              className="hidden"
+            />
+
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full h-32 rounded-2xl bg-neutral-200/60 border-2 border-dashed border-neutral-300 hover:border-brand-green/60 transition-colors flex flex-col items-center justify-center gap-2 cursor-pointer overflow-hidden p-2"
+            >
+              {photoPreview ? (
+                <div className="relative w-full h-full rounded-xl overflow-hidden">
+                  <img
+                    src={photoPreview}
+                    alt="Bukti Sampah"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center text-white text-xs font-bold">
+                    Klik untuk ubah foto
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="size-10 rounded-2xl bg-white text-neutral-600 flex items-center justify-center shadow-2xs">
+                    <Upload className="size-5" />
+                  </div>
+                  <span className="text-xs font-bold text-neutral-700">
+                    Unggah foto atau file
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-amber-800 text-xs">
-          <ShieldAlert className="size-5 text-amber-600 shrink-0 mt-0.5" />
-          <p className="leading-relaxed">
-            Kurir berhak menolak atau mengurangi poin jika kedapatan sampah basah, bercampur, atau mengandung limbah B3 berbahaya.
-          </p>
-        </div>
+        {/* Card 2: Kondisi Material (3 Green Badges) */}
+        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+          <div>
+            <h3 className="text-xs font-extrabold text-neutral-900 font-heading">
+              Kondisi Material
+            </h3>
+            <p className="text-[11px] text-neutral-500">
+              Pastikan 3 syarat higienitas sebelum dijemput pengepul:
+            </p>
+          </div>
 
-        <div className="pt-2 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex-1 py-4 rounded-2xl bg-white text-neutral-800 border border-neutral-300 text-xs font-bold hover:bg-neutral-50 transition-colors"
-          >
-            &larr; Kembali
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/setoran/langkah-4')}
-            className="flex-[2] py-4 rounded-2xl bg-neutral-900 text-white text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
-          >
-            Lanjut (Langkah 3/4)
-          </button>
+          <div className="grid grid-cols-3 gap-2">
+            {/* Syarat 1 */}
+            <div className="p-3 rounded-2xl bg-brand-green text-ink flex flex-col items-center justify-center text-center gap-1.5 shadow-2xs">
+              <div className="size-6 rounded-full bg-white text-brand-green flex items-center justify-center shadow-2xs">
+                <Check className="size-3.5 stroke-[3]" />
+              </div>
+              <p className="text-[11px] font-extrabold leading-tight">Sudah Dipilah</p>
+              <p className="text-[9px] opacity-90">Bebas Campur</p>
+            </div>
+
+            {/* Syarat 2 */}
+            <div className="p-3 rounded-2xl bg-brand-green text-ink flex flex-col items-center justify-center text-center gap-1.5 shadow-2xs">
+              <div className="size-6 rounded-full bg-white text-brand-green flex items-center justify-center shadow-2xs">
+                <Check className="size-3.5 stroke-[3]" />
+              </div>
+              <p className="text-[11px] font-extrabold leading-tight">Bersih</p>
+              <p className="text-[9px] opacity-90">Dibilas tuntas</p>
+            </div>
+
+            {/* Syarat 3 */}
+            <div className="p-3 rounded-2xl bg-brand-green text-ink flex flex-col items-center justify-center text-center gap-1.5 shadow-2xs">
+              <div className="size-6 rounded-full bg-white text-brand-green flex items-center justify-center shadow-2xs">
+                <Check className="size-3.5 stroke-[3]" />
+              </div>
+              <p className="text-[11px] font-extrabold leading-tight">Kering</p>
+              <p className="text-[9px] opacity-90">Tanpa sisa air</p>
+            </div>
+          </div>
         </div>
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
-        <div className="mx-auto max-w-xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
-          <div className="flex items-center gap-6">
-            <Link to="/kebijakan-privasi" className="hover:text-neutral-900 transition-colors">Kebijakan Privasi</Link>
-            <span>&bull;</span>
-            <Link to="/syarat-ketentuan" className="hover:text-neutral-900 transition-colors">Syarat Ketentuan</Link>
-          </div>
+      {/* Fixed Bottom Action Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+        <div className="mx-auto max-w-md flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.setoranStep2)}
+            className="text-xs font-bold text-neutral-700 hover:text-neutral-900 flex items-center gap-1.5 px-3 py-2 cursor-pointer"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Kembali</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+          >
+            Lanjut (Langkah 4 /6)
+          </button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

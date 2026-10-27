@@ -1,151 +1,209 @@
 import { useState } from 'react';
-import { ArrowLeft, MapPin, Clock, Truck, ShieldCheck, Sparkles } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { siteConfig } from '../../config/siteConfig';
+import { 
+  ArrowLeft, LayoutGrid, Sparkles, Droplets, 
+  Lightbulb, AlertCircle, Info, Check 
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../routes';
+import { WargaStepHeader } from '../../components/layout/WargaStepHeader';
 
 export function SetoranStep4Page() {
   const navigate = useNavigate();
-  const [slot, setSlot] = useState('09:00 - 10:30 WIB');
+
+  const [conditions, setConditions] = useState({
+    sorted: true,
+    clean: true,
+    dry: true
+  });
+
+  const toggleCondition = (key) => {
+    setConditions((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const handleNext = () => {
+    navigate(ROUTES.setoranStep5);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
-          <button type="button" onClick={() => navigate(-1)} className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800">
-            <ArrowLeft className="size-5" />
-          </button>
-          
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
-          </Link>
+    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28">
+      {/* 4 of 6 Step Header */}
+      <WargaStepHeader
+        stepBadge="Kondisi"
+        stepNumber={4}
+        totalSteps={6}
+        backTo={ROUTES.setoranStep3}
+      />
 
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
-            Beranda
-          </Link>
-        </div>
-      </header>
-
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-6">
-        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200 space-y-3">
-          <div className="flex items-center justify-between text-xs font-bold text-neutral-700">
-            <span className="px-3 py-1 rounded-full bg-neutral-200 text-neutral-800">Konfirmasi</span>
-            <span>Langkah 4 dari 4</span>
-          </div>
-          <div className="grid grid-cols-4 gap-1.5 h-1.5">
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-          </div>
+      <main className="flex-grow mx-auto w-full max-w-md px-4 space-y-4">
+        {/* Title & Description */}
+        <div className="space-y-1">
+          <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">
+            Kondisi & Kriteria Higienitas
+          </h1>
+          <p className="text-xs text-neutral-500 leading-relaxed font-body">
+            Pastikan 3 standar sirkular terpenuhi sebelum diserahkan ke mitra pengepul agar memudahkan proses selanjutnya
+          </p>
         </div>
 
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">Konfirmasi & Penjemputan</h1>
-          <p className="text-xs text-neutral-600 mt-1">Periksa ringkasan setoran dan pilih waktu penjemputan armada</p>
-        </div>
+        {/* Condition 1 */}
+        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="size-11 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shrink-0 mt-0.5">
+                <LayoutGrid className="size-5" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-sm font-extrabold text-neutral-900 font-heading">
+                  Sudah Dipilah Sesuai Kategori
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                  Sampah plastik sudah dipisahkan dari kertas, kardus, dan bebas dari residu berbahaya
+                </p>
+              </div>
+            </div>
 
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-            <span className="text-xs font-bold text-neutral-500">ID Transaksi</span>
-            <span className="text-xs font-mono font-bold text-neutral-900">#HC-78664</span>
+            {/* iOS Switch Toggle */}
+            <button
+              type="button"
+              onClick={() => toggleCondition('sorted')}
+              className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                conditions.sorted ? 'bg-brand-green' : 'bg-neutral-300'
+              }`}
+            >
+              <span
+                className={`inline-block size-6 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out mt-0.5 ${
+                  conditions.sorted ? 'translate-x-5.5 ml-0' : 'translate-x-0.5'
+                }`}
+              />
+            </button>
           </div>
 
-          <div className="space-y-2 text-xs">
-            <div className="flex justify-between">
-              <span className="text-neutral-500">Kategori Sampah</span>
-              <span className="font-bold text-neutral-900">Plastik PET & Kardus</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-500">Perkiraan Berat</span>
-              <span className="font-bold text-neutral-900">4.5 kg (15 Pcs)</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-500">Estimasi Poin Diperoleh</span>
-              <span className="font-bold text-brand-green">+280 Pts</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-500">Biaya Pengantaran</span>
-              <span className="font-bold text-emerald-600">GRATIS</span>
-            </div>
+          <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-100">
+            <Info className="size-4 text-brand-green shrink-0" />
+            <span>Mencegah kontaminasi silang material difasilitas pencacah</span>
           </div>
         </div>
 
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-neutral-500">Lokasi Penjemputan</span>
-            <Link to="/dashboard/profil/alamat" className="text-xs font-bold text-brand-green hover:underline">Ubah</Link>
+        {/* Condition 2 */}
+        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="size-11 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shrink-0 mt-0.5">
+                <Sparkles className="size-5" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-sm font-extrabold text-neutral-900 font-heading">
+                  Kondisi Bersih & Terbilas
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                  Botol dan wadah telah dibilas dari sisa minuman manis atau minyak agar tidak berbau dan mengundang lalat
+                </p>
+              </div>
+            </div>
+
+            {/* iOS Switch Toggle */}
+            <button
+              type="button"
+              onClick={() => toggleCondition('clean')}
+              className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                conditions.clean ? 'bg-brand-green' : 'bg-neutral-300'
+              }`}
+            >
+              <span
+                className={`inline-block size-6 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out mt-0.5 ${
+                  conditions.clean ? 'translate-x-5.5 ml-0' : 'translate-x-0.5'
+                }`}
+              />
+            </button>
           </div>
-          <div className="flex items-start gap-3">
-            <div className="size-9 rounded-xl bg-neutral-100 text-neutral-800 flex items-center justify-center shrink-0">
-              <MapPin className="size-4" />
-            </div>
-            <div className="space-y-0.5">
-              <p className="text-xs font-bold text-neutral-900">Rumah Utama (Medokan Asri)</p>
-              <p className="text-[11px] text-neutral-600 leading-relaxed">Jl. Medokan Asri Barat No. 14, RT 04 / RW 08, Surabaya</p>
-              <p className="text-[10px] text-neutral-400">Patokan: Pagar hitam samping warung Bu Siti</p>
-            </div>
+
+          <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-100">
+            <Info className="size-4 text-brand-green shrink-0" />
+            <span>Aman dan higienis untuk ditangani oleh petugas pengepul</span>
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-neutral-800 block">Pilih Jadwal Penjemputan Hari Ini</label>
-          <div className="space-y-2">
-            {[
-              '09:00 - 10:30 WIB (Truk Siap 400m)',
-              '13:00 - 14:30 WIB (Truk Siap 1.2km)',
-              '16:00 - 17:30 WIB (Sore)'
-            ].map((s) => {
-              const active = slot === s;
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setSlot(s)}
-                  className={`w-full text-left p-4 rounded-3xl border transition-all flex items-center justify-between ${
-                    active ? 'bg-white border-brand-green shadow-sm ring-2 ring-brand-green/20' : 'bg-white border-neutral-200'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Clock className="size-4 text-brand-green" />
-                    <span className="text-xs font-bold text-neutral-900">{s}</span>
-                  </div>
-                  <span className={`size-5 rounded-full border flex items-center justify-center ${active ? 'bg-brand-green border-brand-green text-ink' : 'border-neutral-300'}`}>
-                    {active && <ShieldCheck className="size-3" />}
-                  </span>
-                </button>
-              );
-            })}
+        {/* Condition 3 */}
+        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start gap-3 min-w-0">
+              <div className="size-11 rounded-2xl bg-neutral-900 text-white flex items-center justify-center shrink-0 mt-0.5">
+                <Droplets className="size-5" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-sm font-extrabold text-neutral-900 font-heading">
+                  Kering Tanpa Genangan Air
+                </h3>
+                <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                  Sudah ditiriskan kering sempurna, berat murni material daur ulang tanpa manipulasi cairan pemberat
+                </p>
+              </div>
+            </div>
+
+            {/* iOS Switch Toggle */}
+            <button
+              type="button"
+              onClick={() => toggleCondition('dry')}
+              className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                conditions.dry ? 'bg-brand-green' : 'bg-neutral-300'
+              }`}
+            >
+              <span
+                className={`inline-block size-6 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out mt-0.5 ${
+                  conditions.dry ? 'translate-x-5.5 ml-0' : 'translate-x-0.5'
+                }`}
+              />
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50 text-emerald-800 text-[11px] font-medium border border-emerald-100">
+            <Info className="size-4 text-brand-green shrink-0" />
+            <span>Akurasi timbangan terjamin dengan nilai tukar optimal</span>
           </div>
         </div>
 
-        <div className="pt-2 space-y-3">
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/setoran/sukses')}
-            className="w-full flex items-center justify-center rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg gap-2"
-          >
-            Pesan Penjemputan Sekarang <Sparkles className="size-4 text-brand-green" />
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="w-full flex items-center justify-center rounded-2xl bg-white text-neutral-800 border border-neutral-300 py-3.5 px-6 text-xs font-bold hover:bg-neutral-50 transition-colors"
-          >
-            &larr; Kembali
-          </button>
+        {/* Info Card: Mengapa Higienitas Penting? */}
+        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+          <div className="flex items-center gap-2">
+            <Lightbulb className="size-4.5 text-neutral-900" />
+            <h3 className="text-sm font-extrabold text-neutral-900 font-heading">
+              Mengapa higienitas penting?
+            </h3>
+          </div>
+          <p className="text-xs text-neutral-600 leading-relaxed">
+            Pabrik daur ulang otomatis menolak material berjamur atau berminyak. Menjaga kebersihan sampah akan mempertahankan nilai ekonomi tinggi.
+          </p>
+
+          <div className="p-3.5 rounded-2xl bg-red-100/70 border border-red-200/80 text-red-900 text-[11px] flex items-start gap-2.5 leading-relaxed">
+            <AlertCircle className="size-4 text-red-600 shrink-0 mt-0.5" />
+            <span>
+              <strong>Peringatan verifikasi:</strong> Material basah atau kotor berpotensi mengalami penolakan saat penimbangan sehingga akan dialihkan ke status &quot;Diterima Sebagian&quot;.
+            </span>
+          </div>
         </div>
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
-        <div className="mx-auto max-w-xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
-          <div className="flex items-center gap-6">
-            <Link to="/kebijakan-privasi" className="hover:text-neutral-900 transition-colors">Kebijakan Privasi</Link>
-            <span>&bull;</span>
-            <Link to="/syarat-ketentuan" className="hover:text-neutral-900 transition-colors">Syarat Ketentuan</Link>
-          </div>
+      {/* Fixed Bottom Action Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+        <div className="mx-auto max-w-md flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.setoranStep3)}
+            className="text-xs font-bold text-neutral-700 hover:text-neutral-900 flex items-center gap-1.5 px-3 py-2 cursor-pointer"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Kembali</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+          >
+            Lanjut (Langkah 5 /6)
+          </button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

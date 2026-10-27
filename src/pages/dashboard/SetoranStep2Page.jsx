@@ -1,159 +1,213 @@
 import { useState } from 'react';
-import { ArrowLeft, Plus, Minus, Camera, Check } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { siteConfig } from '../../config/siteConfig';
+import { 
+  ArrowLeft, Check, CheckCircle2, 
+  Wine, FileText, Trash2, Milk, Info, AlertCircle 
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../routes';
+import { WargaStepHeader } from '../../components/layout/WargaStepHeader';
+import { PanduanPilahModal } from '../../components/ui/PanduanPilahModal';
 
 export function SetoranStep2Page() {
   const navigate = useNavigate();
-  const [weight, setWeight] = useState(4.5);
-  const [count, setCount] = useState(15);
+  const [selectedCats, setSelectedCats] = useState(['plastik']);
+  const [activeModalCat, setActiveModalCat] = useState(null);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const categories = [
+    {
+      id: 'plastik',
+      name: 'Plastik',
+      desc: 'Botol PET, gelas plastik, kantong kresek, kemasan makanan',
+      icon: Milk
+    },
+    {
+      id: 'kertas',
+      name: 'Kertas & Karton',
+      desc: 'Kardus bekas, koran, majalah, kertas dokumen',
+      icon: FileText
+    },
+    {
+      id: 'logam',
+      name: 'Logam & Kaleng',
+      desc: 'Kaleng minuman, aluminium foil, besi bekas, kuningan',
+      icon: Trash2
+    },
+    {
+      id: 'kaca',
+      name: 'Kaca & Beling',
+      desc: 'Botol sirup, toples beling, cermin pecah, gelas kaca',
+      icon: Wine
+    }
+  ];
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3000);
+  };
+
+  const handleCategoryClick = (catId) => {
+    // If already selected, allow toggling off (min 1)
+    if (selectedCats.includes(catId)) {
+      if (selectedCats.length > 1) {
+        setSelectedCats(selectedCats.filter((c) => c !== catId));
+      } else {
+        showToast('Minimal pilih 1 kategori sampah.');
+      }
+      return;
+    }
+
+    // Check max 2 categories rule
+    if (selectedCats.length >= 2) {
+      showToast('Maksimal memilih 2 kategori sampah.');
+      return;
+    }
+
+    // Open pop up guide modal for the clicked category
+    setActiveModalCat(catId);
+  };
+
+  const handleModalConfirm = (catId) => {
+    if (!selectedCats.includes(catId) && selectedCats.length < 2) {
+      setSelectedCats([...selectedCats, catId]);
+    }
+    setActiveModalCat(null);
+  };
+
+  const handleNext = () => {
+    navigate(ROUTES.setoranStep3);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
-          <button type="button" onClick={() => navigate(-1)} className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800">
-            <ArrowLeft className="size-5" />
-          </button>
-          
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
-          </Link>
-
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
-            Beranda
-          </Link>
+    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28 relative">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2 animate-in fade-in slide-in-from-top-2 border border-neutral-700 max-w-xs text-center">
+          <AlertCircle className="size-4 text-amber-400 shrink-0" />
+          <span>{toastMessage}</span>
         </div>
-      </header>
+      )}
 
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-6">
-        {/* Progress Bar Card */}
-        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200 space-y-3">
-          <div className="flex items-center justify-between text-xs font-bold text-neutral-700">
-            <span className="px-3 py-1 rounded-full bg-neutral-200 text-neutral-800">Kategori</span>
-            <span>Langkah 2 dari 4</span>
-          </div>
-          <div className="grid grid-cols-4 gap-1.5 h-1.5">
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
-          </div>
-        </div>
+      {/* 2 of 6 Step Header */}
+      <WargaStepHeader
+        stepBadge="Kategori"
+        stepNumber={2}
+        totalSteps={6}
+        backTo={ROUTES.setoranStep1}
+      />
 
-        {/* Pilih Material */}
-        <div className="space-y-2">
-          <select className="w-full rounded-2xl bg-white border border-neutral-200 px-4 py-3.5 text-xs font-bold text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-green/30">
-            <option>Plastik PET (Bening)</option>
-            <option>Kardus Box Bersih</option>
-            <option>Kaleng Aluminium</option>
-          </select>
-          <p className="text-[11px] text-neutral-500 px-1">Pilih spesifikasi plastik agar estimasi daur ulang tepat</p>
+      <main className="flex-grow mx-auto w-full max-w-md px-4 space-y-4">
+        {/* Title & Description */}
+        <div className="space-y-1">
+          <div className="flex items-center justify-between gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">
+              Pilih Kategori Sampah
+            </h1>
+            <span className="px-2.5 py-1 rounded-full bg-neutral-900 text-white text-[11px] font-bold shrink-0 font-mono">
+              {selectedCats.length}/2 Dipilih
+            </span>
+          </div>
+          <p className="text-xs text-neutral-500 leading-relaxed font-body">
+            Pilih 1 atau maksimal 2 kategori sampah yang sudah dipisah. Panduan pilah akan tampil saat kategori dipilih.
+          </p>
         </div>
 
-        {/* Perkiraan Berat Total */}
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-neutral-900">Perkiraan Berat Total</span>
-            <span className="text-[11px] text-neutral-400">Minimal 1 kg</span>
-          </div>
-
-          <div className="flex items-center justify-between bg-neutral-100 p-2 rounded-2xl border border-neutral-200">
-            <button
-              type="button"
-              onClick={() => setWeight(Math.max(1, weight - 0.5))}
-              className="size-10 rounded-xl bg-white flex items-center justify-center shadow hover:bg-neutral-50 text-neutral-800 font-bold"
-            >
-              <Minus className="size-4" />
-            </button>
-            <span className="text-xl font-extrabold text-neutral-900">{weight} kg</span>
-            <button
-              type="button"
-              onClick={() => setWeight(weight + 0.5)}
-              className="size-10 rounded-xl bg-brand-green text-ink flex items-center justify-center shadow hover:bg-brand-green/90 font-bold"
-            >
-              <Plus className="size-4" />
-            </button>
-          </div>
+        {/* Max 2 Notice Banner */}
+        <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 text-xs text-emerald-900 font-medium">
+          <Info className="size-4 text-brand-green shrink-0" />
+          <span>Maksimal 2 jenis kategori sampah dalam satu sesi penjemputan armada.</span>
         </div>
 
-        {/* Estimasi Jumlah Satuan */}
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-3">
-          <div>
-            <p className="text-xs font-bold text-neutral-900">Estimasi Jumlah Satuan</p>
-            <p className="text-[11px] text-neutral-500">Membantu kalkulasi daya muat</p>
-          </div>
-          <div className="flex items-center justify-between bg-neutral-100 p-3 rounded-2xl border border-neutral-200">
-            <span className="text-xs text-neutral-500 font-medium">Jumlah botol / pcs</span>
-            <span className="text-sm font-extrabold text-neutral-900">{count}</span>
-          </div>
-        </div>
+        {/* Category List Cards */}
+        <div className="space-y-3">
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            const isSelected = selectedCats.includes(cat.id);
+            return (
+              <div
+                key={cat.id}
+                onClick={() => handleCategoryClick(cat.id)}
+                className={`w-full p-5 rounded-3xl border transition-all flex items-center justify-between gap-4 cursor-pointer relative ${
+                  isSelected
+                    ? 'bg-white border-brand-green shadow-sm ring-2 ring-brand-green/20'
+                    : 'bg-white border-neutral-200/80 hover:border-neutral-300'
+                }`}
+              >
+                <div className="flex items-center gap-3.5 min-w-0">
+                  <div className={`size-12 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
+                    isSelected ? 'bg-brand-green/15 text-brand-green' : 'bg-neutral-100/90 text-neutral-700'
+                  }`}>
+                    <Icon className="size-6 stroke-[1.8]" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-extrabold text-neutral-900 font-heading">
+                        {cat.name}
+                      </p>
+                      {isSelected && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveModalCat(cat.id);
+                          }}
+                          className="text-[10px] text-brand-green font-bold bg-brand-green/10 hover:bg-brand-green/20 px-2 py-0.5 rounded-full transition-colors"
+                        >
+                          Lihat Panduan
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                      {cat.desc}
+                    </p>
+                  </div>
+                </div>
 
-        {/* Foto Bukti Sampah */}
-        <div className="rounded-3xl bg-white p-6 shadow-sm border border-neutral-200 space-y-3">
-          <div>
-            <p className="text-xs font-bold text-neutral-900">Foto Bukti Sampah</p>
-            <p className="text-[11px] text-neutral-500">Verifikasi visual untuk percepatan sortir di bank sampah</p>
-          </div>
-
-          <Link
-            to="/dashboard/setoran/foto-kamera"
-            className="h-36 w-full rounded-2xl bg-neutral-100 border-2 border-dashed border-neutral-300 flex flex-col items-center justify-center gap-2 hover:bg-neutral-200/50 transition-colors"
-          >
-            <Camera className="size-7 text-neutral-500" />
-            <span className="text-xs font-bold text-neutral-700">Unggah foto atau file</span>
-          </Link>
-        </div>
-
-        {/* Kondisi Material */}
-        <div className="space-y-2">
-          <p className="text-xs font-bold text-neutral-800">Kondisi Material</p>
-          <p className="text-[11px] text-neutral-500">Pastikan 3 syarat higienitas sebelum dijemput pengepul:</p>
-          
-          <div className="grid grid-cols-3 gap-2 pt-1">
-            {[
-              { label: 'Sudah Dipilah', desc: 'Bebas Campur' },
-              { label: 'Bersih', desc: 'Dibilas tuntas' },
-              { label: 'Kering', desc: 'Tanpa sisa air' }
-            ].map((cond, i) => (
-              <div key={i} className="p-3 rounded-2xl bg-brand-green text-ink text-center space-y-1 shadow-sm">
-                <Check className="size-4 mx-auto" />
-                <p className="text-[11px] font-bold">{cond.label}</p>
-                <p className="text-[9px] opacity-90">{cond.desc}</p>
+                {/* Circular Indicator */}
+                <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
+                  isSelected
+                    ? 'border-brand-green bg-brand-green text-white'
+                    : 'border-neutral-300 bg-white'
+                }`}>
+                  {isSelected && <Check className="size-3.5 stroke-[3]" />}
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-
-        <div className="pt-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex-1 py-4 rounded-2xl bg-white text-neutral-800 border border-neutral-300 text-xs font-bold hover:bg-neutral-50 transition-colors"
-          >
-            &larr; Kembali
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/setoran/langkah-3')}
-            className="flex-[2] py-4 rounded-2xl bg-neutral-900 text-white text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
-          >
-            Lanjut (Langkah 2/4)
-          </button>
-        </div>
-
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
-        <div className="mx-auto max-w-xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
-          <div className="flex items-center gap-6">
-            <Link to="/kebijakan-privasi" className="hover:text-neutral-900 transition-colors">Kebijakan Privasi</Link>
-            <span>&bull;</span>
-            <Link to="/syarat-ketentuan" className="hover:text-neutral-900 transition-colors">Syarat Ketentuan</Link>
-          </div>
+      {/* Pop Up Ringkasan Panduan Pilah Sampah Modal */}
+      <PanduanPilahModal
+        isOpen={Boolean(activeModalCat)}
+        categoryKey={activeModalCat}
+        onClose={() => setActiveModalCat(null)}
+        onConfirm={handleModalConfirm}
+      />
+
+      {/* Fixed Bottom Action Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+        <div className="mx-auto max-w-md flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.setoranStep1)}
+            className="text-xs font-bold text-neutral-700 hover:text-neutral-900 flex items-center gap-1.5 px-3 py-2 cursor-pointer"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Kembali</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+          >
+            Lanjut (Langkah 3 /6)
+          </button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }

@@ -160,7 +160,7 @@ export function SetoranMainPage() {
 
                 <div>
                   <Link
-                    to={ROUTES.setoranStep1}
+                    to={ROUTES.gabungPickupStep1}
                     className="w-full flex items-center justify-center rounded-xl bg-neutral-100 hover:bg-neutral-900 hover:text-white text-neutral-800 py-2.5 px-4 text-xs font-bold transition-all"
                   >
                     Gabung Pick Up Ini

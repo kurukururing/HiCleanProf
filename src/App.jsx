@@ -45,9 +45,17 @@ import { SetoranStep1Page } from './pages/dashboard/SetoranStep1Page';
 import { SetoranStep2Page } from './pages/dashboard/SetoranStep2Page';
 import { SetoranStep3Page } from './pages/dashboard/SetoranStep3Page';
 import { SetoranStep4Page } from './pages/dashboard/SetoranStep4Page';
+import { SetoranStep5Page } from './pages/dashboard/SetoranStep5Page';
+import { SetoranStep6Page } from './pages/dashboard/SetoranStep6Page';
 import { SetoranSuccessPage } from './pages/dashboard/SetoranSuccessPage';
+import { SetoranBatalPage } from './pages/dashboard/SetoranBatalPage';
 import { SetoranActiveListPage } from './pages/dashboard/SetoranActiveListPage';
 import { SetoranCameraPage } from './pages/dashboard/SetoranCameraPage';
+import { GabungPickupStep1Page } from './pages/dashboard/GabungPickupStep1Page';
+import { GabungPickupStep2Page } from './pages/dashboard/GabungPickupStep2Page';
+import { GabungPickupStep3Page } from './pages/dashboard/GabungPickupStep3Page';
+import { GabungPickupStep4Page } from './pages/dashboard/GabungPickupStep4Page';
+import { GabungPickupSuccessPage } from './pages/dashboard/GabungPickupSuccessPage';
 
 import { PengepulDashboardPage } from './pages/pengepul/PengepulDashboardPage';
 import { PengepulProfilePage } from './pages/pengepul/PengepulProfilePage';
@@ -126,8 +134,6 @@ function App() {
           <Route path={ROUTES.forgot} element={<ForgotPasswordPage />} />
           <Route path={ROUTES.forgotOtp} element={<OtpPage />} />
           <Route path={ROUTES.forgotReset} element={<ResetPasswordPage />} />
-
-          <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
         </Route>
 
         {/* Warga Routes */}
@@ -135,6 +141,10 @@ function App() {
         <Route path={ROUTES.notifications} element={<NotificationsPage />} />
         <Route path={ROUTES.activePickup} element={<ActivePickupPage />} />
         <Route path={ROUTES.tips} element={<TipsPage />} />
+        <Route path="/dashboard/tips" element={<TipsPage />} />
+        <Route path="/dashboard/edukasi" element={<TipsPage />} />
+        <Route path="/dashboard/panduan" element={<TipsPage />} />
+        <Route path="/tips" element={<TipsPage />} />
         <Route path={ROUTES.history} element={<HistoryPage />} />
         <Route path={ROUTES.historyDetail} element={<HistoryDetailPage />} />
         <Route path={ROUTES.pickupResort} element={<PickupResortPage />} />
@@ -153,14 +163,25 @@ function App() {
         <Route path={ROUTES.profileLanguage} element={<LanguageSettingsPage />} />
         <Route path={ROUTES.profileSecurity} element={<SecuritySettingsPage />} />
         <Route path={ROUTES.generalSettings} element={<GeneralSettingsPage />} />
+        {/* Setoran Sampah Mandiri (6 Langkah) */}
         <Route path={ROUTES.setoranMain} element={<SetoranMainPage />} />
         <Route path={ROUTES.setoranStep1} element={<SetoranStep1Page />} />
         <Route path={ROUTES.setoranStep2} element={<SetoranStep2Page />} />
         <Route path={ROUTES.setoranStep3} element={<SetoranStep3Page />} />
         <Route path={ROUTES.setoranStep4} element={<SetoranStep4Page />} />
+        <Route path={ROUTES.setoranStep5} element={<SetoranStep5Page />} />
+        <Route path={ROUTES.setoranStep6} element={<SetoranStep6Page />} />
         <Route path={ROUTES.setoranSuccess} element={<SetoranSuccessPage />} />
+        <Route path={ROUTES.setoranBatal} element={<SetoranBatalPage />} />
         <Route path={ROUTES.setoranActiveList} element={<SetoranActiveListPage />} />
         <Route path={ROUTES.setoranCamera} element={<SetoranCameraPage />} />
+
+        {/* Gabung Pickup (4 Langkah) */}
+        <Route path={ROUTES.gabungPickupStep1} element={<GabungPickupStep1Page />} />
+        <Route path={ROUTES.gabungPickupStep2} element={<GabungPickupStep2Page />} />
+        <Route path={ROUTES.gabungPickupStep3} element={<GabungPickupStep3Page />} />
+        <Route path={ROUTES.gabungPickupStep4} element={<GabungPickupStep4Page />} />
+        <Route path={ROUTES.gabungPickupSuccess} element={<GabungPickupSuccessPage />} />
 
         {/* Pengepul Routes */}
         <Route path={ROUTES.pengepulDashboard} element={<PengepulDashboardPage />} />
@@ -198,6 +219,9 @@ function App() {
         <Route path={ROUTES.pengepulMaterialFoto} element={<PengepulFotoMaterialPage />} />
         <Route path={ROUTES.pengepulMaterialSukses} element={<PengepulMaterialSuksesPage />} />
         <Route path={ROUTES.pengepulNotifikasi} element={<PengepulNotifikasiPage />} />
+
+        {/* Fallback 404 Catch-All */}
+        <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
       </Routes>
     </>
   );

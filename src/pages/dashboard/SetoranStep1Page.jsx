@@ -1,128 +1,205 @@
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { siteConfig } from '../../config/siteConfig';
+import { 
+  MapPin, CheckCircle2, Crosshair, Home, 
+  GraduationCap, Building2, Radio, ArrowLeft 
+} from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../routes';
+import { WargaStepHeader } from '../../components/layout/WargaStepHeader';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function SetoranStep1Page() {
   const navigate = useNavigate();
-  const [selectedCats, setSelectedCats] = useState(['Plastik']);
+  const [placeCategory, setPlaceCategory] = useState('rumah');
+  const [address, setAddress] = useState('Jl. Medokan Asri Timur No.14, Gunung Anyar');
+  const [benchmark, setBenchmark] = useState('Pagar Hitam Kayu, seberang toko bahan kue');
+  const [mapCenter, setMapCenter] = useState([-7.3197, 112.7842]);
 
-  const categories = [
-    { title: 'Plastik', desc: 'Botol PET, gelas plastik, kantong kresek, kemasan makanan', icon: '🧴' },
-    { title: 'Kertas & Karton', desc: 'Kardus bekas, koran, majalah, kertas dokumen', icon: '📄' },
-    { title: 'Logam & Kaleng', desc: 'Kaleng minuman, aluminium foil, besi bekas, kuningan', icon: '🥫' },
-    { title: 'Kaca & Beling', desc: 'Botol sirup, toples beling, cermin pecah, gelas kaca', icon: '🍾' }
+  const placeTypes = [
+    { id: 'rumah', label: 'Rumah Pribadi', icon: Home },
+    { id: 'sekolah', label: 'Sekolah / Madrasah', icon: GraduationCap },
+    { id: 'banksampah', label: 'Bank Sampah RW', icon: Building2 }
   ];
 
-  const toggleCategory = (title) => {
-    if (selectedCats.includes(title)) {
-      if (selectedCats.length > 1) {
-        setSelectedCats(selectedCats.filter(c => c !== title));
-      }
-    } else {
-      setSelectedCats([...selectedCats, title]);
-    }
+  const handleGetCurrentLocation = () => {
+    setMapCenter([-7.3197, 112.7842]);
+  };
+
+  const handleNext = () => {
+    navigate(ROUTES.setoranStep2);
   };
 
   return (
-    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
-          <button type="button" onClick={() => navigate(-1)} className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800">
-            <ArrowLeft className="size-5" />
-          </button>
-          
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
-          </Link>
+    <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28">
+      {/* 1 of 6 Step Header */}
+      <WargaStepHeader
+        stepBadge="Lokasi"
+        stepNumber={1}
+        totalSteps={6}
+        backTo={ROUTES.setoranMain}
+      />
 
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
-            Beranda
-          </Link>
+      <main className="flex-grow mx-auto w-full max-w-md px-4 space-y-5">
+        {/* Title & Description */}
+        <div className="space-y-1">
+          <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">
+            Tentukan Lokasi Penjemputan
+          </h1>
+          <p className="text-xs text-neutral-500 leading-relaxed font-body">
+            Petugas kurir akan menjemput limbah sampah langsung ketitik yang sudah anda pilih
+          </p>
         </div>
-      </header>
 
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-6">
-        {/* Progress Bar Card */}
-        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200 space-y-3">
-          <div className="flex items-center justify-between text-xs font-bold text-neutral-700">
-            <span className="px-3 py-1 rounded-full bg-neutral-200 text-neutral-800">Kategori</span>
-            <span>Langkah 1 dari 4</span>
+        {/* Interactive Map Card */}
+        <div className="rounded-3xl bg-white shadow-sm border border-neutral-200/80 overflow-hidden">
+          <div className="relative h-64 sm:h-72 w-full">
+            {/* GPS Pill Coordinate */}
+            <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-neutral-200 shadow-sm text-xs font-mono font-bold text-neutral-800">
+              <Radio className="size-3.5 text-brand-green animate-pulse" />
+              <span>GPS -7.3197, 112.7842</span>
+            </div>
+
+            {/* Interactive Leaflet Map */}
+            <InteractiveMap
+              center={mapCenter}
+              zoom={16}
+              markers={[
+                {
+                  id: 'pickup-point',
+                  position: mapCenter,
+                  type: 'home',
+                  title: 'Titik Jemput Anda',
+                  desc: address,
+                  active: true
+                }
+              ]}
+              showCoverageCircle={true}
+              coverageRadiusMeters={350}
+              className="h-full w-full"
+            />
+
+            {/* Lokasi Sekarang Button */}
+            <button
+              type="button"
+              onClick={handleGetCurrentLocation}
+              className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-neutral-900/90 hover:bg-neutral-900 text-white text-xs font-bold shadow-md active:scale-95 transition-all cursor-pointer"
+            >
+              <Crosshair className="size-3.5 text-brand-green" />
+              <span>Lokasi Sekarang</span>
+            </button>
           </div>
-          <div className="grid grid-cols-4 gap-1.5 h-1.5">
-            <div className="bg-brand-green rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
-            <div className="bg-neutral-200 rounded-full h-full" />
+
+          {/* Map Card Dark Bottom Bar */}
+          <div className="bg-[#1a1d1b] p-4 text-white flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="size-7 rounded-full bg-brand-green/20 text-brand-green flex items-center justify-center shrink-0">
+                <CheckCircle2 className="size-4 text-brand-green" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-white">Zona terjangkau titik jemput</p>
+                <p className="text-[11px] text-neutral-400">HiClean Armada Medokan Asri</p>
+              </div>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-white/10 text-brand-green text-xs font-bold tracking-wide">
+              Tersedia
+            </span>
           </div>
         </div>
 
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">Pilih Kategori Sampah</h1>
-          <p className="text-xs text-neutral-600 mt-1">Kamu bisa memilih lebih dari satu atau lebih kategori yang sudah dipisah untuk disetor sekaligus</p>
-        </div>
-
-        <div className="space-y-3">
-          {categories.map((cat) => {
-            const active = selectedCats.includes(cat.title);
-            return (
-              <button
-                key={cat.title}
-                type="button"
-                onClick={() => toggleCategory(cat.title)}
-                className={`w-full text-left p-5 rounded-3xl border transition-all flex items-start justify-between gap-3 ${
-                  active ? 'bg-white border-brand-green shadow-md ring-2 ring-brand-green/20' : 'bg-white border-neutral-200 hover:border-neutral-300'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <div className="size-11 rounded-2xl bg-neutral-100 flex items-center justify-center text-xl shrink-0">
-                    {cat.icon}
+        {/* Kategori Tempat */}
+        <div className="space-y-2.5">
+          <h2 className="text-sm font-extrabold text-neutral-900 font-heading">
+            Kategori Tempat
+          </h2>
+          <div className="grid grid-cols-3 gap-2.5">
+            {placeTypes.map((pt) => {
+              const Icon = pt.icon;
+              const isSelected = placeCategory === pt.id;
+              return (
+                <button
+                  key={pt.id}
+                  type="button"
+                  onClick={() => setPlaceCategory(pt.id)}
+                  className={`p-4 rounded-3xl border flex flex-col items-center justify-center text-center gap-2 transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-white border-brand-green shadow-md ring-2 ring-brand-green/20'
+                      : 'bg-white border-neutral-200/80 hover:border-neutral-300'
+                  }`}
+                >
+                  <div className={`size-10 rounded-2xl flex items-center justify-center ${
+                    isSelected ? 'bg-brand-green/15 text-brand-green' : 'bg-neutral-100 text-neutral-600'
+                  }`}>
+                    <Icon className="size-5" />
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-neutral-900">{cat.title}</p>
-                    <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">{cat.desc}</p>
-                  </div>
-                </div>
-
-                <div className={`size-6 rounded-full border flex items-center justify-center shrink-0 mt-1 ${
-                  active ? 'bg-brand-green border-brand-green text-ink' : 'border-neutral-300'
-                }`}>
-                  {active && <CheckCircle2 className="size-4" />}
-                </div>
-              </button>
-            );
-          })}
+                  <span className="text-[11px] font-bold text-neutral-800 leading-tight">
+                    {pt.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="pt-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex-1 py-4 rounded-2xl bg-white text-neutral-800 border border-neutral-300 text-xs font-bold hover:bg-neutral-50 transition-colors"
-          >
-            &larr; Kembali
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard/setoran/langkah-2')}
-            className="flex-[2] py-4 rounded-2xl bg-neutral-900 text-white text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
-          >
-            Lanjut (Langkah 1/4)
-          </button>
+        {/* Alamat Lengkap Input */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-xs">
+            <label className="font-extrabold text-neutral-900 font-heading">
+              Alamat Lengkap
+            </label>
+            <span className="text-red-500 font-semibold text-[11px]">
+              Wajib diisi
+            </span>
+          </div>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Masukan alamat lengkap"
+            className="w-full rounded-2xl bg-neutral-200/60 border border-neutral-200 px-4 py-3.5 text-xs text-neutral-900 placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all"
+          />
         </div>
 
+        {/* Patokan Input */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-xs">
+            <label className="font-extrabold text-neutral-900 font-heading">
+              Patokan
+            </label>
+            <span className="text-neutral-400 font-medium text-[11px]">
+              Opsional
+            </span>
+          </div>
+          <input
+            type="text"
+            value={benchmark}
+            onChange={(e) => setBenchmark(e.target.value)}
+            placeholder="Contoh : pagar hitam"
+            className="w-full rounded-2xl bg-neutral-200/60 border border-neutral-200 px-4 py-3.5 text-xs text-neutral-900 placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all"
+          />
+        </div>
       </main>
 
-      <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
-        <div className="mx-auto max-w-xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <p>&copy; {siteConfig.year} Hi-Clean App. Hak cipta dilindungi.</p>
-          <div className="flex items-center gap-6">
-            <Link to="/kebijakan-privasi" className="hover:text-neutral-900 transition-colors">Kebijakan Privasi</Link>
-            <span>&bull;</span>
-            <Link to="/syarat-ketentuan" className="hover:text-neutral-900 transition-colors">Syarat Ketentuan</Link>
-          </div>
+      {/* Fixed Bottom Action Bar */}
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+        <div className="mx-auto max-w-md flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.setoranMain)}
+            className="text-xs font-bold text-neutral-700 hover:text-neutral-900 flex items-center gap-1.5 px-3 py-2 cursor-pointer"
+          >
+            <ArrowLeft className="size-4" />
+            <span>Kembali</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleNext}
+            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+          >
+            Lanjut (Langkah 2 /6)
+          </button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
