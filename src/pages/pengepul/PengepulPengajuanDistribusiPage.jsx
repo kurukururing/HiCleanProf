@@ -1,25 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   ArrowLeft, Menu, CheckCircle2, Package, Star, 
-  MapPin, Plus, Minus, Upload, Camera, Sun, Sunset, Sunrise, Clock
+  MapPin, Plus, Minus, Upload, Camera, Sun, Sunset, Sunrise, Clock,
+  Eye, RefreshCw, X, Check, ShieldCheck
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 import { InteractiveMap } from '../../components/maps/InteractiveMap';
+import { Lightbox } from '../../components/ui/Lightbox';
 
 export function PengepulPengajuanDistribusiPage() {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(1);
+  const location = useLocation();
 
-  // Form State
-  const [selectedMaterial, setSelectedMaterial] = useState(1);
-  const [selectedFactory, setSelectedFactory] = useState(1);
-  const [weight, setWeight] = useState(50);
-  const [materialCondition, setMaterialCondition] = useState('bersih');
-  const [uploadedPhoto, setUploadedPhoto] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('19');
-  const [selectedSession, setSelectedSession] = useState('siang');
-  const [note, setNote] = useState('');
+  const [currentStep, setCurrentStep] = useState(location.state?.step || 1);
+
+  // Form State with state persistence
+  const [selectedMaterial, setSelectedMaterial] = useState(location.state?.selectedMaterial || 1);
+  const [selectedFactory, setSelectedFactory] = useState(location.state?.selectedFactory || 1);
+  const [weight, setWeight] = useState(location.state?.weight || 50);
+  const [materialCondition, setMaterialCondition] = useState(location.state?.materialCondition || 'bersih');
+  const [uploadedPhoto, setUploadedPhoto] = useState(
+    location.state?.uploadedPhoto || '/material/foto-material.jpg'
+  );
+  const [selectedDate, setSelectedDate] = useState(location.state?.selectedDate || '19');
+  const [selectedSession, setSelectedSession] = useState(location.state?.selectedSession || 'siang');
+  const [note, setNote] = useState(location.state?.note || '');
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.uploadedPhoto) {
+      setUploadedPhoto(location.state.uploadedPhoto);
+    }
+    if (location.state?.step) {
+      setCurrentStep(location.state.step);
+    }
+  }, [location.state]);
 
   // Step 1 Data
   const materials = [
@@ -105,10 +121,35 @@ export function PengepulPengajuanDistribusiPage() {
     }
   };
 
+  const handleOpenCamera = () => {
+    navigate(ROUTES.pengepulMaterialFoto, {
+      state: {
+        from: ROUTES.pengepulMaterialDistribusiPengajuan,
+        step: 3,
+        selectedMaterial,
+        selectedFactory,
+        weight,
+        materialCondition,
+        uploadedPhoto,
+        selectedDate,
+        selectedSession,
+        note
+      }
+    });
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setUploadedPhoto(url);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28">
       {/* Top Header */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-neutral-200">
         <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3 sm:px-6">
           <button
             type="button"
@@ -176,7 +217,7 @@ export function PengepulPengajuanDistribusiPage() {
                   <span className="text-xs font-semibold text-neutral-400">/ 500kg</span>
                 </div>
                 <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-                  Kapasitas 50%
+                  Kapasitas 68%
                 </span>
               </div>
               <div className="w-full h-2.5 rounded-full bg-neutral-100 overflow-hidden">
@@ -184,14 +225,14 @@ export function PengepulPengajuanDistribusiPage() {
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-600 font-medium">
                 <CheckCircle2 className="size-4 text-brand-green" />
-                <span>Sisa ruang aman : 200 kg</span>
+                <span>Sisa ruang aman : 157.8 kg</span>
               </div>
             </div>
 
             {/* List Material */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-extrabold text-neutral-900">List Material</h3>
+                <h3 className="text-sm font-extrabold text-neutral-900">List Material Gudang</h3>
                 <span className="text-xs text-neutral-400">{materials.length} Jenis Material</span>
               </div>
 
@@ -219,9 +260,9 @@ export function PengepulPengajuanDistribusiPage() {
                     </div>
 
                     <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                      isSelected ? 'border-brand-green bg-brand-green text-white' : 'border-neutral-300 bg-white'
+                      isSelected ? 'border-brand-green bg-brand-green text-ink' : 'border-neutral-300 bg-white'
                     }`}>
-                      {isSelected && <div className="size-2 rounded-full bg-white" />}
+                      {isSelected && <Check className="size-3.5 stroke-[3]" />}
                     </div>
                   </div>
                 );
@@ -266,9 +307,9 @@ export function PengepulPengajuanDistribusiPage() {
                       </div>
 
                       <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                        isSelected ? 'border-brand-green bg-brand-green text-white' : 'border-neutral-300 bg-white'
+                        isSelected ? 'border-brand-green bg-brand-green text-ink' : 'border-neutral-300 bg-white'
                       }`}>
-                        {isSelected && <div className="size-2 rounded-full bg-white" />}
+                        {isSelected && <Check className="size-3.5 stroke-[3]" />}
                       </div>
                     </div>
 
@@ -315,14 +356,14 @@ export function PengepulPengajuanDistribusiPage() {
                   <button
                     type="button"
                     onClick={() => setWeight(Math.max(25, weight - 5))}
-                    className="size-9 rounded-full bg-white shadow-sm hover:bg-neutral-50 flex items-center justify-center text-neutral-700"
+                    className="size-9 rounded-full bg-white shadow-sm hover:bg-neutral-50 active:scale-95 flex items-center justify-center text-neutral-700 font-bold"
                   >
                     <Minus className="size-4" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setWeight(weight + 5)}
-                    className="size-9 rounded-full bg-brand-green text-white shadow hover:bg-brand-green/90 flex items-center justify-center"
+                    className="size-9 rounded-full bg-brand-green text-ink shadow hover:bg-brand-green/90 active:scale-95 flex items-center justify-center font-bold"
                   >
                     <Plus className="size-4" />
                   </button>
@@ -363,7 +404,7 @@ export function PengepulPengajuanDistribusiPage() {
                     key={opt.id}
                     onClick={() => setMaterialCondition(opt.id)}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      isSelected ? 'border-brand-green bg-emerald-50/50' : 'border-emerald-200/60 hover:bg-neutral-50'
+                      isSelected ? 'border-brand-green bg-emerald-50/50' : 'border-neutral-200 hover:bg-neutral-50'
                     }`}
                   >
                     <div>
@@ -371,31 +412,113 @@ export function PengepulPengajuanDistribusiPage() {
                       <p className="text-[11px] text-neutral-500 mt-0.5">{opt.desc}</p>
                     </div>
                     <div className={`size-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
-                      isSelected ? 'border-brand-green bg-brand-green text-white' : 'border-neutral-300 bg-white'
+                      isSelected ? 'border-brand-green bg-brand-green text-ink' : 'border-neutral-300 bg-white'
                     }`}>
-                      {isSelected && <div className="size-1.5 rounded-full bg-white" />}
+                      {isSelected && <Check className="size-3 stroke-[3]" />}
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            {/* Foto Bukti Sampah */}
+            {/* Foto Bukti Sampah dengan Natural Camera Support */}
             <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
-              <div>
-                <h3 className="text-sm font-extrabold text-neutral-900">Foto Bukti Sampah</h3>
-                <p className="text-[11px] text-neutral-500">Verifikasi visual untuk percepatan sortir di bank sampah</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-extrabold text-neutral-900">Foto Bukti Bal Sampah</h3>
+                  <p className="text-[11px] text-neutral-500">Verifikasi visual kondisi ikatan bal & kebersihan</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleOpenCamera}
+                  className="text-xs text-emerald-800 bg-brand-green/15 hover:bg-brand-green/25 font-bold px-3 py-1 rounded-full flex items-center gap-1.5 transition-colors"
+                >
+                  <Camera className="size-3.5 text-brand-green" />
+                  <span>{uploadedPhoto ? 'Ambil Ulang' : 'Buka Kamera'}</span>
+                </button>
               </div>
 
-              <Link
-                to={ROUTES.pengepulMaterialFoto}
-                className="w-full h-32 rounded-2xl border-2 border-dashed border-neutral-300 hover:border-brand-green bg-neutral-100/70 hover:bg-emerald-50/30 transition-colors flex flex-col items-center justify-center gap-2 cursor-pointer"
-              >
-                <div className="size-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-neutral-600">
-                  <Upload className="size-5" />
+              {uploadedPhoto ? (
+                <div className="relative rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-900 shadow-sm aspect-video group">
+                  <img
+                    src={uploadedPhoto}
+                    alt="Foto Bukti Material"
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-300"
+                  />
+
+                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-semibold flex items-center gap-1">
+                    <Check className="size-3 text-brand-green stroke-[3]" /> Terlampir
+                  </div>
+
+                  <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setIsLightboxOpen(true)}
+                      className="size-8 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-colors"
+                      title="Lihat Penuh"
+                    >
+                      <Eye className="size-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUploadedPhoto(null)}
+                      className="size-8 rounded-full bg-black/60 hover:bg-red-600 text-white flex items-center justify-center transition-colors"
+                      title="Hapus Foto"
+                    >
+                      <X className="size-4" />
+                    </button>
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2.5 flex items-center justify-between text-white text-xs">
+                    <span className="text-[11px] text-neutral-300 font-medium">
+                      Bal material siap kirim
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleOpenCamera}
+                      className="text-[11px] font-bold text-brand-green hover:underline flex items-center gap-1"
+                    >
+                      <RefreshCw className="size-3" /> Foto Ulang
+                    </button>
+                  </div>
                 </div>
-                <span className="text-xs font-bold text-neutral-600">Unggah foto atau ambil kamera</span>
-              </Link>
+              ) : (
+                <div className="grid grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={handleOpenCamera}
+                    className="border-2 border-dashed border-neutral-300 hover:border-brand-green bg-neutral-50 hover:bg-emerald-50/30 rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors text-center space-y-1"
+                  >
+                    <div className="size-9 rounded-xl bg-brand-green/15 text-brand-green flex items-center justify-center">
+                      <Camera className="size-4.5" />
+                    </div>
+                    <span className="text-xs font-bold text-neutral-800">
+                      Buka Kamera
+                    </span>
+                    <span className="text-[10px] text-neutral-400">
+                      Ambil foto bal
+                    </span>
+                  </button>
+
+                  <label className="border-2 border-dashed border-neutral-300 hover:border-brand-green bg-neutral-50 hover:bg-emerald-50/30 rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors text-center space-y-1">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                    <div className="size-9 rounded-xl bg-neutral-200 text-neutral-700 flex items-center justify-center">
+                      <Upload className="size-4.5" />
+                    </div>
+                    <span className="text-xs font-bold text-neutral-800">
+                      Pilih Galeri
+                    </span>
+                    <span className="text-[10px] text-neutral-400">
+                      Dari memori HP
+                    </span>
+                  </label>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -408,7 +531,7 @@ export function PengepulPengajuanDistribusiPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MapPin className="size-4 text-brand-green" />
-                  <h3 className="text-sm font-extrabold text-neutral-900">Lokasi Pickup</h3>
+                  <h3 className="text-sm font-extrabold text-neutral-900">Lokasi Penjemputan Lapak</h3>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
                   Terverifikasi
@@ -434,7 +557,7 @@ export function PengepulPengajuanDistribusiPage() {
               </div>
 
               <p className="text-xs font-bold text-neutral-800">
-                Jl. Medokan Asri Timur no.14, Gunung Anyar
+                Jl. Medokan Asri Timur no.14, Gunung Anyar, Surabaya
               </p>
             </div>
 
@@ -442,7 +565,7 @@ export function PengepulPengajuanDistribusiPage() {
             <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
               <div className="flex items-center gap-2">
                 <Clock className="size-4 text-brand-green" />
-                <h3 className="text-sm font-extrabold text-neutral-900">Tanggal Pickup</h3>
+                <h3 className="text-sm font-extrabold text-neutral-900">Tanggal Penjemputan Truk Pabrik</h3>
               </div>
 
               <div className="grid grid-cols-4 gap-2 text-center">
@@ -486,7 +609,7 @@ export function PengepulPengajuanDistribusiPage() {
 
             {/* Sesi Pickup */}
             <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
-              <h3 className="text-sm font-extrabold text-neutral-900">Sesi Pickup</h3>
+              <h3 className="text-sm font-extrabold text-neutral-900">Sesi Waktu Muat</h3>
 
               {[
                 { id: 'pagi', title: 'Sesi Pagi', time: '08:30 – 10:30 WIB', icon: Sunrise },
@@ -513,30 +636,61 @@ export function PengepulPengajuanDistribusiPage() {
                       </div>
                     </div>
                     <div className={`size-5 rounded-full border-2 flex items-center justify-center ${
-                      isSelected ? 'border-brand-green bg-brand-green text-white' : 'border-neutral-300 bg-white'
+                      isSelected ? 'border-brand-green bg-brand-green text-ink' : 'border-neutral-300 bg-white'
                     }`}>
-                      {isSelected && <div className="size-1.5 rounded-full bg-white" />}
+                      {isSelected && <Check className="size-3 stroke-[3]" />}
                     </div>
                   </div>
                 );
               })}
             </div>
 
+            {/* Ringkasan Bukti Foto */}
+            {uploadedPhoto && (
+              <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-2">
+                <h3 className="text-sm font-extrabold text-neutral-900">Bukti Foto Bal yang Disertakan</h3>
+                <div 
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="relative rounded-2xl overflow-hidden aspect-video border border-neutral-200 cursor-pointer group"
+                >
+                  <img
+                    src={uploadedPhoto}
+                    alt="Foto Bukti"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+                    <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold flex items-center gap-1.5">
+                      <Check className="size-3.5 text-brand-green stroke-[3]" /> Klik untuk memperbesar
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Catatan Pengirim */}
             <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-2">
               <h3 className="text-sm font-extrabold text-neutral-900">Catatan Pengirim</h3>
               <textarea
                 rows={2}
-                placeholder="Contoh: Jangan dibanting, simpan di gerbang samping lapak"
+                placeholder="Contoh: Muatan sudah diikat kencang, lokasi muat di dekat gerbang gudang"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                className="w-full rounded-2xl bg-neutral-100/80 border border-neutral-200/80 p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
+                className="w-full rounded-2xl bg-neutral-50 border border-neutral-200 p-3 text-xs text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
               />
             </div>
           </div>
         )}
 
       </main>
+
+      {/* Lightbox for Previewing Attached Photo */}
+      {isLightboxOpen && uploadedPhoto && (
+        <Lightbox
+          src={uploadedPhoto}
+          alt="Foto Bal Sampah"
+          onClose={() => setIsLightboxOpen(false)}
+        />
+      )}
 
       {/* Floating Bottom Action Buttons */}
       <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
@@ -551,13 +705,12 @@ export function PengepulPengajuanDistribusiPage() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex-grow py-3.5 rounded-2xl bg-brand-green text-ink text-xs font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99]"
+            className="flex-grow py-3.5 rounded-2xl bg-brand-green text-ink text-xs font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center"
           >
-            {currentStep === 4 ? 'Konfirmasi Pickup' : `Lanjut (Langkah ${currentStep + 1} / 4)`}
+            {currentStep === 4 ? 'Konfirmasi Distribusi' : `Lanjut (Langkah ${currentStep + 1} / 4)`}
           </button>
         </div>
       </div>
     </div>
   );
 }
-

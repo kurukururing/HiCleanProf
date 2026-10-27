@@ -59,15 +59,22 @@ export function PengepulVerifikasiSuksesPage() {
         </div>
       </main>
 
-      {/* Bottom Button */}
+      {/* Bottom Actions */}
       <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-4 mt-auto">
-        <div className="mx-auto max-w-md">
+        <div className="mx-auto max-w-md flex flex-col sm:flex-row items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => navigate(ROUTES.pengepulVerifikasi || '/pengepul/verifikasi')}
+            className="w-full sm:flex-1 py-3.5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center"
+          >
+            Verifikasi Berikutnya
+          </button>
           <button
             type="button"
             onClick={() => navigate(ROUTES.pengepulDashboard || '/pengepul')}
-            className="w-full py-3.5 rounded-2xl border-2 border-brand-green text-brand-green hover:bg-brand-green hover:text-ink text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-[0.99] text-center"
+            className="w-full sm:flex-1 py-3.5 rounded-2xl border-2 border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-xs sm:text-sm font-bold transition-all active:scale-[0.99] text-center"
           >
-            Kembali ke beranda
+            Kembali ke Beranda
           </button>
         </div>
       </div>

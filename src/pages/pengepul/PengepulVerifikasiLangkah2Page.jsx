@@ -99,7 +99,10 @@ export function PengepulVerifikasiLangkah2Page() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-[#1a1d1b] flex flex-col font-sans pb-28">
-      <PengepulStepHeader backTo={ROUTES.pengepulVerifikasiLangkah1 || '/pengepul/verifikasi/langkah-1'} />
+      <PengepulStepHeader 
+        title="Timbang Bobot IoT"
+        backTo={ROUTES.pengepulVerifikasiLangkah1 || '/pengepul/verifikasi/langkah-1'} 
+      />
 
       <main className="mx-auto w-full max-w-md px-4 py-2 space-y-4">
         {/* Progress Stepper Card */}

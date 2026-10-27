@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { ArrowLeft, Check, Recycle, Info, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Check, Recycle, Info, AlertTriangle, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { PengepulStepHeader } from '../../components/pengepul/PengepulStepHeader';
+import { Lightbox } from '../../components/ui/Lightbox';
 import { ROUTES } from '../../routes';
 
 export function PengepulVerifikasiLangkah1Page() {
   const navigate = useNavigate();
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   // Checklist state
   const [checks, setChecks] = useState({
@@ -27,14 +29,17 @@ export function PengepulVerifikasiLangkah1Page() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-[#1a1d1b] flex flex-col font-sans pb-28">
-      <PengepulStepHeader backTo={ROUTES.pengepulVerifikasi || '/pengepul/verifikasi'} />
+      <PengepulStepHeader 
+        title="Verifikasi Fisik"
+        backTo={ROUTES.pengepulVerifikasi || '/pengepul/verifikasi'} 
+      />
 
       <main className="mx-auto w-full max-w-md px-4 py-2 space-y-4">
         {/* Stepper Card */}
         <div className="rounded-3xl bg-white p-5 shadow-xs border border-neutral-200/80 space-y-3">
           <div className="flex items-center justify-between">
             <span className="px-3 py-1 rounded-full bg-[#E5F8ED] text-emerald-800 text-xs font-semibold">
-              Material
+              Kondisi Material
             </span>
             <span className="text-xs font-bold text-neutral-800 font-heading">
               Langkah 1 dari 4
@@ -53,10 +58,10 @@ export function PengepulVerifikasiLangkah1Page() {
         {/* Header Text */}
         <div className="space-y-1">
           <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">
-            Material
+            Kondisi Fisik Sampah
           </h1>
           <p className="text-xs text-neutral-500 leading-relaxed">
-            Verifikasi material yang disetor untuk mengetahui kondisi
+            Periksa kecocokan fisik sampel sampah dengan foto bukti yang diunggah warga
           </p>
         </div>
 
@@ -72,24 +77,31 @@ export function PengepulVerifikasiLangkah1Page() {
                 Botol Plastik PET
               </h2>
               <p className="text-[11px] text-neutral-500">
-                Botol plastik, dan botol minyak bekas
+                Botol plastik air mineral dan minyak bekas
               </p>
             </div>
           </div>
 
-          {/* Material Image */}
-          <div className="relative rounded-2xl overflow-hidden aspect-video border border-neutral-200 shadow-2xs">
+          {/* Material Image with Lightbox preview */}
+          <div 
+            onClick={() => setIsLightboxOpen(true)}
+            className="relative rounded-2xl overflow-hidden aspect-video border border-neutral-200 shadow-2xs cursor-pointer group"
+          >
             <img
               src="/verifikasi_pengepul/Foto.jpg"
               alt="Botol Plastik PET"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               onError={(e) => {
-                // Fallback image if needed
                 e.target.src = 'https://images.unsplash.com/photo-1595278069441-2cf29f8005a4?w=600&auto=format&fit=crop&q=80';
               }}
             />
-            <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-medium">
-              Foto Bukti Warga
+            <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-medium flex items-center gap-1">
+              <Eye className="size-3" /> Foto Bukti Warga
+            </div>
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-bold">
+                Perbesar Foto
+              </span>
             </div>
           </div>
 
@@ -183,6 +195,15 @@ export function PengepulVerifikasiLangkah1Page() {
           )}
         </div>
       </main>
+
+      {/* Lightbox for citizen photo */}
+      {isLightboxOpen && (
+        <Lightbox
+          src="/verifikasi_pengepul/Foto.jpg"
+          alt="Foto Bukti Warga"
+          onClose={() => setIsLightboxOpen(false)}
+        />
+      )}
 
       {/* Fixed Bottom Action Bar */}
       <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
