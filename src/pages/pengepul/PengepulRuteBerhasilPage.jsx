@@ -1,6 +1,7 @@
 import { Check, ArrowLeft, Menu, Navigation, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulRuteBerhasilPage() {
   const navigate = useNavigate();
@@ -52,14 +53,25 @@ export function PengepulRuteBerhasilPage() {
 
         {/* Map Preview Card */}
         <div className="rounded-3xl overflow-hidden border border-neutral-200/80 bg-white shadow-sm">
-          <div className="relative h-48 sm:h-56 w-full bg-neutral-100">
-            <img 
-              src="/rute/rute-berhasil.jpg" 
-              alt="Peta Rute Selesai" 
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = '/rute/maps-base.jpg';
-              }}
+          <div className="relative h-56 sm:h-64 w-full bg-neutral-100">
+            <InteractiveMap
+              center={[-7.3205, 112.7845]}
+              zoom={15}
+              markers={[
+                { id: '1', position: [-7.3190, 112.7830], type: 'stop', number: '1', active: true, title: 'Rute 1: Rumah Bu Rahayu' },
+                { id: '2', position: [-7.3215, 112.7852], type: 'stop', number: '2', title: 'Rute 2: Joko Santoso' },
+                { id: '3', position: [-7.3235, 112.7880], type: 'stop', number: '3', title: 'Rute 3: Ibu Siti Nurhaliza' },
+                { id: '4', position: [-7.3175, 112.7865], type: 'stop', number: '4', title: 'Rute 4: Ahmad Rizky' },
+                { id: '5', position: [-7.3160, 112.7838], type: 'stop', number: '5', title: 'Rute 5: Rina Rahayu' }
+              ]}
+              routePath={[
+                [-7.3190, 112.7830],
+                [-7.3215, 112.7852],
+                [-7.3235, 112.7880],
+                [-7.3175, 112.7865],
+                [-7.3160, 112.7838]
+              ]}
+              height="100%"
             />
           </div>
         </div>

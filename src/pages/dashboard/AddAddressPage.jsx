@@ -1,12 +1,25 @@
 import { useState } from 'react';
-import { ArrowLeft, MapPin, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, MapPin, ShieldCheck, Locate } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function AddAddressPage() {
   const navigate = useNavigate();
   const [label, setLabel] = useState('Rumah');
   const [access, setAccess] = useState('pickup');
+  const [coords, setCoords] = useState({ lat: -7.3225, lng: 112.7870, text: '-7.3225, 112.7870' });
+  const [addressTitle, setAddressTitle] = useState('Jl. Medokan Asri Barat No. 14, Gunung Anyar, Surabaya');
+
+  const handleLocationPicked = (loc) => {
+    setCoords({ lat: loc.lat, lng: loc.lng, text: `${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}` });
+    setAddressTitle(`Titik Terpilih (${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}), Surabaya`);
+  };
+
+  const handleUseCurrentGPS = () => {
+    setCoords({ lat: -7.3225, lng: 112.7870, text: '-7.3225, 112.7870' });
+    setAddressTitle('Jl. Medokan Asri Barat No. 14, Gunung Anyar, Surabaya');
+  };
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
@@ -38,21 +51,36 @@ export function AddAddressPage() {
 
         {/* Map Card */}
         <div className="rounded-3xl bg-white p-4 shadow-sm border border-neutral-200 space-y-3">
-          <div className="relative h-48 w-full rounded-2xl bg-neutral-200 overflow-hidden border border-neutral-100 flex items-center justify-center">
-            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-70" />
-            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-mono font-semibold">
-              📍 GPS-6.2168, 107.586
+          <div className="relative h-60 w-full rounded-2xl overflow-hidden border border-neutral-100">
+            <InteractiveMap
+              center={[coords.lat, coords.lng]}
+              zoom={16}
+              allowPickLocation={true}
+              onLocationSelect={handleLocationPicked}
+              height="100%"
+            />
+
+            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-[11px] font-mono font-semibold shadow border border-neutral-200/60 z-10 flex items-center gap-1.5">
+              <MapPin className="size-3.5 text-brand-green" /> 📍 {coords.text}
             </div>
-            <div className="size-8 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-lg">
-              <MapPin className="size-4 text-brand-green" />
-            </div>
+
+            <button
+              type="button"
+              onClick={handleUseCurrentGPS}
+              className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm hover:bg-white text-neutral-800 px-3 py-1.5 rounded-full text-[10px] font-bold shadow border border-neutral-200/60 z-10 flex items-center gap-1 active:scale-95 transition-all"
+            >
+              <Locate className="size-3 text-brand-green" /> GPS Saya
+            </button>
           </div>
+
           <div className="flex items-center justify-between px-1">
-            <div>
-              <p className="text-[11px] text-neutral-500">Titik GPS Terdeteksi</p>
-              <p className="text-xs font-bold text-neutral-900">Waru, Kabupaten Sidoarjo</p>
+            <div className="min-w-0 pr-2">
+              <p className="text-[11px] text-neutral-500">Titik GPS Terdeteksi (Geser pin atau klik peta)</p>
+              <p className="text-xs font-bold text-neutral-900 truncate">{addressTitle}</p>
             </div>
-            <span className="px-2.5 py-0.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] font-bold">Terverifikasi</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-brand-green/10 text-brand-green text-[10px] font-bold shrink-0">
+              Terverifikasi
+            </span>
           </div>
         </div>
 

@@ -5,10 +5,12 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { ConfirmationModal } from '../ui/ConfirmationModal';
 
 export function PengepulNavbar({ activeName }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
   const links = [
@@ -91,7 +93,7 @@ export function PengepulNavbar({ activeName }) {
                       className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
                       <User className="size-4 text-neutral-500" /> Profil Mitra
                     </Link>
-                    <button type="button" onClick={() => { setProfileMenuOpen(false); navigate('/'); }}
+                    <button type="button" onClick={() => { setProfileMenuOpen(false); setShowLogoutModal(true); }}
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1">
                       <LogOut className="size-4 text-red-500" /> Keluar
                     </button>
@@ -199,7 +201,10 @@ export function PengepulNavbar({ activeName }) {
             <div className="px-4 py-4 border-t border-neutral-100">
               <button
                 type="button"
-                onClick={() => { setDrawerOpen(false); navigate('/'); }}
+                onClick={() => {
+                  setDrawerOpen(false);
+                  setShowLogoutModal(true);
+                }}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-all"
               >
                 <div className="size-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
@@ -211,6 +216,21 @@ export function PengepulNavbar({ activeName }) {
           </div>
         </div>
       )}
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={() => {
+          setShowLogoutModal(false);
+          navigate('/');
+        }}
+        title="Keluar dari Akun Mitra?"
+        description="Apakah Anda yakin ingin keluar dari sesi akun mitra pengepul? Anda dapat masuk kembali kapan saja."
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+        type="danger"
+      />
     </>
   );
 }

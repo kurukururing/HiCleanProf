@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulPengajuanDistribusiPage() {
   const navigate = useNavigate();
@@ -414,14 +415,21 @@ export function PengepulPengajuanDistribusiPage() {
                 </span>
               </div>
 
-              <div className="relative h-28 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
-                <img 
-                  src="/material/detail-distribusi.jpg" 
-                  alt="Lokasi Pickup" 
-                  className="w-full h-full object-cover object-top"
-                  onError={(e) => {
-                    e.target.src = '/rute/maps-base.jpg';
-                  }}
+              <div className="relative h-36 rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-100">
+                <InteractiveMap
+                  center={[-7.3205, 112.7845]}
+                  zoom={15}
+                  markers={[
+                    {
+                      id: 'pickup-point',
+                      position: [-7.3205, 112.7845],
+                      type: 'truck',
+                      title: 'Titik Muat Penjemputan',
+                      desc: 'Jl. Medokan Asri Timur No.14'
+                    }
+                  ]}
+                  showControls={false}
+                  height="100%"
                 />
               </div>
 

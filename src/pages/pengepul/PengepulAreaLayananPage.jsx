@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowLeft, Menu, MapPin, Clock, Plus, Minus, Home, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulAreaLayananPage() {
   const navigate = useNavigate();
@@ -54,20 +55,31 @@ export function PengepulAreaLayananPage() {
       <main className="flex-grow mx-auto w-full max-w-md px-4 py-5 space-y-4">
         
         {/* Map Preview with Green Radius Circle */}
-        <div className="rounded-3xl overflow-hidden border border-neutral-200/80 bg-white shadow-sm relative h-56 sm:h-64">
-          <img 
-            src="/profil_pengepul/area-layanan.jpg" 
-            alt="Peta Area Layanan" 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              e.target.src = '/rute/maps-base.jpg';
-            }}
+        <div className="rounded-3xl overflow-hidden border border-neutral-200/80 bg-white shadow-sm relative h-64 sm:h-72">
+          <InteractiveMap
+            center={[-7.3205, 112.7845]}
+            zoom={14}
+            coverageRadius={radius * 1000}
+            markers={[
+              {
+                id: 'base-hub',
+                position: [-7.3205, 112.7845],
+                type: 'truck',
+                title: 'Pangkalan Utama Mitra',
+                desc: 'Bank Sampah Maju Jaya'
+              }
+            ]}
+            height="100%"
           />
 
           {/* GPS Coordinates Tag Top Left */}
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-neutral-800 font-mono">
-            <MapPin className="size-3.5 text-neutral-900" />
-            <span>GPS -6.2168, 107.586</span>
+          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-neutral-800 font-mono z-10">
+            <MapPin className="size-3.5 text-brand-green" />
+            <span>GPS -7.3205, 112.7845</span>
+          </div>
+
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm border border-neutral-200/80 text-[10px] font-bold text-brand-green z-10">
+            Radius Aktif: {radius.toFixed(1)} km
           </div>
         </div>
 

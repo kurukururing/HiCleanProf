@@ -3,7 +3,7 @@
 @theme {
   --color-brand-green: #20c85e;
   --color-brand-green-50: #effcf3;
-  --color-ink: #282b29;
+  --color-ink: #1a1d1b;
   --color-accent-orange: #f97316;
   --color-warm-50: #f8f4ee;
 
@@ -21,17 +21,65 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: -10px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
   body {
-    @apply font-body text-ink bg-white antialiased;
+    @apply font-body bg-white antialiased;
+    color: #1a1d1b;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  p, span, label, li {
+    line-height: 1.6;
+  }
+
+  :focus-visible {
+    outline: 2px solid #20c85e;
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
+/* ─────────────────────────────────────────────
+   TYPOGRAPHY & UTILITY HELPERS
+   ───────────────────────────────────────────── */
+@layer utilities {
+  /* Scrollbar tersembunyi (dipakai di filter tabs horizontal) */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Modern Leaflet Map Popup */
+.modern-map-popup .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  padding: 4px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.modern-map-popup .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.95);
+}
+
 /* =====================================================================
-   Animasi scroll & Efek Modern (Sesuai animation.md)
+   Animasi scroll & Efek Modern
    ===================================================================== */
 
 :root {

@@ -6,9 +6,12 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 
 export function ActivePickupPage() {
   const navigate = useNavigate();
+  const [showCancelModal, setShowCancelModal] = useState(false);
 
   const pickupData = {
     id: '#HC-88412',
@@ -75,21 +78,42 @@ export function ActivePickupPage() {
 
         {/* Map Card */}
         <div className="rounded-3xl bg-white p-4 shadow-sm border border-neutral-200 overflow-hidden space-y-3">
-          <div className="relative h-56 sm:h-64 w-full rounded-2xl bg-neutral-100 overflow-hidden border border-neutral-100">
-            <img 
-              src="/rute/detail-pickup.jpg" 
-              alt="Peta Lacak Setoran" 
-              className="w-full h-full object-cover object-top"
-              onError={(e) => {
-                e.target.src = '/rute/maps-base.jpg';
-              }}
+          <div className="relative h-64 sm:h-72 w-full rounded-2xl overflow-hidden border border-neutral-100">
+            <InteractiveMap
+              center={[-7.3197, 112.7842]}
+              zoom={15}
+              markers={[
+                {
+                  id: 'truck',
+                  position: [-7.3170, 112.7815],
+                  type: 'truck',
+                  title: 'Armada Truk HiClean',
+                  desc: 'Pak Alexander Wijaya • Menuju lokasi Anda'
+                },
+                {
+                  id: 'home',
+                  position: [-7.3225, 112.7870],
+                  type: 'home',
+                  active: true,
+                  title: 'Rumah Anda',
+                  desc: pickupData.locationName
+                }
+              ]}
+              routePath={[
+                [-7.3170, 112.7815],
+                [-7.3182, 112.7825],
+                [-7.3195, 112.7840],
+                [-7.3210, 112.7855],
+                [-7.3225, 112.7870]
+              ]}
+              height="100%"
             />
 
-            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-mono font-semibold text-neutral-800 flex items-center gap-1.5">
-              <MapPin className="size-3.5 text-brand-green" /> {pickupData.gpsCoordinates}
+            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-mono font-semibold text-neutral-800 flex items-center gap-1.5 border border-neutral-200/60 z-10">
+              <MapPin className="size-3.5 text-brand-green" /> -7.3225, 112.7870
             </div>
 
-            <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-semibold text-neutral-800 flex items-center gap-1.5">
+            <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow text-[11px] font-semibold text-neutral-800 flex items-center gap-1.5 border border-neutral-200/60 z-10">
               <span className="size-2 rounded-full bg-brand-green animate-ping" /> Kurir Sedang Menuju Rumah Anda
             </div>
           </div>
@@ -207,7 +231,35 @@ export function ActivePickupPage() {
           </div>
         </div>
 
+        {/* Action: Batalkan Penjemputan */}
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={() => setShowCancelModal(true)}
+            className="w-full py-3.5 px-4 rounded-2xl bg-white border border-red-200 text-red-600 hover:bg-red-50 text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+          >
+            <Trash2 className="size-4 text-red-500" />
+            <span>Batalkan Permintaan Penjemputan</span>
+          </button>
+        </div>
+
       </main>
+
+      {/* Confirmation Modal: Batalkan Penjemputan */}
+      <ConfirmationModal
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={() => {
+          setShowCancelModal(false);
+          navigate(ROUTES.dashboard);
+        }}
+        title="Batalkan Penjemputan?"
+        description="Apakah Anda yakin ingin membatalkan penjemputan ini? Armada kurir mitra yang sedang menuju lokasi Anda akan dialihkan."
+        confirmText="Ya, Batalkan"
+        cancelText="Kembali"
+        type="danger"
+        icon={<Trash2 className="size-6 text-red-600 stroke-[2.2]" />}
+      />
 
       <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">

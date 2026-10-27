@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PengepulNavbar } from '../../components/pengepul/PengepulNavbar';
 import { ROUTES } from '../../routes';
 import { siteConfig } from '../../config/siteConfig';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulRutePage() {
   const navigate = useNavigate();
@@ -118,31 +119,84 @@ export function PengepulRutePage() {
             <span className="text-xs text-neutral-500">Kecamatan Gunung Anyar</span>
           </div>
 
-          <div className="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden border border-neutral-200/60 bg-neutral-100">
-            {/* Map image from Figma / design */}
-            <img 
-              src="/rute/maps-base.jpg" 
-              alt="Peta Rute" 
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                // Fallback to high quality styling if file not loaded
-                e.target.style.display = 'none';
-              }}
+          <div className="relative w-full h-64 sm:h-72 rounded-2xl overflow-hidden border border-neutral-200/60 bg-neutral-100">
+            <InteractiveMap
+              center={[-7.3205, 112.7845]}
+              zoom={15}
+              markers={[
+                {
+                  id: 'driver',
+                  position: [-7.3180, 112.7820],
+                  type: 'truck',
+                  title: 'Posisi Anda (Truk Mitra)',
+                  desc: 'Menuju Antrean 1'
+                },
+                {
+                  id: 'stop-1',
+                  position: [-7.3190, 112.7830],
+                  type: 'stop',
+                  number: '1',
+                  active: true,
+                  title: 'Antrean 1: Ibu Ratna Dewi',
+                  desc: 'Jl. Medokan Asri Timur No. 14 • 4.0 kg'
+                },
+                {
+                  id: 'stop-2',
+                  position: [-7.3215, 112.7852],
+                  type: 'stop',
+                  number: '2',
+                  title: 'Antrean 2: Bapak Joko Santoso',
+                  desc: 'Jl. Candi Jago No. 7 • 5.5 kg'
+                },
+                {
+                  id: 'stop-3',
+                  position: [-7.3235, 112.7880],
+                  type: 'stop',
+                  number: '3',
+                  title: 'Antrean 3: Ibu Siti Aisyah',
+                  desc: 'Jl. Raya Darmo No. 56 • 3.2 kg'
+                },
+                {
+                  id: 'stop-4',
+                  position: [-7.3175, 112.7865],
+                  type: 'stop',
+                  number: '4',
+                  completed: true,
+                  title: 'Antrean 4: Pak Hendra',
+                  desc: 'Selesai ditimbang'
+                },
+                {
+                  id: 'stop-5',
+                  position: [-7.3160, 112.7838],
+                  type: 'stop',
+                  number: '5',
+                  completed: true,
+                  title: 'Antrean 5: Ibu Mayangsari',
+                  desc: 'Selesai ditimbang'
+                }
+              ]}
+              routePath={[
+                [-7.3180, 112.7820],
+                [-7.3190, 112.7830],
+                [-7.3215, 112.7852],
+                [-7.3235, 112.7880]
+              ]}
+              height="100%"
             />
 
             {/* GPS Tag Top Left */}
-            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-neutral-800 font-mono">
-              <MapPin className="size-3.5 text-neutral-900" />
-              <span>GPS -6.2168, 107.586</span>
+            <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-neutral-200/80 flex items-center gap-1.5 text-[11px] font-semibold text-neutral-800 font-mono z-10">
+              <MapPin className="size-3.5 text-brand-green" />
+              <span>GPS -7.3205, 112.7845</span>
             </div>
 
-            {/* Button Lihat Detail Bottom Right */}
+            {/* Button Lihat Detail Bottom Left */}
             <Link
               to={ROUTES.pengepulRouteNavigasi}
-              className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md hover:bg-white text-neutral-900 px-4 py-2 rounded-2xl shadow-md border border-neutral-200/80 text-xs font-bold flex items-center gap-1.5 transition-transform hover:scale-105 active:scale-95"
+              className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-md hover:bg-white text-neutral-900 px-4 py-2 rounded-2xl shadow-md border border-neutral-200/80 text-xs font-bold flex items-center gap-1.5 transition-transform hover:scale-105 active:scale-95 z-10"
             >
-              <span>Lihat Detail</span>
-              <ChevronRight className="size-3.5 text-neutral-600" />
+              <span>Buka Navigasi Rute</span>
+              <ChevronRight className="size-3.5 text-brand-green" />
             </Link>
           </div>
         </div>

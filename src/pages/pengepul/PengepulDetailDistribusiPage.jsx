@@ -2,6 +2,7 @@ import { ArrowLeft, Menu, CheckCircle2, MapPin, Truck, ShieldCheck, Scale, Check
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 import { siteConfig } from '../../config/siteConfig';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulDetailDistribusiPage() {
   const navigate = useNavigate();
@@ -36,14 +37,42 @@ export function PengepulDetailDistribusiPage() {
         
         {/* Map Preview Card with GPS Tag */}
         <div className="rounded-3xl overflow-hidden border border-neutral-200/80 bg-white shadow-sm space-y-0">
-          <div className="relative h-48 sm:h-52 w-full bg-neutral-100">
-            <img 
-              src="/material/detail-distribusi.jpg" 
-              alt="Peta Distribusi" 
-              className="w-full h-full object-cover object-top"
-              onError={(e) => {
-                e.target.src = '/rute/detail-pickup.jpg';
-              }}
+          <div className="relative h-56 sm:h-64 w-full bg-neutral-100">
+            <InteractiveMap
+              center={[-7.3380, 112.7680]}
+              zoom={13}
+              markers={[
+                {
+                  id: 'warehouse',
+                  position: [-7.3205, 112.7845],
+                  type: 'stop',
+                  number: 'G',
+                  title: 'Gudang Pengepul (Asal)',
+                  desc: 'Bank Sampah Maju Jaya'
+                },
+                {
+                  id: 'dist-truck',
+                  position: [-7.3380, 112.7680],
+                  type: 'truck',
+                  title: 'Truk Pengantar Material #DST-881',
+                  desc: 'Sedang menuju pabrik mitra'
+                },
+                {
+                  id: 'dest-factory',
+                  position: [-7.3550, 112.7500],
+                  type: 'factory',
+                  title: 'Pabrik Daur Ulang Mitra',
+                  desc: 'PT Eco Plastik Lestari, Rungkut Industri'
+                }
+              ]}
+              routePath={[
+                [-7.3205, 112.7845],
+                [-7.3280, 112.7780],
+                [-7.3380, 112.7680],
+                [-7.3480, 112.7580],
+                [-7.3550, 112.7500]
+              ]}
+              height="100%"
             />
           </div>
 

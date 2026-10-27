@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   User, LogOut, Settings, ShieldCheck, ChevronRight,
   MapPin, Globe, Lock, Flame, Package
@@ -5,10 +6,12 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 import { WargaNavbar } from '../../components/layout/WargaNavbar';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import { siteConfig } from '../../config/siteConfig';
 
 export function ProfilePage() {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const user = {
     name: 'Budiman',
@@ -112,8 +115,8 @@ export function ProfilePage() {
         {/* Keluar Button */}
         <button
           type="button"
-          onClick={() => navigate(ROUTES.home)}
-          className="w-full flex items-center justify-between p-4 sm:p-5 rounded-3xl bg-red-50/80 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-semibold text-sm"
+          onClick={() => setShowLogoutModal(true)}
+          className="w-full flex items-center justify-between p-4 sm:p-5 rounded-3xl bg-red-50/80 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-semibold text-sm cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="size-9 sm:size-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center">
@@ -125,6 +128,21 @@ export function ProfilePage() {
         </button>
 
       </main>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={() => {
+          setShowLogoutModal(false);
+          navigate(ROUTES.home);
+        }}
+        title="Keluar dari Akun Hi-Clean?"
+        description="Apakah Anda yakin ingin keluar dari akun Anda? Anda harus masuk kembali untuk mengumpulkan poin dan memesan penjemputan."
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+        type="danger"
+      />
 
       <footer className="hidden sm:block bg-white border-t border-neutral-200 py-6 text-neutral-500 text-xs mt-auto">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">

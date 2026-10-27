@@ -5,11 +5,13 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PengepulNavbar } from '../../components/pengepul/PengepulNavbar';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import { siteConfig } from '../../config/siteConfig';
 import { ROUTES } from '../../routes';
 
 export function PengepulProfilePage() {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const menuItems = [
     { label: 'Data diri', icon: User, path: ROUTES.pengepulDataDiri },
@@ -111,9 +113,10 @@ export function PengepulProfilePage() {
         </div>
 
         {/* Keluar Button */}
-        <Link
-          to={ROUTES.home}
-          className="w-full flex items-center justify-between p-4 rounded-3xl bg-red-100/70 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-extrabold text-sm shadow-sm"
+        <button
+          type="button"
+          onClick={() => setShowLogoutModal(true)}
+          className="w-full flex items-center justify-between p-4 rounded-3xl bg-red-100/70 border border-red-200 text-red-600 hover:bg-red-100 transition-colors font-extrabold text-sm shadow-sm cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <div className="size-8 rounded-xl bg-red-200/80 text-red-600 flex items-center justify-center">
@@ -122,8 +125,23 @@ export function PengepulProfilePage() {
             <span>Keluar</span>
           </div>
           <ChevronRight className="size-4 text-red-400" />
-        </Link>
+        </button>
       </main>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={() => {
+          setShowLogoutModal(false);
+          navigate(ROUTES.home);
+        }}
+        title="Keluar dari Akun Mitra?"
+        description="Apakah Anda yakin ingin keluar dari sesi akun mitra pengepul? Anda dapat masuk kembali kapan saja."
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+        type="danger"
+      />
 
       <footer className="bg-white border-t border-neutral-200 mt-12 py-8 text-neutral-500 text-xs">
         <div className="mx-auto max-w-md px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">

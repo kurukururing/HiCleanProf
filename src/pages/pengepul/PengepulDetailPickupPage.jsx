@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function PengepulDetailPickupPage() {
   const navigate = useNavigate();
@@ -40,14 +41,33 @@ export function PengepulDetailPickupPage() {
         
         {/* Map Preview Card with GPS Badge */}
         <div className="rounded-3xl overflow-hidden border border-neutral-200/80 bg-white shadow-sm space-y-0">
-          <div className="relative h-48 sm:h-52 w-full bg-neutral-100">
-            <img 
-              src="/rute/detail-pickup.jpg" 
-              alt="Detail Rute" 
-              className="w-full h-full object-cover object-top"
-              onError={(e) => {
-                e.target.src = '/rute/maps-base.jpg';
-              }}
+          <div className="relative h-56 sm:h-60 w-full bg-neutral-100">
+            <InteractiveMap
+              center={[-7.3225, 112.7870]}
+              zoom={16}
+              markers={[
+                {
+                  id: 'pickup-target',
+                  position: [-7.3225, 112.7870],
+                  type: 'home',
+                  active: true,
+                  title: 'Titik Penjemputan',
+                  desc: 'Ibu Rahayu • Jl. Medokan Asri Barat No.14'
+                },
+                {
+                  id: 'pengepul-loc',
+                  position: [-7.3180, 112.7820],
+                  type: 'truck',
+                  title: 'Truk Anda',
+                  desc: '450m dari lokasi'
+                }
+              ]}
+              routePath={[
+                [-7.3180, 112.7820],
+                [-7.3195, 112.7840],
+                [-7.3225, 112.7870]
+              ]}
+              height="100%"
             />
           </div>
 

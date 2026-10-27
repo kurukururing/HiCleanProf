@@ -5,12 +5,15 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { InteractiveMap } from '../../components/maps/InteractiveMap';
+import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 
 export function PengepulRuteNavigasiPage() {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState([]);
   const [showFinishedNotice, setShowFinishedNotice] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const routePoints = [
     { 
@@ -19,6 +22,7 @@ export function PengepulRuteNavigasiPage() {
       name: 'Ibu Rahayu',
       address: 'Jl. Medokan Asri Barat No.14, Gunung Anyar',
       timeDist: '10 min - 1.2 km', 
+      coords: [-7.3190, 112.7830],
       mapImg: '/rute/Maps-1.jpg',
       material: 'Plastik PET & Kardus (10.5 kg)'
     },
@@ -28,6 +32,7 @@ export function PengepulRuteNavigasiPage() {
       name: 'Bapak Joko Santoso',
       address: 'Jl. Candi Jago No. 7, Rungkut',
       timeDist: '15 min - 1.6 km', 
+      coords: [-7.3215, 112.7852],
       mapImg: '/rute/Maps-2.jpg',
       material: 'Karton & Bubble Wrap (5.5 kg)'
     },
@@ -37,6 +42,7 @@ export function PengepulRuteNavigasiPage() {
       name: 'Ibu Siti Nurhaliza',
       address: 'Jl. Kebangkitan No. 5, Rungkut',
       timeDist: '25 min - 2.0 km', 
+      coords: [-7.3235, 112.7880],
       mapImg: '/rute/Maps-3.jpg',
       material: 'Botol Kaca & Kaleng (8.0 kg)'
     },
@@ -46,6 +52,7 @@ export function PengepulRuteNavigasiPage() {
       name: 'Bapak Ahmad Rizky',
       address: 'Jl. Merdeka No. 10, Wonokromo',
       timeDist: '30 min - 2.4 km', 
+      coords: [-7.3175, 112.7865],
       mapImg: '/rute/Maps-4.jpg',
       material: 'Kardus Bersih (12.0 kg)'
     },
@@ -55,6 +62,7 @@ export function PengepulRuteNavigasiPage() {
       name: 'Ibu Rina Rahayu',
       address: 'Jl. Sejahtera No. 18, Gunung Anyar',
       timeDist: '45 min - 3.5 km', 
+      coords: [-7.3160, 112.7838],
       mapImg: '/rute/Maps-5.jpg',
       material: 'Plastik HD & Campur (6.0 kg)'
     },
@@ -92,7 +100,8 @@ export function PengepulRuteNavigasiPage() {
         <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3 sm:px-6">
           <button
             type="button"
-            onClick={() => navigate(ROUTES.pengepulRoute)}
+            onClick={() => setShowExitModal(true)}
+            aria-label="Kembali / Keluar Navigasi"
             className="size-9 rounded-full bg-brand-green text-white flex items-center justify-center hover:bg-brand-green/90 transition-transform active:scale-95 shadow-sm"
           >
             <ArrowLeft className="size-5" />
@@ -116,13 +125,34 @@ export function PengepulRuteNavigasiPage() {
         
         {/* Map View Area */}
         <div className="relative w-full h-[380px] sm:h-[420px] bg-neutral-200 overflow-hidden">
-          <img 
-            src={currentPoint.mapImg} 
-            alt={`Peta ${currentPoint.title}`} 
-            className="w-full h-full object-cover transition-opacity duration-300"
-            onError={(e) => {
-              e.target.src = '/rute/maps-base.jpg';
-            }}
+          <InteractiveMap
+            center={currentPoint.coords}
+            zoom={16}
+            markers={[
+              {
+                id: 'driver',
+                position: [-7.3180, 112.7820],
+                type: 'truck',
+                title: 'Posisi Anda',
+                desc: 'Truk Siap Jemput'
+              },
+              ...routePoints.map((pt) => ({
+                id: `stop-${pt.id}`,
+                position: pt.coords,
+                type: pt.id === activeStep ? 'destination' : 'stop',
+                number: String(pt.id),
+                active: pt.id === activeStep,
+                completed: completedSteps.includes(pt.id),
+                title: pt.title,
+                desc: pt.address,
+                onClick: () => setActiveStep(pt.id)
+              }))
+            ]}
+            routePath={[
+              [-7.3180, 112.7820],
+              currentPoint.coords
+            ]}
+            height="100%"
           />
 
           {/* Floating Top Banner: Active Route Target */}
@@ -247,18 +277,41 @@ export function PengepulRuteNavigasiPage() {
           </div>
 
           {/* Selesaikan Titik / Verifikasi Button */}
-          <div className="pt-2">
+          <div className="pt-2 space-y-2">
             <button
               type="button"
               onClick={handleCompleteCurrent}
-              className="w-full py-3.5 rounded-2xl bg-brand-green text-ink text-xs font-extrabold flex items-center justify-center gap-2 shadow-md hover:bg-brand-green/90 transition-all active:scale-[0.99]"
+              className="w-full py-3.5 rounded-2xl bg-brand-green text-ink text-xs font-extrabold flex items-center justify-center gap-2 shadow-md hover:bg-brand-green/90 transition-all active:scale-[0.99] cursor-pointer"
             >
               <CheckCircle2 className="size-4 text-ink" />
               <span>Selesaikan Titik {activeStep} & Lanjut</span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setShowExitModal(true)}
+              className="w-full py-2.5 rounded-xl text-neutral-500 hover:text-red-600 text-xs font-semibold hover:bg-red-50/50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <span>Batalkan / Keluar Navigasi</span>
+            </button>
           </div>
         </div>
       </main>
+
+      {/* Exit / Cancel Navigation Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showExitModal}
+        onClose={() => setShowExitModal(false)}
+        onConfirm={() => {
+          setShowExitModal(false);
+          navigate(ROUTES.pengepulRoute);
+        }}
+        title="Akhiri Sesi Navigasi?"
+        description="Apakah Anda yakin ingin membatalkan atau keluar dari navigasi rute aktif? Riwayat titik yang telah selesai akan tetap tersimpan di akun Anda."
+        confirmText="Ya, Akhiri Navigasi"
+        cancelText="Lanjut Navigasi"
+        type="warning"
+      />
 
       {/* Finished Modal Notice */}
       {showFinishedNotice && (

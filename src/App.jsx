@@ -1,7 +1,8 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollManager } from './components/layout/ScrollManager';
+
 import { Hero } from './components/sections/Hero';
 import { Problem } from './components/sections/Problem';
 import { HowItWorks } from './components/sections/HowItWorks';
@@ -9,6 +10,7 @@ import { Features } from './components/sections/Features';
 import { Technology } from './components/sections/Technology';
 import { Partners } from './components/sections/Partners';
 import { Contact } from './components/sections/Contact';
+
 import { LoginPage } from './pages/auth/LoginPage';
 import { RolePage } from './pages/auth/RolePage';
 import { RegisterAccountPage } from './pages/auth/RegisterAccountPage';
@@ -16,10 +18,11 @@ import { RegisterBusinessPage } from './pages/auth/RegisterBusinessPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
 import { OtpPage } from './pages/auth/OtpPage';
 import { ResetPasswordPage } from './pages/auth/ResetPasswordPage';
+
 import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { NotificationsPage } from './pages/dashboard/NotificationsPage';
 import { ActivePickupPage } from './pages/dashboard/ActivePickupPage';
-import { TipsPageImpl as TipsPage } from './pages/dashboard/TipsPage';
+import { TipsPage } from './pages/dashboard/TipsPage';
 import { HistoryPage } from './pages/dashboard/HistoryPage';
 import { HistoryDetailPage } from './pages/dashboard/HistoryDetailPage';
 import { PickupResortPage } from './pages/dashboard/PickupResortPage';
@@ -46,7 +49,6 @@ import { SetoranSuccessPage } from './pages/dashboard/SetoranSuccessPage';
 import { SetoranActiveListPage } from './pages/dashboard/SetoranActiveListPage';
 import { SetoranCameraPage } from './pages/dashboard/SetoranCameraPage';
 
-// Pengepul Pages
 import { PengepulDashboardPage } from './pages/pengepul/PengepulDashboardPage';
 import { PengepulProfilePage } from './pages/pengepul/PengepulProfilePage';
 import { PengepulDataDiriPage } from './pages/pengepul/PengepulDataDiriPage';
@@ -62,6 +64,12 @@ import { PengepulRuteBerhasilPage } from './pages/pengepul/PengepulRuteBerhasilP
 import { PengepulRuteNavigasiPage } from './pages/pengepul/PengepulRuteNavigasiPage';
 import { PengepulDetailPickupPage } from './pages/pengepul/PengepulDetailPickupPage';
 import { PengepulVerifikasiPage } from './pages/pengepul/PengepulVerifikasiPage';
+import { PengepulVerifikasiLangkah1Page } from './pages/pengepul/PengepulVerifikasiLangkah1Page';
+import { PengepulVerifikasiLangkah2Page } from './pages/pengepul/PengepulVerifikasiLangkah2Page';
+import { PengepulVerifikasiLangkah3Page } from './pages/pengepul/PengepulVerifikasiLangkah3Page';
+import { PengepulVerifikasiLangkah4Page } from './pages/pengepul/PengepulVerifikasiLangkah4Page';
+import { PengepulVerifikasiSuksesPage } from './pages/pengepul/PengepulVerifikasiSuksesPage';
+import { PengepulFotoVerifikasiPage } from './pages/pengepul/PengepulFotoVerifikasiPage';
 import { PengepulMaterialPage } from './pages/pengepul/PengepulMaterialPage';
 import { PengepulMaterialDetailPage } from './pages/pengepul/PengepulMaterialDetailPage';
 import { PengepulDistribusiMaterialPage } from './pages/pengepul/PengepulDistribusiMaterialPage';
@@ -169,7 +177,17 @@ function App() {
         <Route path={ROUTES.pengepulRouteBerhasil} element={<PengepulRuteBerhasilPage />} />
         <Route path={ROUTES.pengepulRouteNavigasi} element={<PengepulRuteNavigasiPage />} />
         <Route path={ROUTES.pengepulRouteDetail} element={<PengepulDetailPickupPage />} />
+        
+        {/* Pengepul Verifikasi Flow */}
         <Route path={ROUTES.pengepulVerifikasi} element={<PengepulVerifikasiPage />} />
+        <Route path={ROUTES.pengepulVerifikasiLangkah1} element={<PengepulVerifikasiLangkah1Page />} />
+        <Route path={ROUTES.pengepulVerifikasiLangkah2} element={<PengepulVerifikasiLangkah2Page />} />
+        <Route path={ROUTES.pengepulVerifikasiLangkah3} element={<PengepulVerifikasiLangkah3Page />} />
+        <Route path={ROUTES.pengepulVerifikasiLangkah4} element={<PengepulVerifikasiLangkah4Page />} />
+        <Route path={ROUTES.pengepulVerifikasiSukses} element={<PengepulVerifikasiSuksesPage />} />
+        <Route path={ROUTES.pengepulFotoVerifikasi || ROUTES.pengepulVerifikasiFoto} element={<PengepulFotoVerifikasiPage />} />
+        
+        {/* Pengepul Material Flow */}
         <Route path={ROUTES.pengepulMaterial} element={<PengepulMaterialPage />} />
         <Route path={ROUTES.pengepulMaterialDetail} element={<PengepulMaterialDetailPage />} />
         <Route path={ROUTES.pengepulMaterialDistribusi} element={<PengepulDistribusiMaterialPage />} />
