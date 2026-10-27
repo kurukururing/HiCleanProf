@@ -140,6 +140,10 @@ function App() {
         <Route path={ROUTES.dashboard} element={<DashboardPage />} />
         <Route path={ROUTES.notifications} element={<NotificationsPage />} />
         <Route path={ROUTES.activePickup} element={<ActivePickupPage />} />
+        <Route path="/dashboard/setoran-aktif" element={<ActivePickupPage />} />
+        <Route path="/dashboard/setoran-aktifs" element={<ActivePickupPage />} />
+        <Route path="/dashboard/setoran/aktif" element={<ActivePickupPage />} />
+        <Route path="/dashboard/lacak-kurir" element={<ActivePickupPage />} />
         <Route path={ROUTES.tips} element={<TipsPage />} />
         <Route path="/dashboard/tips" element={<TipsPage />} />
         <Route path="/dashboard/edukasi" element={<TipsPage />} />
@@ -174,6 +178,8 @@ function App() {
         <Route path={ROUTES.setoranSuccess} element={<SetoranSuccessPage />} />
         <Route path={ROUTES.setoranBatal} element={<SetoranBatalPage />} />
         <Route path={ROUTES.setoranActiveList} element={<SetoranActiveListPage />} />
+        <Route path="/dashboard/setoran/aktif-list" element={<SetoranActiveListPage />} />
+        <Route path="/dashboard/setoran-aktif-list" element={<SetoranActiveListPage />} />
         <Route path={ROUTES.setoranCamera} element={<SetoranCameraPage />} />
 
         {/* Gabung Pickup (4 Langkah) */}

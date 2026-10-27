@@ -1,6 +1,7 @@
 import { CheckCircle2, ArrowRight, Home, Clock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
+import { ROUTES } from '../../routes';
 
 export function GabungPickupSuccessPage() {
   const navigate = useNavigate();
@@ -9,10 +10,10 @@ export function GabungPickupSuccessPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
         <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to={ROUTES.dashboard} className="flex items-center gap-2">
             <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
           </Link>
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
+          <Link to={ROUTES.dashboard} className="text-xs font-semibold text-brand-green hover:underline">
             Beranda
           </Link>
         </div>
@@ -49,15 +50,15 @@ export function GabungPickupSuccessPage() {
 
         <div className="w-full space-y-3 pt-4">
           <Link
-            to="/dashboard/setoran-aktifs"
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
+            to={ROUTES.activePickup}
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg active:scale-[0.99]"
           >
             Lacak Posisi Kurir <ArrowRight className="size-4 text-brand-green" />
           </Link>
 
           <Link
-            to="/dashboard/setoran"
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-white text-neutral-800 border border-neutral-300 py-3.5 px-6 text-xs font-bold hover:bg-neutral-50 transition-colors"
+            to={ROUTES.setoranMain}
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-white text-neutral-800 border border-neutral-300 py-3.5 px-6 text-xs font-bold hover:bg-neutral-50 transition-colors active:scale-[0.99]"
           >
             <Home className="size-4" /> Kembali ke Menu Setoran
           </Link>

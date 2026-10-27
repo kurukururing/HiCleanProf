@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowLeft, Clock, MapPin, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { siteConfig } from '../../config/siteConfig';
+import { ROUTES } from '../../routes';
 
 export function SetoranActiveListPage() {
   const navigate = useNavigate();
@@ -113,8 +114,8 @@ export function SetoranActiveListPage() {
                 </div>
 
                 <Link 
-                  to="/dashboard/setoran-aktifs"
-                  className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-neutral-900 hover:bg-neutral-800 px-6 py-3 rounded-xl shadow transition-colors"
+                  to={ROUTES.activePickup}
+                  className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-neutral-900 hover:bg-neutral-800 px-6 py-3 rounded-xl shadow transition-colors active:scale-95"
                 >
                   Lacak Detail &rarr;
                 </Link>

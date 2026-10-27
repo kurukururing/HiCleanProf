@@ -13,7 +13,7 @@ export const ROUTES = {
   afterLogin: '/dashboard',
   dashboard: '/dashboard',
   notifications: '/dashboard/notifikasi',
-  activePickup: '/dashboard/setoran/aktif-list',
+  activePickup: '/dashboard/setoran-aktif',
   tips: '/dashboard/edukasi/tip-1',
   history: '/dashboard/riwayat',
   historyDetail: '/dashboard/riwayat/detail/:id',
