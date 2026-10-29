@@ -54,7 +54,7 @@ export function DashboardPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-[#1a1d1b] flex flex-col font-sans">
       <WargaNavbar activeName="Beranda" />
 
-      <main className="flex-grow mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 lg:px-8 space-y-6 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 lg:px-8 space-y-6 pb-8">
         
         {/* ── GREETING ── */}
         <div className="flex flex-row items-center justify-between gap-3 pt-1">

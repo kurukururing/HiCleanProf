@@ -76,7 +76,7 @@ export function PengepulVerifikasiPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-[#1a1d1b] flex flex-col font-sans">
       <PengepulNavbar activeName="Verifikasi" />
 
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-5 space-y-4 pb-28 sm:pb-12">
+      <main className="flex-grow mx-auto w-full max-w-md px-4 py-5 space-y-4 pb-12">
         {/* Title */}
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">

@@ -65,7 +65,7 @@ export function PengepulRutePage() {
       <PengepulNavbar activeName="Rute" />
 
       {/* Main Content */}
-      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5 pb-8">
         {/* Title Header */}
         <div className="flex items-center justify-between">
           <div>

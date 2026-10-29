@@ -37,7 +37,7 @@ export function PengepulNotifikasiPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <PengepulNavbar activeName="" />
 
-      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5 pb-8">
         <div className="flex items-center gap-3">
           <button
             type="button"

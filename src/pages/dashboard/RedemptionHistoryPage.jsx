@@ -26,7 +26,7 @@ export function RedemptionHistoryPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <WargaNavbar activeName="Penukaran" />
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 font-heading">Riwayat Penukaran</h1>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">

@@ -26,7 +26,7 @@ export function PengepulProfilePage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <PengepulNavbar activeName="Profil" />
 
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-5 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-md px-4 py-6 space-y-5 pb-8">
         <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">
           Akun Saya
         </h1>

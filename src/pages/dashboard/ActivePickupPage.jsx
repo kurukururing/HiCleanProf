@@ -65,7 +65,7 @@ export function ActivePickupPage() {
         </div>
       </header>
 
-      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-6 pb-28 sm:pb-6">
+      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-6 pb-8">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Setoran Aktif</h1>

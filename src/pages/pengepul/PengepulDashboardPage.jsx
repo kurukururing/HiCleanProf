@@ -72,7 +72,7 @@ export function PengepulDashboardPage() {
         </div>
       )}
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-8">
         
         {/* ── GREETING SECTION ── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">

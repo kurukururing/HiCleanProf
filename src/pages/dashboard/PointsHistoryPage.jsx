@@ -28,7 +28,7 @@ export function PointsHistoryPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <WargaNavbar activeName="Penukaran" />
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-28 sm:pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-8">
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 font-heading">Riwayat Poin</h1>
 
         <div className="rounded-3xl bg-neutral-900 text-white p-6 sm:p-8 shadow-xl relative overflow-hidden space-y-6">
