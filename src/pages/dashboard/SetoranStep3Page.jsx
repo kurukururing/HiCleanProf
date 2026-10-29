@@ -108,6 +108,7 @@ export function SetoranStep3Page() {
                   type="button"
                   onClick={() => handleWeightChange(-0.5)}
                   className="size-8 rounded-full bg-white hover:bg-neutral-100 text-neutral-800 flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+                  title="Kurang 0.5 kg"
                 >
                   <Minus className="size-4" />
                 </button>
@@ -115,10 +116,29 @@ export function SetoranStep3Page() {
                   type="button"
                   onClick={() => handleWeightChange(0.5)}
                   className="size-8 rounded-full bg-neutral-900 hover:bg-black text-white flex items-center justify-center shadow-2xs transition-transform active:scale-90 cursor-pointer"
+                  title="Tambah 0.5 kg"
                 >
                   <Plus className="size-4" />
                 </button>
               </div>
+            </div>
+
+            {/* Quick Weight Chips */}
+            <div className="flex items-center gap-2 pt-1">
+              {[2, 5, 10, 15].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setWeight(preset)}
+                  className={`flex-1 py-1.5 rounded-xl text-xs font-bold border transition-colors cursor-pointer active:scale-95 ${
+                    weight === preset
+                      ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
+                      : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-100'
+                  }`}
+                >
+                  {preset} kg
+                </button>
+              ))}
             </div>
           </div>
 
@@ -243,7 +263,7 @@ export function SetoranStep3Page() {
       </main>
 
       {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] z-40">
         <div className="mx-auto max-w-md flex items-center justify-between gap-4">
           <button
             type="button"
@@ -257,7 +277,7 @@ export function SetoranStep3Page() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+            className="flex-1 py-4 px-6 rounded-2xl bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
           >
             Lanjut (Langkah 4 /6)
           </button>

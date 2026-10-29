@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { 
-  Bell, Menu, X, ArrowRight, Wallet, Sparkles, 
-  Clock, History, User, LogOut, Settings, ShieldCheck, Calendar, Filter
+  ArrowRight, Wallet, Sparkles, 
+  Clock, History, Calendar, Filter
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 import { siteConfig } from '../../config/siteConfig';
+import { WargaNavbar } from '../../components/layout/WargaNavbar';
 
 export function RedemptionHistoryPage() {
   const navigate = useNavigate();
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('Semua');
 
   const historyList = [
@@ -25,80 +24,10 @@ export function RedemptionHistoryPage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-9 w-auto" />
-          </Link>
+      <WargaNavbar activeName="Penukaran" />
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/dashboard" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Beranda</Link>
-            <Link to="/dashboard/setoran" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Setoran</Link>
-            <Link to="/dashboard/riwayat" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Riwayat</Link>
-            <Link to="/dashboard/penukaran" className="text-sm font-semibold text-brand-green">Penukaran</Link>
-            <Link to="/dashboard/profil" className="text-sm font-medium text-neutral-600 hover:text-neutral-900 transition-colors">Profil</Link>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link 
-              to="/dashboard/notifikasi" 
-              aria-label="Notifikasi" 
-              className="relative rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors inline-flex items-center justify-center"
-            >
-              <Bell className="size-5" />
-              <span className="absolute top-2 right-2 size-2 rounded-full bg-red-500 ring-2 ring-white" />
-            </Link>
-
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 rounded-full p-1 pl-2.5 bg-neutral-100 hover:bg-neutral-200 transition-colors border border-neutral-200"
-              >
-                <span className="text-xs font-semibold hidden sm:inline-block max-w-[120px] truncate">Budiman Sekti</span>
-                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-bold text-sm">
-                  B
-                </div>
-              </button>
-
-              {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-neutral-100 z-50">
-                  <div className="px-3 py-2 border-b border-neutral-100 mb-1">
-                    <p className="text-xs font-bold text-neutral-900">Budiman Sekti</p>
-                    <p className="text-[11px] text-neutral-500 truncate">Mahasiswa UPN Veteran Jawa Timur</p>
-                  </div>
-                  <Link to="/dashboard/profil" onClick={() => setProfileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                    <User className="size-4 text-neutral-500" /> Profil Saya
-                  </Link>
-                  <Link to="/dashboard/pengaturan" onClick={() => setProfileMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                    <Settings className="size-4 text-neutral-500" /> Pengaturan
-                  </Link>
-                  <button type="button" onClick={() => navigate(ROUTES.home)} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1">
-                    <LogOut className="size-4 text-red-500" /> Keluar
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden rounded-full p-2.5 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors">
-              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden border-t border-neutral-200 bg-white px-4 py-4 space-y-3">
-            <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Beranda</Link>
-            <Link to="/dashboard/setoran" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Setoran</Link>
-            <Link to="/dashboard/riwayat" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Riwayat</Link>
-            <Link to="/dashboard/penukaran" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-semibold text-brand-green">Penukaran</Link>
-            <Link to="/dashboard/profil" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-sm font-medium text-neutral-700">Profil</Link>
-          </div>
-        )}
-      </header>
-
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Riwayat Penukaran</h1>
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-28 sm:pb-8">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 font-heading">Riwayat Penukaran</h1>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">

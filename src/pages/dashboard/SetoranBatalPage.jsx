@@ -47,14 +47,14 @@ export function SetoranBatalPage() {
       </main>
 
       {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] z-40">
         <div className="mx-auto max-w-md">
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard)}
-            className="w-full py-4 rounded-full bg-white hover:bg-neutral-50 text-neutral-800 border-2 border-neutral-300 text-sm font-extrabold shadow-2xs active:scale-[0.99] transition-all cursor-pointer text-center"
+            className="w-full py-4 rounded-2xl bg-neutral-900 hover:bg-black text-white text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
           >
-            Kembali ke beranda
+            Kembali ke Beranda
           </button>
         </div>
       </div>

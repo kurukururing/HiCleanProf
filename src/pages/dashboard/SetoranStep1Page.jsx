@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { 
   MapPin, CheckCircle2, Crosshair, Home, 
-  GraduationCap, Building2, Radio, ArrowLeft 
+  GraduationCap, Building2, Radio, ArrowLeft,
+  Sparkles, X, AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
@@ -10,10 +11,13 @@ import { InteractiveMap } from '../../components/maps/InteractiveMap';
 
 export function SetoranStep1Page() {
   const navigate = useNavigate();
+  const addressInputRef = useRef(null);
+
   const [placeCategory, setPlaceCategory] = useState('rumah');
-  const [address, setAddress] = useState('Jl. Medokan Asri Timur No.14, Gunung Anyar');
-  const [benchmark, setBenchmark] = useState('Pagar Hitam Kayu, seberang toko bahan kue');
+  const [address, setAddress] = useState('');
+  const [benchmark, setBenchmark] = useState('');
   const [mapCenter, setMapCenter] = useState([-7.3197, 112.7842]);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const placeTypes = [
     { id: 'rumah', label: 'Rumah Pribadi', icon: Home },
@@ -25,15 +29,43 @@ export function SetoranStep1Page() {
     setMapCenter([-7.3197, 112.7842]);
   };
 
+  const handleUseSavedAddress = () => {
+    setAddress('Jl. Medokan Asri Timur No.14, Gunung Anyar');
+    setBenchmark('Pagar Hitam Kayu, seberang toko bahan kue');
+    setErrorMessage(null);
+  };
+
   const handleNext = () => {
+    if (!address.trim()) {
+      setErrorMessage('Harap masukkan alamat lengkap penjemputan terlebih dahulu.');
+      addressInputRef.current?.focus();
+      return;
+    }
+    setErrorMessage(null);
     navigate(ROUTES.setoranStep2);
   };
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans pb-28">
+      {/* Toast Error Alert */}
+      {errorMessage && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-neutral-900 text-white px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold flex items-center gap-2 animate-in fade-in slide-in-from-top-2 border border-red-500/50 max-w-sm text-center">
+          <AlertCircle className="size-4 text-red-400 shrink-0" />
+          <span>{errorMessage}</span>
+          <button 
+            type="button" 
+            onClick={() => setErrorMessage(null)} 
+            className="ml-auto text-neutral-400 hover:text-white"
+          >
+            <X className="size-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* 1 of 6 Step Header */}
       <WargaStepHeader
         stepBadge="Lokasi"
+        title="Lokasi Penjemputan"
         stepNumber={1}
         totalSteps={6}
         backTo={ROUTES.setoranMain}
@@ -46,7 +78,7 @@ export function SetoranStep1Page() {
             Tentukan Lokasi Penjemputan
           </h1>
           <p className="text-xs text-neutral-500 leading-relaxed font-body">
-            Petugas kurir akan menjemput limbah sampah langsung ketitik yang sudah anda pilih
+            Petugas kurir akan menjemput limbah sampah langsung ke titik lokasi yang Anda tentukan
           </p>
         </div>
 
@@ -69,7 +101,7 @@ export function SetoranStep1Page() {
                   position: mapCenter,
                   type: 'home',
                   title: 'Titik Jemput Anda',
-                  desc: address,
+                  desc: address || 'Pilih alamat Anda',
                   active: true
                 }
               ]}
@@ -82,7 +114,7 @@ export function SetoranStep1Page() {
             <button
               type="button"
               onClick={handleGetCurrentLocation}
-              className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-neutral-900/90 hover:bg-neutral-900 text-white text-xs font-bold shadow-md active:scale-95 transition-all cursor-pointer"
+              className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-neutral-900/90 hover:bg-neutral-900 text-white text-xs font-bold shadow-md active:scale-95 transition-all cursor-pointer"
             >
               <Crosshair className="size-3.5 text-brand-green" />
               <span>Lokasi Sekarang</span>
@@ -100,10 +132,27 @@ export function SetoranStep1Page() {
                 <p className="text-[11px] text-neutral-400">HiClean Armada Medokan Asri</p>
               </div>
             </div>
-            <span className="px-3 py-1 rounded-full bg-white/10 text-brand-green text-xs font-bold tracking-wide">
+            <span className="px-3 py-1 rounded-full bg-brand-green/20 text-brand-green text-xs font-bold tracking-wide">
               Tersedia
             </span>
           </div>
+        </div>
+
+        {/* Quick Fill Address Helper Pill */}
+        <div className="flex items-center justify-between p-3 rounded-2xl bg-emerald-50 border border-emerald-200/70 text-xs text-emerald-950">
+          <div className="flex items-center gap-2 min-w-0">
+            <Sparkles className="size-4 text-brand-green shrink-0" />
+            <span className="text-[11px] font-medium truncate">
+              Ada alamat rumah tersimpan di profil
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={handleUseSavedAddress}
+            className="text-[11px] font-extrabold text-emerald-900 bg-white px-3 py-1 rounded-full border border-emerald-200 shadow-2xs hover:bg-emerald-100 transition-colors shrink-0 cursor-pointer active:scale-95"
+          >
+            Gunakan Alamat Tersimpan
+          </button>
         </div>
 
         {/* Kategori Tempat */}
@@ -150,32 +199,64 @@ export function SetoranStep1Page() {
               Wajib diisi
             </span>
           </div>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Masukan alamat lengkap"
-            className="w-full rounded-2xl bg-neutral-200/60 border border-neutral-200 px-4 py-3.5 text-xs text-neutral-900 placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all"
-          />
+          <div className="relative">
+            <input
+              ref={addressInputRef}
+              type="text"
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                if (errorMessage) setErrorMessage(null);
+              }}
+              placeholder="Masukkan alamat lengkap penjemputan"
+              className={`w-full rounded-2xl border px-4 py-3.5 pr-10 text-xs text-neutral-900 placeholder:text-neutral-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all ${
+                errorMessage && !address.trim() 
+                  ? 'bg-red-50/50 border-red-300 ring-1 ring-red-400' 
+                  : 'bg-neutral-100/70 border-neutral-200'
+              }`}
+            />
+            {address && (
+              <button
+                type="button"
+                onClick={() => setAddress('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer"
+                title="Hapus Alamat"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Patokan Input */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs">
             <label className="font-extrabold text-neutral-900 font-heading">
-              Patokan
+              Patokan / Ciri Khusus
             </label>
             <span className="text-neutral-400 font-medium text-[11px]">
               Opsional
             </span>
           </div>
-          <input
-            type="text"
-            value={benchmark}
-            onChange={(e) => setBenchmark(e.target.value)}
-            placeholder="Contoh : pagar hitam"
-            className="w-full rounded-2xl bg-neutral-200/60 border border-neutral-200 px-4 py-3.5 text-xs text-neutral-900 placeholder:text-neutral-500 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={benchmark}
+              onChange={(e) => setBenchmark(e.target.value)}
+              placeholder="Contoh: Pagar hitam kayu, seberang warung kelontong"
+              className="w-full rounded-2xl bg-neutral-100/70 border border-neutral-200 px-4 py-3.5 pr-10 text-xs text-neutral-900 placeholder:text-neutral-400 font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:bg-white transition-all"
+            />
+            {benchmark && (
+              <button
+                type="button"
+                onClick={() => setBenchmark('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 cursor-pointer"
+                title="Hapus Patokan"
+              >
+                <X className="size-4" />
+              </button>
+            )}
+          </div>
         </div>
       </main>
 

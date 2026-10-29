@@ -34,13 +34,13 @@ export function PengepulStepHeader({ backTo, title }) {
             type="button"
             onClick={handleBack}
             aria-label="Kembali"
-            className="flex items-center justify-center size-10 rounded-full bg-brand-green text-white hover:bg-emerald-600 transition-transform active:scale-95 shadow-sm"
+            className="flex items-center justify-center size-10 rounded-full bg-brand-green text-ink hover:brightness-105 transition-transform active:scale-95 shadow-sm cursor-pointer"
           >
             <ChevronLeft className="size-6 stroke-[2.5]" />
           </button>
 
           {title && (
-            <h1 className="text-sm font-bold text-neutral-800 truncate px-2">
+            <h1 className="text-sm font-extrabold text-neutral-900 truncate px-2 font-heading">
               {title}
             </h1>
           )}

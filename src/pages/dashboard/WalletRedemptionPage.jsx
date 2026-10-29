@@ -91,7 +91,7 @@ export function WalletRedemptionPage() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Contoh: 0812-1234-1231"
-              className="w-full rounded-2xl bg-white border border-neutral-200 px-4 py-3 text-xs text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
+              className="w-full rounded-2xl bg-white border border-neutral-200 px-4 py-3.5 text-xs sm:text-sm text-neutral-900 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
             />
           </div>
         </div>
@@ -160,7 +160,7 @@ export function WalletRedemptionPage() {
         <div className="pt-2">
           <Link
             to="/dashboard/penukaran/berhasil"
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-sm font-extrabold hover:bg-neutral-800 transition-colors shadow-lg active:scale-[0.99]"
           >
             Tukar Poin <ArrowRight className="size-4 text-brand-green" />
           </Link>

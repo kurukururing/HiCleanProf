@@ -72,7 +72,7 @@ export function HistoryPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <WargaNavbar activeName="Riwayat" />
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-28 sm:pb-8">
         
         {/* Header Title */}
         <div className="pt-1">
@@ -206,6 +206,7 @@ export function HistoryPage() {
 
                     <Link 
                       to={`/dashboard/riwayat/detail/${encodeURIComponent(item.id)}`}
+                      state={{ item }}
                       className="inline-flex items-center gap-1 text-xs font-bold text-neutral-900 hover:text-brand-green bg-white px-3 py-1.5 rounded-xl shadow-2xs border border-neutral-200/80 transition-colors"
                     >
                       Detail <ChevronRight className="size-3.5" />

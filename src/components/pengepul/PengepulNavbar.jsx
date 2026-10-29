@@ -231,6 +231,44 @@ export function PengepulNavbar({ activeName }) {
         cancelText="Batal"
         type="danger"
       />
+
+      {/* ───────────────── MOBILE BOTTOM NAVIGATION BAR ───────────────── */}
+      <nav 
+        aria-label="Navigasi Bawah Mitra"
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] px-2 pt-1 pb-[max(0.6rem,env(safe-area-inset-bottom))]"
+      >
+        <div className="flex items-center justify-around max-w-lg mx-auto">
+          {links.map((item) => {
+            const isActive = activeName === item.name;
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-2xl min-w-[56px] min-h-[48px] transition-all duration-150 active:scale-95 ${
+                  isActive 
+                    ? 'text-neutral-900 font-extrabold' 
+                    : 'text-neutral-500 hover:text-neutral-800 font-semibold'
+                }`}
+              >
+                <div className={`relative p-1 rounded-xl transition-colors ${
+                  isActive ? 'bg-brand-green/20 text-neutral-900' : 'text-neutral-500'
+                }`}>
+                  <Icon className={`size-5 transition-transform ${isActive ? 'scale-110 text-neutral-900 stroke-[2.4]' : 'stroke-[1.8]'}`} />
+                  {isActive && (
+                    <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 size-1 rounded-full bg-brand-green" />
+                  )}
+                </div>
+                <span className={`text-[10px] mt-0.5 tracking-tight ${
+                  isActive ? 'text-neutral-900 font-extrabold' : 'text-neutral-500 font-medium'
+                }`}>
+                  {item.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </>
   );
 }

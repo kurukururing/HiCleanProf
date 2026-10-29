@@ -170,12 +170,12 @@ export function SetoranStep6Page() {
       </main>
 
       {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] z-40">
         <div className="mx-auto max-w-md">
           <button
             type="button"
             onClick={handleConfirm}
-            className="w-full py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-sm font-extrabold shadow-lg active:scale-[0.99] transition-all cursor-pointer text-center"
+            className="w-full py-4 px-6 rounded-2xl bg-neutral-900 hover:bg-black text-white text-sm font-extrabold shadow-lg active:scale-[0.99] transition-all cursor-pointer text-center"
           >
             Siap Dijemput
           </button>

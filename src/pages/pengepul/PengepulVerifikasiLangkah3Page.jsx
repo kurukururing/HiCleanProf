@@ -384,12 +384,12 @@ export function PengepulVerifikasiLangkah3Page() {
       )}
 
       {/* Fixed Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="mx-auto max-w-md flex items-center justify-between gap-3">
           <button
             type="button"
             onClick={() => navigate(ROUTES.pengepulVerifikasiLangkah2 || '/pengepul/verifikasi/langkah-2')}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-bold text-neutral-700 hover:bg-neutral-100 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-3.5 rounded-2xl text-xs font-bold text-neutral-700 hover:bg-neutral-100 transition-colors cursor-pointer"
           >
             <ArrowLeft className="size-4" />
             <span>Kembali</span>
@@ -398,7 +398,7 @@ export function PengepulVerifikasiLangkah3Page() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex-1 py-3 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center"
+            className="flex-1 py-3.5 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:brightness-105 transition-all shadow-md active:scale-[0.99] text-center cursor-pointer"
           >
             Lanjut (Langkah 4 /4)
           </button>

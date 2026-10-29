@@ -22,7 +22,7 @@ export function SetoranMainPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <WargaNavbar activeName="Setoran" />
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-28 sm:pb-8">
         
         {/* Header Title */}
         <div className="pt-1">

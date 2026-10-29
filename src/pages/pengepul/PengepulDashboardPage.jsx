@@ -3,7 +3,7 @@ import {
   Package, Clock, ShieldCheck, CheckCircle2, Phone, 
   MapPin, Navigation, ArrowRight, TrendingUp, Sparkles, 
   ChevronRight, MessageSquare, AlertCircle, X, Check,
-  Truck, BarChart3
+  Truck, BarChart3, Copy
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PengepulNavbar } from '../../components/pengepul/PengepulNavbar';
@@ -14,6 +14,13 @@ export function PengepulDashboardPage() {
   const navigate = useNavigate();
   const [toastMessage, setToastMessage] = useState(null);
   const [contactModal, setContactModal] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyPhone = (phone) => {
+    navigator.clipboard?.writeText(phone);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const [incoming, setIncoming] = useState([
     {
@@ -65,7 +72,7 @@ export function PengepulDashboardPage() {
         </div>
       )}
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-8">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-5 sm:px-6 lg:px-8 space-y-5 pb-28 sm:pb-8">
         
         {/* ── GREETING SECTION ── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-1">
@@ -320,8 +327,27 @@ export function PengepulDashboardPage() {
               </button>
             </div>
 
-            <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-100 space-y-0.5">
-              <span className="text-[11px] text-neutral-400 font-medium">Nomor Handphone</span>
+            <div className="bg-neutral-50 p-4 rounded-2xl border border-neutral-100 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] text-neutral-400 font-medium">Nomor Handphone</span>
+                <button
+                  type="button"
+                  onClick={() => handleCopyPhone(contactModal.phone)}
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-green hover:underline cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="size-3 text-brand-green" />
+                      <span>Tersalin!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="size-3" />
+                      <span>Salin</span>
+                    </>
+                  )}
+                </button>
+              </div>
               <p className="text-base font-mono font-extrabold text-neutral-900">{contactModal.phone}</p>
               <p className="text-xs text-neutral-500">{contactModal.address}</p>
             </div>
@@ -329,16 +355,16 @@ export function PengepulDashboardPage() {
             <div className="space-y-2">
               <a
                 href={`tel:${contactModal.phone}`}
-                className="w-full py-3 rounded-2xl bg-brand-green text-ink text-xs font-extrabold flex items-center justify-center gap-2 shadow"
+                className="w-full py-3 rounded-2xl bg-brand-green text-ink text-xs font-extrabold flex items-center justify-center gap-2 shadow active:scale-[0.99] transition-transform"
               >
                 <Phone className="size-4" />
                 Panggil Sekarang
               </a>
               <a
-                href={`https://wa.me/6281234567890?text=Halo%20${encodeURIComponent(contactModal.name)},%20saya%20petugas%20Hi-Clean%20sedang%20menuju%20ke%20lokasi%20anda`}
+                href={`https://wa.me/62${contactModal.phone.replace(/[^0-9]/g, '').replace(/^0/, '')}?text=Halo%20${encodeURIComponent(contactModal.name)},%20saya%20petugas%20Hi-Clean%20sedang%20menuju%20ke%20lokasi%20anda`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-3 rounded-2xl bg-emerald-600 text-white text-xs font-extrabold flex items-center justify-center gap-2 shadow"
+                className="w-full py-3 rounded-2xl bg-emerald-600 text-white text-xs font-extrabold flex items-center justify-center gap-2 shadow active:scale-[0.99] transition-transform"
               >
                 <MessageSquare className="size-4" />
                 Chat via WhatsApp

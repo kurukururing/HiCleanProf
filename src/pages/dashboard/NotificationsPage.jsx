@@ -69,7 +69,7 @@ export function NotificationsPage() {
       </header>
 
       <main className="flex-grow mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 space-y-6">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-neutral-900">Notifikasi</h1>
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 font-heading">Notifikasi</h1>
 
         {/* Filter Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">

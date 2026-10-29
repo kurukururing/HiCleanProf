@@ -51,14 +51,14 @@ export function GabungPickupSuccessPage() {
         <div className="w-full space-y-3 pt-4">
           <Link
             to={ROUTES.activePickup}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg active:scale-[0.99]"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white py-4 px-6 text-sm font-extrabold hover:bg-neutral-800 transition-colors shadow-lg active:scale-[0.99]"
           >
             Lacak Posisi Kurir <ArrowRight className="size-4 text-brand-green" />
           </Link>
 
           <Link
             to={ROUTES.setoranMain}
-            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-white text-neutral-800 border border-neutral-300 py-3.5 px-6 text-xs font-bold hover:bg-neutral-50 transition-colors active:scale-[0.99]"
+            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-white text-neutral-800 border border-neutral-300 py-3.5 px-6 text-sm font-semibold hover:bg-neutral-50 transition-colors active:scale-[0.99]"
           >
             <Home className="size-4" /> Kembali ke Menu Setoran
           </Link>

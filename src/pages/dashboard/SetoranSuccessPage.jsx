@@ -38,7 +38,7 @@ export function SetoranSuccessPage() {
         {/* Success Icon */}
         <div className="flex flex-col items-center text-center space-y-3">
           <div className="size-24 rounded-full bg-brand-green/20 p-2 flex items-center justify-center">
-            <div className="size-20 rounded-full bg-brand-green flex items-center justify-center shadow-lg text-white">
+            <div className="size-20 rounded-full bg-brand-green flex items-center justify-center shadow-lg text-ink">
               <Check className="size-10 stroke-[3]" />
             </div>
           </div>
@@ -123,22 +123,31 @@ export function SetoranSuccessPage() {
 
         {/* Action Buttons */}
         <div className="space-y-3 pt-2">
-          {/* Batalkan Button (Red) */}
+          {/* Lacak Penjemputan (Primary CTA) */}
           <button
             type="button"
-            onClick={() => setShowCancelModal(true)}
-            className="w-full py-4 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer"
+            onClick={() => navigate(ROUTES.activePickup)}
+            className="w-full py-4 rounded-2xl bg-neutral-900 hover:bg-black text-white text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2"
           >
-            Batalkan
+            <span>Lacak Penjemputan</span>
           </button>
 
-          {/* Kembali ke Beranda Button (Ghost) */}
+          {/* Kembali ke Beranda Button (Secondary CTA) */}
           <button
             type="button"
             onClick={() => navigate(ROUTES.dashboard)}
-            className="w-full py-4 rounded-full bg-white hover:bg-neutral-50 text-neutral-800 border-2 border-neutral-300 text-sm font-extrabold shadow-2xs active:scale-[0.99] transition-all cursor-pointer"
+            className="w-full py-3.5 rounded-2xl bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-200 text-sm font-bold shadow-2xs active:scale-[0.99] transition-all cursor-pointer"
           >
-            Kembali ke beranda
+            Kembali ke Beranda
+          </button>
+
+          {/* Batalkan Button (Subtle Red Text) */}
+          <button
+            type="button"
+            onClick={() => setShowCancelModal(true)}
+            className="w-full py-2.5 text-xs font-semibold text-red-600 hover:text-red-700 hover:underline transition-all cursor-pointer"
+          >
+            Batalkan Permintaan Setoran
           </button>
         </div>
       </main>

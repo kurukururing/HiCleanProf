@@ -76,13 +76,13 @@ export function PengepulVerifikasiPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-[#1a1d1b] flex flex-col font-sans">
       <PengepulNavbar activeName="Verifikasi" />
 
-      <main className="flex-grow mx-auto w-full max-w-md px-4 py-5 space-y-4 pb-12">
+      <main className="flex-grow mx-auto w-full max-w-md px-4 py-5 space-y-4 pb-28 sm:pb-12">
         {/* Title */}
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 font-heading">
-            Verifikasi
+            Verifikasi Setoran
           </h1>
-          <p className="text-xs text-neutral-500 mt-0.5">
+          <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
             Daftar setoran warga yang perlu diverifikasi fisik dan bobot
           </p>
         </div>
@@ -95,7 +95,7 @@ export function PengepulVerifikasiPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari nomor ID atau nama warga..."
-            className="w-full bg-[#E5E5EA] text-neutral-800 placeholder-neutral-400 rounded-full pl-11 pr-4 py-3 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-green/30 transition-all"
+            className="w-full bg-white border border-neutral-200/90 text-neutral-800 placeholder-neutral-400 rounded-2xl pl-11 pr-4 py-3 text-xs sm:text-sm font-medium shadow-2xs focus:outline-none focus:ring-2 focus:ring-brand-green/30 transition-all"
           >
           </input>
         </div>
@@ -191,7 +191,7 @@ export function PengepulVerifikasiPage() {
                 <button
                   type="button"
                   onClick={() => navigate(ROUTES.pengepulVerifikasiLangkah1 || '/pengepul/verifikasi/langkah-1')}
-                  className="w-full py-2.5 rounded-2xl border border-brand-green text-brand-green hover:bg-brand-green hover:text-ink text-xs font-bold transition-all shadow-2xs active:scale-[0.99]"
+                  className="w-full py-3 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:brightness-105 transition-all shadow-sm active:scale-[0.98]"
                 >
                   {item.actionLabel}
                 </button>
@@ -199,7 +199,7 @@ export function PengepulVerifikasiPage() {
                 <button
                   type="button"
                   disabled
-                  className="w-full py-2.5 rounded-2xl border border-neutral-300 text-neutral-400 text-xs font-bold cursor-not-allowed bg-neutral-50"
+                  className="w-full py-3 rounded-2xl border border-neutral-200 text-neutral-400 text-xs sm:text-sm font-bold cursor-not-allowed bg-neutral-100"
                 >
                   {item.actionLabel}
                 </button>
@@ -207,7 +207,7 @@ export function PengepulVerifikasiPage() {
                 <button
                   type="button"
                   onClick={() => navigate(ROUTES.pengepulVerifikasiLangkah1 || '/pengepul/verifikasi/langkah-1')}
-                  className="w-full py-2.5 rounded-2xl border border-brand-green text-brand-green hover:bg-brand-green hover:text-ink text-xs font-bold transition-all shadow-2xs active:scale-[0.99]"
+                  className="w-full py-3 rounded-2xl bg-neutral-900 text-white hover:bg-neutral-800 text-xs sm:text-sm font-bold transition-all shadow-sm active:scale-[0.98]"
                 >
                   {item.actionLabel}
                 </button>

@@ -201,12 +201,12 @@ export function PengepulVerifikasiLangkah4Page() {
       )}
 
       {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="mx-auto max-w-md">
           <button
             type="button"
             onClick={handleConfirm}
-            className="w-full py-3.5 px-6 rounded-2xl bg-brand-green text-ink text-sm font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center"
+            className="w-full py-4 px-6 rounded-2xl bg-brand-green text-ink text-sm font-extrabold hover:brightness-105 transition-all shadow-md active:scale-[0.99] text-center cursor-pointer"
           >
             Konfirmasi & Terbitkan Bukti
           </button>

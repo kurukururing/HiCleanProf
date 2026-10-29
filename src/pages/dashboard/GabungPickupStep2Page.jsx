@@ -136,7 +136,7 @@ export function GabungPickupStep2Page() {
           <button
             type="button"
             onClick={() => navigate('/dashboard/gabung-pickup/langkah-3')}
-            className="flex-[2] py-4 rounded-2xl bg-neutral-900 text-white text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
+            className="flex-[2] py-4 rounded-2xl bg-neutral-900 text-white text-xs sm:text-sm font-extrabold hover:bg-neutral-800 transition-colors shadow-lg"
           >
             Lanjut (Langkah 2/4)
           </button>

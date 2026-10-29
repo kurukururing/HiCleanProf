@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, Menu, X, Home, Truck, History, Gift, User, Bell, LogOut } from 'lucide-react';
+import { ChevronLeft, Menu, X, Home, Truck, History, Gift, User, Bell, LogOut, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes';
 import { ConfirmationModal } from '../ui/ConfirmationModal';
@@ -8,7 +8,8 @@ export function WargaStepHeader({
   backTo, 
   stepBadge = 'Lokasi', 
   stepNumber = 1, 
-  totalSteps = 6 
+  totalSteps = 6,
+  title
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -45,6 +46,13 @@ export function WargaStepHeader({
             <ChevronLeft className="size-6 stroke-[2.5]" />
           </button>
 
+          {/* Optional Center Step Title */}
+          {title && (
+            <h1 className="text-sm font-extrabold text-neutral-900 truncate px-2 font-heading">
+              {title}
+            </h1>
+          )}
+
           {/* Burger Button (White Circle) */}
           <button
             type="button"
@@ -57,19 +65,24 @@ export function WargaStepHeader({
         </div>
       </header>
 
-      {/* Progress Card */}
+      {/* Dynamic Progress Card */}
       <div className="mx-auto w-full max-w-md px-4 pt-1 pb-3">
-        <div className="rounded-3xl bg-white p-5 shadow-sm border border-neutral-200/80 space-y-3">
+        <div className="rounded-3xl bg-white p-4 sm:p-5 shadow-xs border border-neutral-200/80 space-y-3">
           <div className="flex items-center justify-between text-xs font-bold text-neutral-700">
-            <span className="px-3 py-1 rounded-full bg-neutral-200 text-neutral-800 text-[11px] font-bold">
+            <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200/60 text-[11px] font-extrabold flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-brand-green" />
               {stepBadge}
             </span>
-            <span className="text-xs font-bold text-neutral-800">
+            <span className="text-xs font-extrabold text-neutral-800 font-mono">
               Langkah {stepNumber} dari {totalSteps}
             </span>
           </div>
 
-          <div className="grid grid-cols-6 gap-1.5 h-1.5">
+          {/* Adaptive Progress Bar Grid based on totalSteps */}
+          <div 
+            className="grid gap-1.5 h-1.5"
+            style={{ gridTemplateColumns: `repeat(${totalSteps}, minmax(0, 1fr))` }}
+          >
             {Array.from({ length: totalSteps }).map((_, idx) => (
               <div
                 key={idx}
@@ -188,4 +201,3 @@ export function WargaStepHeader({
     </>
   );
 }
-

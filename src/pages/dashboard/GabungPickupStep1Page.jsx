@@ -188,7 +188,7 @@ export function GabungPickupStep1Page() {
 
                 <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 mt-1 transition-colors ${
                   active 
-                    ? 'bg-brand-green border-brand-green text-white' 
+                    ? 'bg-brand-green border-brand-green text-ink' 
                     : 'border-neutral-300 bg-white'
                 }`}>
                   {active && <Check className="size-3.5 stroke-[3]" />}
@@ -202,14 +202,14 @@ export function GabungPickupStep1Page() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="flex-1 py-4 rounded-2xl bg-white text-neutral-800 border border-neutral-300 text-xs font-bold hover:bg-neutral-50 transition-colors cursor-pointer"
+            className="flex-1 py-4 rounded-2xl bg-white text-neutral-800 border border-neutral-300 text-xs sm:text-sm font-bold hover:bg-neutral-50 transition-colors cursor-pointer"
           >
             &larr; Kembali
           </button>
           <button
             type="button"
             onClick={() => navigate(ROUTES.gabungPickupStep2)}
-            className="flex-[2] py-4 rounded-2xl bg-neutral-900 hover:bg-black text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
+            className="flex-[2] py-4 rounded-2xl bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold transition-all shadow-lg cursor-pointer"
           >
             Lanjut (Langkah 1/4)
           </button>

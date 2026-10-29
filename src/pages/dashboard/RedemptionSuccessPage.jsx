@@ -83,13 +83,13 @@ export function RedemptionSuccessPage({ isTicket = false }) {
         </div>
       </main>
 
-      <div className="p-4 bg-white border-t border-neutral-200">
+      <div className="p-4 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 pb-[max(1rem,env(safe-area-inset-bottom))]">
         <div className="max-w-md mx-auto">
           <Link
             to="/dashboard"
-            className="w-full flex items-center justify-center rounded-2xl bg-neutral-900 text-white py-4 px-6 text-xs font-bold hover:bg-neutral-800 transition-colors shadow-lg"
+            className="w-full flex items-center justify-center rounded-2xl bg-neutral-900 text-white py-4 px-6 text-sm font-extrabold hover:bg-neutral-800 transition-colors shadow-lg active:scale-[0.99]"
           >
-            Kembali ke beranda
+            Kembali ke Beranda
           </Link>
         </div>
       </div>

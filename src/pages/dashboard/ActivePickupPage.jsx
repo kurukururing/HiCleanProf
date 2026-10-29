@@ -65,7 +65,7 @@ export function ActivePickupPage() {
         </div>
       </header>
 
-      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-6">
+      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-6 pb-28 sm:pb-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Setoran Aktif</h1>
@@ -187,7 +187,7 @@ export function ActivePickupPage() {
           <div className="grid grid-cols-2 gap-3 pt-2">
             <a 
               href="tel:082175677656" 
-              className="flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 py-3 text-xs font-bold transition-colors"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 py-3.5 text-xs sm:text-sm font-bold transition-colors cursor-pointer"
             >
               <Phone className="size-4 text-brand-green" /> Telepon Kurir
             </a>
@@ -195,7 +195,7 @@ export function ActivePickupPage() {
               href="https://wa.me/6282175677656" 
               target="_blank" 
               rel="noreferrer" 
-              className="flex items-center justify-center gap-2 rounded-2xl bg-brand-green text-ink py-3 text-xs font-bold hover:bg-brand-green/90 transition-colors"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-brand-green text-ink py-3.5 text-xs sm:text-sm font-extrabold hover:brightness-105 transition-all shadow-sm active:scale-95 cursor-pointer"
             >
               <MessageSquare className="size-4" /> WhatsApp
             </a>

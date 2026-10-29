@@ -37,16 +37,16 @@ export function PengepulNotifikasiPage() {
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       <PengepulNavbar activeName="" />
 
-      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5">
+      <main className="flex-grow mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 space-y-5 pb-28 sm:pb-8">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="size-9 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 shadow-sm"
+            className="size-10 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 shadow-sm cursor-pointer"
           >
-            <ArrowLeft className="size-4" />
+            <ArrowLeft className="size-4.5" />
           </button>
-          <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900">Notifikasi Mitra</h1>
+          <h1 className="text-2xl font-extrabold text-neutral-900 font-heading">Notifikasi Mitra</h1>
         </div>
 
         <div className="space-y-3">

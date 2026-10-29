@@ -36,6 +36,15 @@ export function PengepulVerifikasiLangkah2Page() {
     setSopChecks((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const handleToggleAllSop = () => {
+    const nextState = !allSopChecked;
+    setSopChecks({
+      posisiTengah: nextState,
+      bebasSentuhan: nextState,
+      janganSentuh: nextState
+    });
+  };
+
   // Reset / Nolkan Ulang
   const handleResetZero = () => {
     setLiveWeight(0.00);
@@ -186,18 +195,28 @@ export function PengepulVerifikasiLangkah2Page() {
           <>
             {/* Checklist SOP Penimbangan */}
             <div className="rounded-3xl bg-white p-5 shadow-xs border border-neutral-200/80 space-y-3 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2.5">
-                <div className="size-9 rounded-xl bg-[#E5F8ED] text-brand-green flex items-center justify-center">
-                  <Scale className="size-5" />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="size-9 rounded-xl bg-[#E5F8ED] text-brand-green flex items-center justify-center">
+                    <Scale className="size-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-neutral-900">
+                      Botol Plastik PET
+                    </h3>
+                    <p className="text-[11px] text-neutral-500">
+                      Botol plastik, dan botol minyak bekas
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold text-neutral-900">
-                    Botol Plastik PET
-                  </h3>
-                  <p className="text-[11px] text-neutral-500">
-                    Botol plastik, dan botol minyak bekas
-                  </p>
-                </div>
+
+                <button
+                  type="button"
+                  onClick={handleToggleAllSop}
+                  className="text-[11px] font-extrabold text-brand-green hover:underline cursor-pointer px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 transition-colors"
+                >
+                  {allSopChecked ? 'Batal Semua' : 'Centang Semua'}
+                </button>
               </div>
 
               <div className="space-y-2 pt-1">
@@ -490,7 +509,7 @@ export function PengepulVerifikasiLangkah2Page() {
       {/* =========================================================================
           Fixed Bottom Action Bar (Changes dynamically per sub-state)
          ========================================================================= */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200 px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+      <div className="fixed bottom-0 left-0 right-0 z-20 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
         <div className="mx-auto max-w-md flex items-center justify-between gap-3">
           {/* Back button */}
           <button
@@ -504,7 +523,7 @@ export function PengepulVerifikasiLangkah2Page() {
                 navigate(ROUTES.pengepulVerifikasiLangkah1 || '/pengepul/verifikasi/langkah-1');
               }
             }}
-            className="flex items-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-bold text-neutral-700 hover:bg-neutral-100 transition-colors"
+            className="flex items-center gap-1.5 px-4 py-3.5 rounded-2xl text-xs font-bold text-neutral-700 hover:bg-neutral-100 transition-colors cursor-pointer"
           >
             <ArrowLeft className="size-4" />
             <span>Kembali</span>
@@ -520,9 +539,9 @@ export function PengepulVerifikasiLangkah2Page() {
             <button
               type="button"
               onClick={handleStartMeasuring}
-              className={`flex-1 py-3 px-5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all shadow-md active:scale-[0.99] text-center ${
+              className={`flex-1 py-3.5 px-5 rounded-2xl text-xs sm:text-sm font-extrabold transition-all shadow-md active:scale-[0.99] text-center cursor-pointer ${
                 allSopChecked
-                  ? 'bg-brand-green text-ink hover:bg-brand-green/90'
+                  ? 'bg-brand-green text-ink hover:brightness-105'
                   : 'bg-neutral-200 text-neutral-500 hover:bg-neutral-300'
               }`}
             >
@@ -534,7 +553,7 @@ export function PengepulVerifikasiLangkah2Page() {
             <button
               type="button"
               disabled
-              className="flex-1 py-3 px-5 rounded-2xl bg-neutral-200 text-neutral-600 text-xs sm:text-sm font-extrabold text-center flex items-center justify-center gap-2 cursor-wait"
+              className="flex-1 py-3.5 px-5 rounded-2xl bg-neutral-200 text-neutral-600 text-xs sm:text-sm font-extrabold text-center flex items-center justify-center gap-2 cursor-wait"
             >
               <Activity className="size-4 animate-spin text-brand-green" />
               <span>Membaca Bobot...</span>
@@ -545,7 +564,7 @@ export function PengepulVerifikasiLangkah2Page() {
             <button
               type="button"
               onClick={handleLockWeight}
-              className="flex-1 py-3 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center animate-pulse"
+              className="flex-1 py-3.5 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:brightness-105 transition-all shadow-md active:scale-[0.99] text-center animate-pulse cursor-pointer"
             >
               Kunci Bobot
             </button>
@@ -555,7 +574,7 @@ export function PengepulVerifikasiLangkah2Page() {
             <button
               type="button"
               onClick={handleNextStep}
-              className="flex-1 py-3 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:bg-brand-green/90 transition-all shadow-md active:scale-[0.99] text-center"
+              className="flex-1 py-3.5 px-5 rounded-2xl bg-brand-green text-ink text-xs sm:text-sm font-extrabold hover:brightness-105 transition-all shadow-md active:scale-[0.99] text-center cursor-pointer"
             >
               Lanjut (Langkah 3 /4)
             </button>

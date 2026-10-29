@@ -49,10 +49,10 @@ export function SetoranActiveListPage() {
         </div>
       </header>
 
-      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+      <main className="flex-grow mx-auto w-full max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6 pb-28 sm:pb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900">Riwayat Setoran Aktif</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 font-heading">Setoran Aktif Berjalan</h1>
             <p className="text-xs text-neutral-500 mt-1">Daftar pesanan penjemputan sampah yang sedang aktif atau dalam proses</p>
           </div>
 
@@ -115,7 +115,7 @@ export function SetoranActiveListPage() {
 
                 <Link 
                   to={ROUTES.activePickup}
-                  className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-white bg-neutral-900 hover:bg-neutral-800 px-6 py-3 rounded-xl shadow transition-colors active:scale-95"
+                  className="inline-flex items-center justify-center gap-1.5 text-xs sm:text-sm font-extrabold text-white bg-neutral-900 hover:bg-neutral-800 px-6 py-3.5 rounded-2xl shadow transition-colors active:scale-95"
                 >
                   Lacak Detail &rarr;
                 </Link>

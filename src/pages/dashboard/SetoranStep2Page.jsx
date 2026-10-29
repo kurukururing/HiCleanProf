@@ -168,7 +168,7 @@ export function SetoranStep2Page() {
                 {/* Circular Indicator */}
                 <div className={`size-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                   isSelected
-                    ? 'border-brand-green bg-brand-green text-white'
+                    ? 'border-brand-green bg-brand-green text-ink'
                     : 'border-neutral-300 bg-white'
                 }`}>
                   {isSelected && <Check className="size-3.5 stroke-[3]" />}
@@ -188,7 +188,7 @@ export function SetoranStep2Page() {
       />
 
       {/* Fixed Bottom Action Bar */}
-      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200 p-4 z-40">
+      <div className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-neutral-200/90 px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] z-40">
         <div className="mx-auto max-w-md flex items-center justify-between gap-4">
           <button
             type="button"
@@ -202,7 +202,7 @@ export function SetoranStep2Page() {
           <button
             type="button"
             onClick={handleNext}
-            className="flex-1 py-4 px-6 rounded-full bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
+            className="flex-1 py-4 px-6 rounded-2xl bg-neutral-900 hover:bg-black text-white text-xs sm:text-sm font-extrabold shadow-md active:scale-[0.99] transition-all cursor-pointer text-center"
           >
             Lanjut (Langkah 3 /6)
           </button>
