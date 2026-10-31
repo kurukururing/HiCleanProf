@@ -15,21 +15,21 @@ export function DataDiriPage() {
 
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-200">
+      <header className="sticky top-0 z-50 bg-white border-b-2 border-neutral-200 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <div className="mx-auto flex max-w-xl items-center justify-between px-4 py-3 sm:px-6">
           <button 
             type="button"
             onClick={() => navigate(-1)}
-            className="size-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors text-neutral-800"
+            className="size-10 rounded-2xl bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 flex items-center justify-center transition-colors text-neutral-900 shadow-2xs font-bold cursor-pointer"
           >
             <ArrowLeft className="size-5" />
           </button>
           
           <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
+            <img src="/logoDesc.png" alt="Hi-Clean" className="h-10 sm:h-11 w-auto object-contain" />
           </Link>
 
-          <Link to="/dashboard" className="text-xs font-semibold text-brand-green hover:underline">
+          <Link to="/dashboard" className="text-xs font-extrabold text-neutral-900 bg-neutral-100 hover:bg-neutral-200 px-3.5 py-1.5 rounded-full border border-neutral-300 transition-colors">
             Beranda
           </Link>
         </div>

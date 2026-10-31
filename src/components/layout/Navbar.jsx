@@ -79,9 +79,9 @@ export function Navbar() {
 
   // Logo berwarna putih, jadi bar selalu gelap: transparan di atas hero, kaca gelap saat di-scroll.
   const surface = isOpen || !isHome
-    ? 'border-white/10 bg-ink'
+    ? 'border-b-2 border-white/20 bg-ink shadow-xl'
     : scrolled
-      ? 'border-white/10 bg-ink/85 backdrop-blur-md'
+      ? 'border-b-2 border-white/15 bg-ink/95 backdrop-blur-md shadow-2xl'
       : 'border-transparent bg-transparent';
 
   return (
@@ -97,7 +97,7 @@ export function Navbar() {
             alt="Hi-Clean"
             decoding="async"
             className={`w-auto max-w-none transition-[height] duration-300 motion-reduce:transition-none ${
-              compact ? 'h-10 md:h-11' : 'h-12 md:h-14'
+              compact ? 'h-12 sm:h-13 md:h-14' : 'h-14 sm:h-16 md:h-18'
             }`}
           />
         </Link>

@@ -27,14 +27,14 @@ export function PengepulStepHeader({ backTo, title }) {
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-[#F4F4F6]/90 backdrop-blur-md px-4 py-3 sm:px-6">
+      <header className="sticky top-0 z-30 bg-white border-b-2 border-neutral-200 shadow-2xs px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-md items-center justify-between">
           {/* Back Button (Green Circle) */}
           <button
             type="button"
             onClick={handleBack}
             aria-label="Kembali"
-            className="flex items-center justify-center size-10 rounded-full bg-brand-green text-ink hover:brightness-105 transition-transform active:scale-95 shadow-sm cursor-pointer"
+            className="flex items-center justify-center size-10 rounded-2xl bg-neutral-100 border border-neutral-300 text-neutral-900 hover:bg-neutral-200 transition-transform active:scale-95 shadow-2xs cursor-pointer font-bold"
           >
             <ChevronLeft className="size-6 stroke-[2.5]" />
           </button>
@@ -45,12 +45,12 @@ export function PengepulStepHeader({ backTo, title }) {
             </h1>
           )}
 
-          {/* Burger Button (White Circle) */}
+          {/* Burger Button */}
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
             aria-label="Menu"
-            className="flex items-center justify-center size-10 rounded-full bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-100 transition-transform active:scale-95 shadow-2xs"
+            className="flex items-center justify-center size-10 rounded-2xl bg-neutral-900 text-white hover:bg-neutral-800 transition-transform active:scale-95 shadow-md cursor-pointer"
           >
             <Menu className="size-5" />
           </button>

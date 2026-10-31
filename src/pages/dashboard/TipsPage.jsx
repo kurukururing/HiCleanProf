@@ -153,22 +153,22 @@ export function TipsPage() {
   return (
     <div className="min-h-screen bg-[#F4F4F6] text-neutral-900 flex flex-col font-sans">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-neutral-200">
+      <header className="sticky top-0 z-50 bg-white border-b-2 border-neutral-200 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3 sm:px-6">
           <button 
             type="button"
             onClick={() => navigate(-1)}
             aria-label="Kembali"
-            className="size-10 rounded-full bg-brand-green text-white hover:bg-emerald-600 flex items-center justify-center transition-all active:scale-95 shadow-sm cursor-pointer"
+            className="size-10 rounded-2xl bg-brand-green text-ink hover:brightness-105 flex items-center justify-center transition-all active:scale-95 shadow-sm cursor-pointer"
           >
             <ArrowLeft className="size-5 stroke-[2.5]" />
           </button>
           
           <Link to="/dashboard" className="flex items-center gap-2">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 w-auto" />
+            <img src="/logoDesc.png" alt="Hi-Clean" className="h-10 sm:h-11 w-auto object-contain" />
           </Link>
 
-          <Link to="/dashboard" className="text-xs font-bold text-brand-green hover:underline">
+          <Link to="/dashboard" className="text-xs font-extrabold text-neutral-900 bg-neutral-100 hover:bg-neutral-200 px-3.5 py-1.5 rounded-full border border-neutral-300 transition-colors">
             Beranda
           </Link>
         </div>

@@ -25,25 +25,29 @@ export function WargaNavbar({ activeName }) {
   return (
     <>
       {/* ───────────────── DESKTOP HEADER ───────────────── */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200/80">
+      <header className="sticky top-0 z-40 bg-ink border-b border-white/10 shadow-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
           {/* Logo */}
-          <Link to={ROUTES.dashboard} className="flex items-center gap-2 shrink-0">
-            <img src="/logoDesc.png" alt="Hi-Clean" className="h-8 md:h-9 w-auto" />
+          <Link to={ROUTES.dashboard} className="flex items-center gap-2 shrink-0 py-0.5 group">
+            <img 
+              src="/logoDesc.png" 
+              alt="Hi-Clean" 
+              className="h-10 sm:h-11 md:h-12 w-auto object-contain transition-transform group-hover:scale-105" 
+            />
           </Link>
 
           {/* Desktop Navigation Links – pill strip */}
-          <nav className="hidden md:flex items-center gap-1 bg-neutral-100/70 p-1 rounded-full border border-neutral-200/60">
+          <nav className="hidden md:flex items-center gap-1.5 bg-white/10 p-1.5 rounded-full border border-white/10 backdrop-blur-sm shadow-inner">
             {navItems.map((item) => {
               const isActive = activeName === item.name;
               return (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-150 ${
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-150 ${
                     isActive
-                      ? 'bg-white text-neutral-900 shadow-sm border-b-2 border-brand-green/40'
-                      : 'text-neutral-600 hover:text-neutral-900 hover:bg-white/60'
+                      ? 'bg-brand-green text-ink shadow-md font-black'
+                      : 'text-white/80 hover:text-white hover:bg-white/10 font-semibold'
                   }`}
                 >
                   {item.name}
@@ -53,15 +57,15 @@ export function WargaNavbar({ activeName }) {
           </nav>
 
           {/* Right: Bell + Avatar (desktop) + Burger (mobile) */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {/* Bell – visible on both */}
             <Link
               to={ROUTES.notifications}
               aria-label="Notifikasi"
-              className="relative rounded-full p-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors inline-flex items-center justify-center border border-neutral-200/70"
+              className="relative rounded-2xl p-2.5 bg-white/10 hover:bg-white/20 text-white transition-colors inline-flex items-center justify-center border border-white/15 shadow-2xs font-bold"
             >
-              <Bell className="size-4.5" />
-              <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-red-500 ring-2 ring-white" />
+              <Bell className="size-5 text-white" />
+              <span className="absolute top-1.5 right-1.5 size-2.5 rounded-full bg-red-500 ring-2 ring-ink" />
             </Link>
 
             {/* Profile dropdown – desktop only */}
@@ -69,12 +73,12 @@ export function WargaNavbar({ activeName }) {
               <button
                 type="button"
                 onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-                className="flex items-center gap-2 rounded-full py-1 pl-2.5 pr-1 bg-neutral-100 hover:bg-neutral-200 transition-colors border border-neutral-200"
+                className="flex items-center gap-2.5 rounded-full py-1.5 pl-3.5 pr-1.5 bg-white/10 hover:bg-white/20 transition-colors border border-white/15 shadow-sm text-white"
               >
-                <span className="text-xs font-semibold max-w-[120px] truncate text-neutral-800">
+                <span className="text-xs font-extrabold max-w-[120px] truncate text-white">
                   Budiman Sekti
                 </span>
-                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-extrabold text-sm">
+                <div className="size-8 rounded-full bg-brand-green text-ink flex items-center justify-center font-black text-sm shadow-2xs">
                   B
                 </div>
               </button>
@@ -82,21 +86,21 @@ export function WargaNavbar({ activeName }) {
               {profileMenuOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setProfileMenuOpen(false)} />
-                  <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-xl border border-neutral-100 z-50">
+                  <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-white p-2 shadow-2xl border border-neutral-200 z-50 text-neutral-900">
                     <div className="px-3 py-2 border-b border-neutral-100 mb-1">
                       <p className="text-xs font-bold text-neutral-900">Budiman Sekti</p>
                       <p className="text-[11px] text-neutral-500">Warga Peduli Lingkungan</p>
                     </div>
                     <Link to={ROUTES.profile} onClick={() => setProfileMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                      <User className="size-4 text-neutral-500" /> Profil Saya
+                      className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
+                      <User className="size-4 text-neutral-600" /> Profil Saya
                     </Link>
                     <Link to={ROUTES.generalSettings} onClick={() => setProfileMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
-                      <Settings className="size-4 text-neutral-500" /> Pengaturan
+                      className="flex items-center gap-2 px-3 py-2 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors">
+                      <Settings className="size-4 text-neutral-600" /> Pengaturan
                     </Link>
                     <button type="button" onClick={() => { setProfileMenuOpen(false); setShowLogoutModal(true); }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1">
+                      className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors mt-1 cursor-pointer">
                       <LogOut className="size-4 text-red-500" /> Keluar
                     </button>
                   </div>
@@ -108,10 +112,10 @@ export function WargaNavbar({ activeName }) {
             <button
               type="button"
               onClick={() => setDrawerOpen(true)}
-              className="md:hidden flex items-center justify-center size-9 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-colors border border-neutral-200"
+              className="md:hidden flex items-center justify-center size-10 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/15 transition-all shadow-md active:scale-95 cursor-pointer"
               aria-label="Buka Menu"
             >
-              <Menu className="size-5" />
+              <Menu className="size-5 stroke-[2.5]" />
             </button>
           </div>
         </div>
@@ -122,35 +126,35 @@ export function WargaNavbar({ activeName }) {
         <div className="fixed inset-0 z-50 md:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setDrawerOpen(false)}
           />
 
           {/* Slide-in panel from right */}
-          <div className="absolute right-0 top-0 bottom-0 w-72 bg-white flex flex-col shadow-2xl">
+          <div className="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-white flex flex-col shadow-2xl border-l-2 border-neutral-200">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100">
+            <div className="flex items-center justify-between px-5 py-4.5 border-b border-white/10 bg-ink text-white">
               <div className="flex items-center gap-3">
-                <div className="size-10 rounded-2xl bg-brand-green text-ink flex items-center justify-center font-extrabold text-base">
+                <div className="size-11 rounded-2xl bg-brand-green text-ink flex items-center justify-center font-black text-base shadow-sm">
                   B
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-neutral-900">Budiman Sekti</p>
-                  <p className="text-[11px] text-neutral-500">Warga Peduli Lingkungan</p>
+                  <p className="text-sm font-extrabold text-white">Budiman Sekti</p>
+                  <p className="text-xs font-medium text-white/70">Warga Peduli Lingkungan</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setDrawerOpen(false)}
-                className="flex items-center justify-center size-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 transition-colors"
+                className="flex items-center justify-center size-9 rounded-2xl bg-white/10 border border-white/20 hover:bg-white/20 text-white transition-colors shadow-2xs cursor-pointer"
               >
-                <X className="size-4.5" />
+                <X className="size-5 stroke-[2.5]" />
               </button>
             </div>
 
             {/* Nav Links */}
-            <nav className="flex-grow px-4 py-4 space-y-1 overflow-y-auto">
-              <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest px-2 pb-1">
+            <nav className="flex-grow px-4 py-4 space-y-1.5 overflow-y-auto">
+              <p className="text-xs font-extrabold text-neutral-500 uppercase tracking-wider px-2 pb-1 font-heading">
                 Menu Utama
               </p>
               {navItems.map((item) => {
@@ -161,16 +165,16 @@ export function WargaNavbar({ activeName }) {
                     key={item.name}
                     to={item.path}
                     onClick={() => setDrawerOpen(false)}
-                    className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-150 active:bg-neutral-100 ${
+                    className={`flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-extrabold transition-all duration-150 active:scale-[0.98] ${
                       isActive
-                        ? 'bg-brand-green/10 text-brand-green'
-                        : 'text-neutral-700 hover:bg-neutral-100'
+                        ? 'bg-neutral-900 text-white shadow-md'
+                        : 'text-neutral-800 hover:bg-neutral-100'
                     }`}
                   >
                     <div className={`size-8 rounded-xl flex items-center justify-center ${
-                      isActive ? 'bg-brand-green/20 text-brand-green' : 'bg-neutral-100 text-neutral-600'
+                      isActive ? 'bg-white/20 text-brand-green' : 'bg-neutral-100 text-neutral-700'
                     }`}>
-                      <Icon className="size-4" />
+                      <Icon className="size-4.5 stroke-[2.2]" />
                     </div>
                     <span>{item.name}</span>
                     {isActive && <span className="ml-auto size-2 rounded-full bg-brand-green" />}
@@ -178,27 +182,27 @@ export function WargaNavbar({ activeName }) {
                 );
               })}
 
-              <div className="pt-4 mt-2 border-t border-neutral-100 space-y-1">
-                <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest px-2 pb-1">
+              <div className="pt-4 mt-3 border-t-2 border-neutral-200 space-y-1.5">
+                <p className="text-xs font-extrabold text-neutral-500 uppercase tracking-wider px-2 pb-1 font-heading">
                   Akun
                 </p>
                 <Link
                   to={ROUTES.generalSettings}
                   onClick={() => setDrawerOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-neutral-700 hover:bg-neutral-100 active:bg-neutral-100 transition-all duration-150"
+                  className="flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold text-neutral-800 hover:bg-neutral-100 active:bg-neutral-100 transition-all duration-150"
                 >
-                  <div className="size-8 rounded-xl bg-neutral-100 text-neutral-600 flex items-center justify-center">
-                    <Settings className="size-4" />
+                  <div className="size-8 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center">
+                    <Settings className="size-4.5" />
                   </div>
                   Pengaturan
                 </Link>
                 <Link
                   to={ROUTES.notifications}
                   onClick={() => setDrawerOpen(false)}
-                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-neutral-700 hover:bg-neutral-100 active:bg-neutral-100 transition-all duration-150"
+                  className="flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold text-neutral-800 hover:bg-neutral-100 active:bg-neutral-100 transition-all duration-150"
                 >
-                  <div className="size-8 rounded-xl bg-neutral-100 text-neutral-600 flex items-center justify-center relative">
-                    <Bell className="size-4" />
+                  <div className="size-8 rounded-xl bg-neutral-100 text-neutral-700 flex items-center justify-center relative">
+                    <Bell className="size-4.5" />
                     <span className="absolute top-0.5 right-0.5 size-2 rounded-full bg-red-500" />
                   </div>
                   Notifikasi
@@ -207,14 +211,14 @@ export function WargaNavbar({ activeName }) {
             </nav>
 
             {/* Drawer Footer: Logout */}
-            <div className="px-4 py-4 border-t border-neutral-100">
+            <div className="px-4 py-4 border-t-2 border-neutral-200">
               <button
                 type="button"
                 onClick={() => { setDrawerOpen(false); setShowLogoutModal(true); }}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold text-red-600 hover:bg-red-50 active:bg-red-100 transition-all duration-150"
+                className="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-sm font-bold text-red-600 hover:bg-red-50 active:bg-red-100 transition-all duration-150 cursor-pointer"
               >
                 <div className="size-8 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
-                  <LogOut className="size-4" />
+                  <LogOut className="size-4.5" />
                 </div>
                 Keluar
               </button>
